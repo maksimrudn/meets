@@ -1,0 +1,113 @@
+﻿@import "../styles/scss/main.scss";
+
+.container-xxl,
+.container-xl,
+.container-lg,
+.container-sm,
+.container-md {
+    padding-bottom: 40px;
+}
+
+.container-xl {
+    max-width: $main_width;
+}
+
+.btn{
+    border-radius: 20px;
+}
+
+////////////////////////////////////////
+
+.Layout {
+    font-family: "Montserrat-ExtraBold", sans-serif;
+    //font-family: Circe, Arial, Helvetica, sans-serif;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+
+    .main {
+        flex: 1 0 auto;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        max-width: $main_width;
+        transition: transform .3s;
+        position: relative;
+        margin: 0px auto 0;
+        //padding: 0 15px;
+        padding-top: 0px !important;
+        margin-top: $top-menu-height-desk;
+
+
+        @media only screen and (max-width: $break-small) {
+            margin-top: $top-menu-height-mob;
+            padding-left: 0px;
+            padding-right: 0px;
+            display: block;
+        }
+
+        .body {
+            padding-top: $padding-from-top-menu;
+
+
+            @media only screen and (max-width: $break-small) {
+                padding-left: 0px;
+                padding-right: 0px;
+                //padding-top: 20px;
+                display: block;
+            }
+        }
+    }
+}
+
+@font-face {
+    font-family: 'Montserrat-ExtraBold';
+    src: url('../styles/fonts/montserrat/Montserrat-ExtraBold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Bold';
+    src: url('../styles/fonts/montserrat/Montserrat-Bold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Regular';
+    src: url('../styles/fonts/montserrat/Montserrat-Regular.otf') format('opentype');
+}
+
+
+
+
+@font-face {
+    font-family: 'Circe-Bold';
+    src: url('../styles/dist/assets/fonts/Circe/Circe-Bold.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Circe';
+    src: url('../styles/dist/assets/fonts/Circe/Circe-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Circe-Bold';
+    src: url('../styles/dist/assets/fonts/Circe/Circe-Bold.woff2') format('woff2');
+}
+
+
+/*@font-face {
+    font-family: 'Circe';
+    //src: url('/assetsMyTask/assets/fonts/dostaevsky/RadiateSans-BoldExpanded.woff2') format('woff2');
+    //src: url('/assetsMyTask/assets/fonts/dostaevsky/Gotham-Pro-Bold.woff2') format('woff2');
+    src: url('../styles/dist/assets/fonts/Circe/Circe-Bold.woff2') format('woff2');
+    src: url('../styles/dist/assets/fonts/Circe/Circe-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;*/
+    /*font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;*/
+/*}*/

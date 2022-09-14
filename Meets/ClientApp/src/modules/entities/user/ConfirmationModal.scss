@@ -1,0 +1,36 @@
+﻿.ConfirmationModal {
+    .Content {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 2px 1px 1px #000;
+
+        .Body {
+            span {
+                font-size: 17px;
+            }
+
+            .Action {
+                height: 36px;
+                width: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 15px;
+                background-color: #18191F;
+                color: #fff;
+                font-size: 12px;
+            }
+
+            .Cancel {
+                height: 36px;
+                width: 50%;
+                justify-content: center;
+                align-items: center;
+                border: 2px solid #18191F;
+                border-radius: 15px;
+                background-color: #fff;
+                font-size: 12px;
+            }
+        }
+    }
+}

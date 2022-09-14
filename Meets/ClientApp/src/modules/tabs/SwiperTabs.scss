@@ -1,0 +1,39 @@
+﻿.SwiperTabsConatainer {
+    .SwiperTabs {
+        height: 52px;
+        width: 100%;
+        border: 2px solid #000;
+
+        .Tab {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            min-width: 166px;
+            max-width: 50%;
+            width: 100%;
+            color: #000;
+            cursor: pointer;
+
+            .Counter{
+                display: none;
+            }
+
+            &.Active {
+                color: #fff;
+                background-color: #00C6AE;
+
+                .Counter {
+                    background-color: #1947E5;
+                    height: 25px;
+                    min-width: 25px;
+                    border-radius: 50rem;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}

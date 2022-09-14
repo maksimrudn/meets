@@ -1,0 +1,37 @@
+﻿.Error {
+    background-color: #fff;
+    padding: 24px;
+    height: calc(95vh + 30px);
+
+    .Icon {
+        width: 161px;
+        height: 161px;
+        border-radius: 50%;
+        border: 2px solid #000;
+        background-color: #F95A2C;
+        padding: 2rem;
+
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    .Text {
+        color: #474A57;
+        font-size: 21px;
+        text-align: center;
+    }
+
+    .Action {
+        height: 60px;
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        background-color: #18191F;
+        color: #fff;
+        font-size: 21px;
+    }
+}

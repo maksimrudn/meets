@@ -1,0 +1,17 @@
+// card 
+.card{
+    border-radius: 8px;
+    border-color: var(--border-color);
+    border-width: 1px;
+    border-style: solid;
+    background-color: var(--card-color);
+    &.card-callout{
+        border-left-width: .4rem;
+        border-left-color: var(--primary-color);
+    }
+    .card-header{
+        background-color: transparent;
+        border-bottom: none;
+    }
+}
+

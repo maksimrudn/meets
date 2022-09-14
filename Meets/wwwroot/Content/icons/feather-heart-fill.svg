@@ -1,0 +1,15 @@
+<svg id="feather_heart-fill" data-name="feather / heart-fill" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17" height="23" viewBox="0 0 17 23">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Path" d="M16.17.674A3.334,3.334,0,0,0,12.378.516l-.215.158L.83,9.874a2,2,0,0,0-.194,3.078l.194.175,11.333,9.2a3.316,3.316,0,0,0,4.007,0,2,2,0,0,0,.194-3.078l-.194-.175L6.84,11.5l9.33-7.574A2,2,0,0,0,16.365.848Z" transform="translate(0 0)" fill="#18191f"/>
+    </clipPath>
+  </defs>
+  <g id="Group_1" data-name="Group 1" transform="translate(0 0)">
+    <path id="Path-2" data-name="Path" d="M16.17.674A3.334,3.334,0,0,0,12.378.516l-.215.158L.83,9.874a2,2,0,0,0-.194,3.078l.194.175,11.333,9.2a3.316,3.316,0,0,0,4.007,0,2,2,0,0,0,.194-3.078l-.194-.175L6.84,11.5l9.33-7.574A2,2,0,0,0,16.365.848Z" transform="translate(0 0)" fill="#18191f"/>
+    <g id="Mask_Group_1" data-name="Mask Group 1" clip-path="url(#clip-path)">
+      <g id="COLOR_black" data-name="COLOR/ black" transform="translate(-11.333 -6.9)">
+        <rect id="Rectangle" width="45.333" height="36.8" fill="#18191f"/>
+      </g>
+    </g>
+  </g>
+</svg>
