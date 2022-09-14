@@ -150,6 +150,8 @@ namespace Meets.Data
                 {
                     Id = 1, 
                     UserName = "admin@admin",
+                    Company = "VIClouds",
+                    Job = "Администратор",
                     FullName = "Администратор",
                     NormalizedUserName = "admin@admin".ToUpper(),
                     Email = "admin@admin",
@@ -159,6 +161,23 @@ namespace Meets.Data
                     ConcurrencyStamp = "3a770767-445a-4eef-93a3-2389c7949bb5"
                 }
            );
+
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
+                {
+                    Id = 2, 
+                    UserName = "loader@loader",
+                    FullName = "Загрузчик",
+                    Job = "VIClouds",
+                    Company = "Администратор",
+                    NormalizedUserName = "loader@loader".ToUpper(),
+                    Email = "loader@loader",
+                    NormalizedEmail = "loader@loader",
+                    PasswordHash = "AQAAAAEAACcQAAAAEM0ZQUtQTujF33s3DNg2JAmlO/QceeCykr10VbntxSs+mwM8PBbEkqaeObrzCaE4XA==",
+                    SecurityStamp = "b8db65e3-df56-4cc6-ad87-16e1c108db13",
+                    ConcurrencyStamp = "3a770767-445a-4eef-93a3-2389c7949bb5"
+                }
+            );
 
             //Seeding the relation between our user and role to AspNetUserRoles table
             modelBuilder.Entity<IdentityUserRole<ulong>>().HasData(

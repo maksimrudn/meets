@@ -83,7 +83,7 @@
 
     <None Remove="ClientApp\src\icons\CommentIcon.tsx" />
 
-    <None Remove="ClientApp\src\icons\CompanyIconSvg.tsx" />
+    <None Remove="ClientApp\src\icons\CompanyIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\DocumentIcon.tsx" />
 
@@ -100,8 +100,6 @@
     <None Remove="ClientApp\src\icons\GrowthIconSvg.tsx" />
 
     <None Remove="ClientApp\src\icons\HeartIcon.tsx" />
-
-    <None Remove="ClientApp\src\icons\JobIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\LocationIconSvg.tsx" />
 
@@ -214,15 +212,13 @@
 
     <TypeScriptCompile Include="ClientApp\src\contracts\work\Work.tsx" />
 
-    <TypeScriptCompile Include="ClientApp\src\icons\JobIcon.tsx">
+    <TypeScriptCompile Include="ClientApp\src\icons\CompanyIcon.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\icons\PlusIcon.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-
-    <TypeScriptCompile Include="ClientApp\src\icons\CompanyIconSvg.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\UserCheckedIcon.tsx">
       <SubType>Code</SubType>

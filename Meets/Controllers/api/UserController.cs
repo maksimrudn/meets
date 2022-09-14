@@ -120,6 +120,9 @@ namespace Meets.Controllers.api
                 userCard.Meetings = await _db.Meetings.Where(x => (x.OwnerId == user.Id && x.Status == MeetingStatus.Canceled) ||
                                                              (x.TargetId == user.Id && x.Status == MeetingStatus.Canceled)).CountAsync();
 
+                userCard.Company = user.Company;
+                userCard.Job = user.Job;
+
                 userCard.Learnings = _db.Learnings.Where(x => x.UserId == user.Id && !x.IsDeleted).ToList();
                 userCard.Works = _db.Works.Where(x => x.UserId == user.Id && !x.IsDeleted).ToList();
                 userCard.Activities = _db.Activities.Where(x => x.UserId == user.Id && !x.IsDeleted).ToList();
@@ -177,52 +180,22 @@ namespace Meets.Controllers.api
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public ActionResult<List<UserIndexDTO>> GetList([FromForm]string name, 
-                                    [FromForm]List<string> tag, 
-                                    [FromForm]string city, 
-                                    [FromForm]int? ageTo, 
-                                    [FromForm]int? ageFrom, 
-                                    [FromForm]Gender gender, 
-                                    [FromForm]double radius = 0)
+        public ActionResult<List<UserIndexDTO>> GetList(GetListRequest request)
         {
             IQueryable<ApplicationUser> res = _db.Users;//.Where(x => x.Id != User.GetUserId());
 
-            //ViewBag.tag = tag;
-
-            if (gender == Gender.Undefined)
+            if (!string.IsNullOrEmpty(request.City))
             {
-                //ViewBag.gender = Gender.Undefined;
-                res = _db.Users;
-            }
-
-            if (gender == Gender.Male)
-            {
-                res = res.Where(x => x.Gender == Gender.Male);
-            }
-
-            if (gender == Gender.Female)
-            {
-                res = res.Where(x => x.Gender == Gender.Female);
-            }
-
-            if (!string.IsNullOrEmpty(name))
-            {
-                string nameTrimed = name.Trim();
-                res = res.Where(x => x.FullName.Contains(nameTrimed));
-            }
-
-            if (!string.IsNullOrEmpty(city))
-            {
-                string cityTrimed = city.Trim();
+                string cityTrimed = request.City.Trim();
                 res = res.Where(x => x.City.Contains(cityTrimed));
             }
 
             // TODO переделать как появится react-select
-            if (tag.Count != 0)
+            if (request.Tags.Count != 0)
             {
                 List<ApplicationUser> users = new List<ApplicationUser>();
 
-                foreach (var i in tag)
+                foreach (var i in request.Tags)
                 {
                     foreach (var r in res.Where(t => t.Tags.Contains(i)))
                     {
@@ -230,36 +203,55 @@ namespace Meets.Controllers.api
                     }
                 }
 
-                res = users.AsQueryable();
+                res = users.Distinct().AsQueryable();
             }
 
-            if (ageTo > 0)
+            if (request.GrowthFrom > 0)
             {
-                res = res.Where(x => DateTime.Now.Year - x.BirthDate.Value.Year > ageTo);
+                res = res.Where(x => x.Growth >= request.GrowthFrom);
             }
 
-            if (ageFrom > 0)
+            if (request.GrowthTo > 0)
             {
-                res = res.Where(x => DateTime.Now.Year - x.BirthDate.Value.Year < ageFrom);
+                res = res.Where(x => x.Growth <= request.GrowthTo);
             }
 
-            if (radius > 0)
+            if (request.WeightFrom > 0)
             {
-                ApplicationUser user = _db.Users.Find(User.GetUserId());
-                double latitude = user.Latitude;
-                double longtitude = user.Longitude;
-                double longGr1km = 1 / Math.Cos(Math.PI * latitude / 180);
-                double latGr1km = 1 / 111.13;
-                double longRadiusGr = radius * longGr1km;
-                double latRadiusGr = radius * latGr1km;
+                res = res.Where(x => x.Weight >= request.WeightFrom);
+            }
 
-                double minLat = latitude - latRadiusGr;
-                double minLong = longtitude - longRadiusGr;
-                double maxLat = latitude + latRadiusGr;
-                double maxLong = longtitude + longRadiusGr;
+            if (request.WeightTo > 0)
+            {
+                res = res.Where(x => x.Weight <= request.WeightTo);
+            }
 
-                res = res.Where(x => x.Latitude > minLat && x.Latitude < maxLat);
-                res = res.Where(x => x.Longitude > minLong && x.Longitude < maxLong);
+            if (request.AgeFrom > 0)
+            {
+                res = res.Where(x => DateTime.Now.Year - x.BirthDate.Value.Year >= request.AgeFrom);
+            }
+
+            if (request.AgeTo > 0)
+            {
+                res = res.Where(x => DateTime.Now.Year - x.BirthDate.Value.Year <= request.AgeTo);
+            }
+
+            if (!string.IsNullOrEmpty(request.Work))
+            {
+                string workTrimed = request.Work.Trim().ToLower();
+                res = res.Where(x => x.Works.Any(w => w.Title.ToLower().Contains(workTrimed)));
+            }
+
+            if (!string.IsNullOrEmpty(request.Learning))
+            {
+                string leaningTrimed = request.Learning.Trim().ToLower();
+                res = res.Where(x => x.Learnings.Any(w => w.Title.ToLower().Contains(leaningTrimed)));
+            }
+
+            if (!string.IsNullOrEmpty(request.Activity))
+            {
+                string activityTrimed = request.Activity.Trim().ToLower();
+                res = res.Where(x => x.Activities.Any(w => w.Title.ToLower().Contains(activityTrimed)));
             }
 
             List<UserIndexDTO> userIndexList = new List<UserIndexDTO>();
@@ -274,6 +266,8 @@ namespace Meets.Controllers.api
                 userIndexDto.Gender = userRes.Gender;
                 userIndexDto.BirthDate = userRes.BirthDate;
                 userIndexDto.Email = userRes.Email;
+                userIndexDto.Company = userRes.Company;
+                userIndexDto.Job = userRes.Job;
                 userIndexDto.Tags = string.IsNullOrEmpty( userRes.Tags )? null: userRes.Tags.Split(';').ToList();
 
                 if ( _db.Subscribtions.Find(User.GetUserId(), userRes.Id) != null )

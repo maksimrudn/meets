@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { getAvatarPathForUser } from '../../common/Utils';
-import Routes from '../../common/Routes';
+import moment from 'moment';
 
+
+import './UserItem.scss';
+import CoffeeIcon from '../../icons/CoffeeIcon';
+import JobIconSvg from '../../icons/JobIconSvg';
 
 interface UserItemProps {
     userInfo: any
@@ -13,28 +17,46 @@ interface UserItemProps {
 
 export default function UserItem(props: UserItemProps) {
     
-    
-
     return (
-        <div className="col-12">
-            <div className="card teacher-card shadow">
-                <div className="card-body d-flex">
-                    <div className="profile-av pe-xl-4 pe-md-2 pe-sm-4 pe-4 text-center w220">
-                        <img src={getAvatarPathForUser(props.user)} alt="" className="avatar xl rounded-circle img-thumbnail shadow-sm" />
+        <div className="UserItem col-12">
+            <div className="Item card teacher-card">
+                <div className="Header card-header">
+                    <div className="Avatar">
+                        <img src={getAvatarPathForUser(props.user)} alt="" className="avatar" />
                     </div>
-                    <div className="teacher-info border-start ps-xl-4 ps-md-3 ps-sm-4 ps-4 w-100">
-                        <h6 className="mb-0 mt-2  fw-bold d-block fs-6">{props.user.fullName == null ? props.user.email : props.user.fullName}</h6>
-                        {
-                            props.user.tags && props.user.tags.map((tag: any) =>
-                                <span className="light-info-bg py-1 px-2 rounded-1 d-inline-block fw-bold small-11 mb-0 mt-1">{tag}</span>
-                            )
+                    <div className="Name">{!props.user.fullName ? props.user.email : props.user.fullName}</div>
+                    <div className="Age">{props.user.birthDate && (moment().diff(moment(props.user.birthDate), 'years'))}</div>
+                </div>
+                <div className="Body card-body">
+                    <div className="Data">
+                        {props.user.company &&
+                            <div className="d-flex align-items-center mb-2">
+                                <span className="me-2">
+                                </span>
+                                <span>{props.user?.company}</span>
+                            </div>
                         }
-                        
-                        <Link to={Routes.UserCardBuild(props.user.id)} className="btn btn-primary btn-sm mt-1 bg-gradient w-100">
-                            <i className="icofont-invisible me-2 fs-6"></i>
-                            Перейти в профиль
-                        </Link>
+
+                        {props.user.job &&
+                            <div className="d-flex align-items-center mb-2">
+                                <span className="me-2">
+                                    <JobIconSvg />
+                                </span>
+                                <span>{props.user?.job}</span>
+                            </div>
+                        }
+
+                        <div className="Tags mb-2">
+                            {props.user.tags && props.user.tags.map((tag: any) =>
+                                <span className="Tag badge bg-secondary rounded-pill text-black py-2 px-3 me-2">{tag}</span>
+                            )}
+                        </div>
                     </div>
+
+                    <button className="Meet" type="button">
+                        <span className="Icon"><CoffeeIcon /></span>
+                        <span className="Text">Пригласить</span>
+                    </button>
                 </div>
             </div>
         </div>

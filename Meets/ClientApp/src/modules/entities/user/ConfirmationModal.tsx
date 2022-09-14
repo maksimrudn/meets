@@ -7,7 +7,6 @@ import './ConfirmationModal.scss';
 interface ConfirmationModalProps {
     isOpen: boolean
     toggle: () => void
-    contextMenuModalToggle?: () => void
     message: string
     confirmAction: () => void
 }
@@ -27,7 +26,6 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
             className="ConfirmationModal"
             contentClassName="Content"
             centered={true}
-            onClosed={props.contextMenuModalToggle}
         >
             <ModalBody
                 className="Body"
