@@ -128,7 +128,7 @@ function LeftMenu({ userInfo, UpdateUserInfo, leftMenuIsOpen, hideLeftMenu }: Le
 
                                 {userInfo.isAuthenticated &&
                                     <div className="fs-3 w-100 text-center mb-5">
-                                        <Link className="Item" to={`/user/details/${userInfo.user.id}`} onClick={hideLeftMenu}>Профиль</Link>
+                                        <Link className="Item" to={`/user/card/${userInfo.user.id}`} onClick={hideLeftMenu}>Профиль</Link>
                                     </div>
                                 }
 

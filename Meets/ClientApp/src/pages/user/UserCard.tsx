@@ -48,9 +48,9 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ShowUserAvatar from '../../modules/entities/user/ShowUserAvatar';
 import ConfirmationModal from '../../modules/entities/user/ConfirmationModal';
 import UserCardContextMenuModal from '../../modules/entities/user/UserCardContextMenuModal';
-import CompanyIconSvg from '../../icons/CompanyIconSvg';
+import CompanyIcon from '../../icons/CompanyIcon';
 import UserCardResponse from '../../contracts/user/UserCardResponse';
-import JobIconSvg from '../../icons/JobIconSvg';
+import JobIcon from '../../icons/JobIcon';
 import ApiError from '../../common/ApiError';
 import Routes from '../../common/Routes';
 import subscribtionService from '../../api/SubscribtionService';
@@ -273,7 +273,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             {user.company &&
                                 <div className="col-12 d-flex align-items-center justify-content-center">
                                     <span className="text-white me-3">
-                                        <CompanyIconSvg />
+                                        <CompanyIcon />
                                     </span>
                                     <span>{user.company}</span>
                                 </div>
@@ -282,7 +282,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             {user.job &&
                                 <div className="col-12 d-flex align-items-center justify-content-center">
                                     <span className="text-white me-3">
-                                        <JobIconSvg />
+                                        <JobIcon />
                                     </span>
                                     <span>{user.job}</span>
                                 </div>

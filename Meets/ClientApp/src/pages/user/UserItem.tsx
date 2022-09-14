@@ -8,7 +8,8 @@ import moment from 'moment';
 
 import './UserItem.scss';
 import CoffeeIcon from '../../icons/CoffeeIcon';
-import JobIconSvg from '../../icons/JobIconSvg';
+import JobIcon from '../../icons/JobIcon';
+import CompanyIcon from '../../icons/CompanyIcon';
 
 interface UserItemProps {
     userInfo: any
@@ -32,6 +33,7 @@ export default function UserItem(props: UserItemProps) {
                         {props.user.company &&
                             <div className="d-flex align-items-center mb-2">
                                 <span className="me-2">
+                                    <CompanyIcon color="#000" />
                                 </span>
                                 <span>{props.user?.company}</span>
                             </div>
@@ -40,7 +42,7 @@ export default function UserItem(props: UserItemProps) {
                         {props.user.job &&
                             <div className="d-flex align-items-center mb-2">
                                 <span className="me-2">
-                                    <JobIconSvg />
+                                    <JobIcon color="#000" />
                                 </span>
                                 <span>{props.user?.job}</span>
                             </div>

@@ -83,8 +83,6 @@
 
     <None Remove="ClientApp\src\icons\CommentIcon.tsx" />
 
-    <None Remove="ClientApp\src\icons\CompanyIcon.tsx" />
-
     <None Remove="ClientApp\src\icons\DocumentIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\EditIcon.tsx" />
@@ -211,10 +209,6 @@
     </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\contracts\work\Work.tsx" />
-
-    <TypeScriptCompile Include="ClientApp\src\icons\CompanyIcon.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\icons\PlusIcon.tsx">
       <SubType>Code</SubType>
