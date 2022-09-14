@@ -1,0 +1,44 @@
+﻿.LearningEditorModal {
+    //height: 90vh !important;
+    //display: flex !important;
+    //align-items: end !important;
+
+    .Content {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 2px 1px 1px #000;
+
+        .Header {
+            border-bottom: 2px solid #000;
+            padding: 20px 30px 15px 45px;
+            font-size: 24px;
+        }
+
+        .Body {
+            .form-label {
+                font-size: 21px;
+                font-weight: bold;
+            }
+
+            .form-control {
+                border: 2px solid #000;
+                border-radius: 10px;
+                background-color: #fff;
+                box-shadow: 0 2px 1px 1px #000;
+                font-size: 21px;
+                resize: none;
+            }
+
+            .Save {
+                height: 60px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 15px;
+                background-color: #18191F;
+                font-size: 21px;
+            }
+        }
+    }
+}

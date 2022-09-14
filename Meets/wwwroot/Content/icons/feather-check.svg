@@ -1,0 +1,15 @@
+<svg id="feather_check" data-name="feather / check" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="67.003" height="61.637" viewBox="0 0 67.003 61.637">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="check" d="M57.974,1.986a4.515,4.515,0,0,1,7.48,0,8.242,8.242,0,0,1,.363,9.073l-.363.515L27.947,59.652a4.476,4.476,0,0,1-7.078.465l-.4-.465L1.549,35.4a8.192,8.192,0,0,1,0-9.588,4.476,4.476,0,0,1,7.078-.465l.4.465L24.205,45.265Z" transform="translate(0 0)" fill="#18191f"/>
+    </clipPath>
+  </defs>
+  <g id="Group_15" data-name="Group 15">
+    <path id="check-2" data-name="check" d="M57.974,1.986a4.515,4.515,0,0,1,7.48,0,8.242,8.242,0,0,1,.363,9.073l-.363.515L27.947,59.652a4.476,4.476,0,0,1-7.078.465l-.4-.465L1.549,35.4a8.192,8.192,0,0,1,0-9.588,4.476,4.476,0,0,1,7.078-.465l.4.465L24.205,45.265Z" transform="translate(0 0)" fill="#18191f"/>
+    <g id="Mask_Group_15" data-name="Mask Group 15" clip-path="url(#clip-path)">
+      <g id="COLOR_black" data-name="COLOR/ black" transform="translate(-7.5 -15.6)">
+        <rect id="Rectangle" width="72" height="72" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

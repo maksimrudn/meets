@@ -1,0 +1,14 @@
+<svg id="feather_menu" data-name="feather / menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37.001" height="31.001" viewBox="0 0 37.001 31.001">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Combined_Shape" data-name="Combined Shape" d="M1.5,31A1.5,1.5,0,0,1,0,29.5V26.688a1.5,1.5,0,0,1,1.5-1.5h34a1.5,1.5,0,0,1,1.5,1.5V29.5A1.5,1.5,0,0,1,35.5,31Zm0-12.594a1.5,1.5,0,0,1-1.5-1.5V14.094a1.5,1.5,0,0,1,1.5-1.5h34a1.5,1.5,0,0,1,1.5,1.5v2.812a1.5,1.5,0,0,1-1.5,1.5Zm0-12.595A1.5,1.5,0,0,1,0,4.313V1.5A1.5,1.5,0,0,1,1.5,0h34A1.5,1.5,0,0,1,37,1.5V4.313a1.5,1.5,0,0,1-1.5,1.5Z" transform="translate(0)" fill="#18191f"/>
+    </clipPath>
+  </defs>
+  <g id="Group_33" data-name="Group 33" transform="translate(0)">
+    <g id="Group_33-2" data-name="Group 33" clip-path="url(#clip-path)">
+      <g id="COLOR_black" data-name="COLOR/ black" transform="translate(-4.889 -7.823)">
+        <rect id="Rectangle" width="46.936" height="46.936" fill="#18191f"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,379 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="AutoMapper" Version="11.0.1" />
+	  <PackageReference Include="MailKit" Version="3.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.22" />
+	  <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
+	  <PackageReference Include="SimpleSitemap" Version="3.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="Controllers\api\dto\Subscribtion\**" />
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="Controllers\api\dto\Subscribtion\**" />
+    <EmbeddedResource Remove="Controllers\api\dto\Subscribtion\**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Remove="Controllers\api\dto\Subscribtion\**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <None Remove="ClientApp\src\common\ApiError.ts" />
+
+    <None Remove="ClientApp\src\common\BottomMenuItems.tsx" />
+
+    <None Remove="ClientApp\src\common\IApiError.ts" />
+
+    <None Remove="ClientApp\src\common\UserCardTabsNames.tsx" />
+
+    <None Remove="ClientApp\src\common\UserFieldNames.js" />
+
+    <None Remove="ClientApp\src\contracts\activity\Activity.ts" />
+
+    <None Remove="ClientApp\src\contracts\fact\Fact.ts" />
+
+    <None Remove="ClientApp\src\contracts\learning\Learning.ts" />
+
+    <None Remove="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
+
+    <None Remove="ClientApp\src\contracts\user\ByUserIdRequest.ts" />
+
+    <None Remove="ClientApp\src\contracts\work\Work.tsx" />
+
+    <None Remove="ClientApp\src\icons\AccessTimeIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\BirthDateIconSvg.tsx" />
+
+    <None Remove="ClientApp\src\icons\BlockedIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\CalendarAltIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\CalendarIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\CheckIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\CommentIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\CompanyIconSvg.tsx" />
+
+    <None Remove="ClientApp\src\icons\DocumentIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\EditIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\EditIconSvg.tsx" />
+
+    <None Remove="ClientApp\src\icons\EmailOutlineIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\ExclamationIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\GoBackIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\GrowthIconSvg.tsx" />
+
+    <None Remove="ClientApp\src\icons\HeartIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\JobIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\LocationIconSvg.tsx" />
+
+    <None Remove="ClientApp\src\icons\LockOutlineIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\MenuCloseIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\MenuIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\MessageIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\PlusIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\RepeatIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\RoubleSignIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\SettingsIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\UserCheckedIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\UserOutlineIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\UserPlusIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\UserSearchIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\WalkingIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\WeightIconSvg.tsx" />
+    <None Remove="ClientApp\src\modules\datepaginator\DatePaginatorWrapper.tsx" />
+    <None Remove="ClientApp\src\modules\entities\activity\ActivityEditorModal.tsx" />
+    <None Remove="ClientApp\src\modules\entities\fact\FactEditorModal.tsx" />
+    <None Remove="ClientApp\src\modules\entities\learning\LearningEditorModal.tsx" />
+    <None Remove="ClientApp\src\modules\entities\user\ConfirmationModal.tsx" />
+
+    <None Remove="ClientApp\src\modules\entities\user\edit\Date.tsx" />
+    <None Remove="ClientApp\src\modules\datatable\event\PlansDataTable.tsx" />
+    <None Remove="ClientApp\src\modules\entities\user\ShowUserAvatar.tsx" />
+    <None Remove="ClientApp\src\modules\entities\user\UserCardAvatarModal.tsx" />
+    <None Remove="ClientApp\src\modules\entities\user\UserCardContextMenuModal.tsx" />
+    <None Remove="ClientApp\src\modules\entities\user\UserCardTabs.tsx" />
+    <None Remove="ClientApp\src\modules\entities\work\WorkEditorModal.tsx" />
+    <None Remove="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
+    <None Remove="ClientApp\src\shared\BottomMenu.tsx" />
+
+    <None Remove="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
+    <None Remove="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
+    <None Remove="ClientApp\src\modules\entities\event\Date.tsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\styles\fonts\" />
+    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\content\events\1\" />
+    <Folder Include="wwwroot\content\events\2\" />
+    <Folder Include="wwwroot\content\events\31\" />
+    <Folder Include="wwwroot\content\events\32\" />
+    <Folder Include="wwwroot\content\events\33\" />
+    <Folder Include="wwwroot\content\events\34\" />
+    <Folder Include="wwwroot\content\events\35\" />
+    <Folder Include="wwwroot\content\icons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <TypeScriptCompile Include="ClientApp\src\common\IApiError.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\common\BottomMenuItems.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\common\ApiError.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\common\UserCardTabsNames.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\common\UserFieldNames.js" />
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\activity\Activity.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\fact\Fact.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\learning\Learning.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\ByUserIdRequest.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\ExclamationIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\CheckIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\BlockedIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\LockOutlineIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\EmailOutlineIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\UserOutlineIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\work\Work.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\JobIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\PlusIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\CompanyIconSvg.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\UserCheckedIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\WalkingIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\HeartIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\CommentIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\RoubleSignIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\AccessTimeIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\EditIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\BirthDateIconSvg.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\CalendarAltIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\WeightIconSvg.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\GrowthIconSvg.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\LocationIconSvg.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\EditIconSvg.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\UserPlusIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\SettingsIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\GoBackIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\MenuCloseIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\RepeatIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\MenuIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\MessageIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\DocumentIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\CalendarIcon.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\UserSearchIcon.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\datepaginator\DatePaginatorWrapper.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\activity\ActivityEditorModal.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\fact\FactEditorModal.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\learning\LearningEditorModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ConfirmationModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ShowUserAvatar.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserCardAvatarModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserCardContextMenuModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserCardTabs.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserEditorModal.tsx" />
+
+
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\edit\Date.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\modules\datatable\event\PlansDataTable.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\work\WorkEditorModal.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\shared\BottomMenu.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\event\Date.tsx" />
+  </ItemGroup>
+
+	<!--<ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\modules\DataTable\Event\OwnEventsDataTable.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\DataTable\User\UserEventsDataTable.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\FriendRequestButton.tsx" />
+  </ItemGroup>-->
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)build\**; $(SpaRoot)build-ssr\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

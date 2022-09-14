@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meets", "Meets\Meets.csproj", "{F57AC7A9-1007-450D-A586-366461B3AC07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F57AC7A9-1007-450D-A586-366461B3AC07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57AC7A9-1007-450D-A586-366461B3AC07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57AC7A9-1007-450D-A586-366461B3AC07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57AC7A9-1007-450D-A586-366461B3AC07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A3FE696-6539-4D45-859E-FBA1E98DF449}
+	EndGlobalSection
+EndGlobal

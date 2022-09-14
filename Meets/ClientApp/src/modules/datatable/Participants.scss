@@ -1,0 +1,10 @@
+﻿.Participants {
+    cursor: pointer;
+
+    .Link {
+        &:hover {
+            color: orange;
+            box-sizing: border-box;
+        }
+    }
+}

@@ -1,0 +1,33 @@
+﻿.flex-sm-column {
+    @media only screen and (max-width: 576px) {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.filter-btn {
+    @media only screen and (max-width: 576px) {
+        width: 15rem;
+        margin-bottom: 2px;
+        margin-top: 2px;
+    }
+}
+
+.text-sm-fix {
+    @media only screen and (max-width: 576px) {
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.text-lg-fix {
+    @media only screen and (min-width: 992px) {
+        max-width: 250px;
+        //width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

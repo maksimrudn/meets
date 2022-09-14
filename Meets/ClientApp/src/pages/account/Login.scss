@@ -1,0 +1,134 @@
+﻿.Login {
+    background-color: #fff;
+    padding: 24px;
+    height: calc(95vh + 30px);
+    //display: flex;
+    //flex-direction: column;
+    //align-items: stretch;
+
+    .Actions {
+        margin-top: 1.5rem;
+
+        .Close {
+            width: 48px;
+            height: 48px;
+            padding: .7rem;
+            border: 2px solid #000;
+            border-radius: 50%;
+
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+
+    .Data {
+        //margin-top: 40%;
+        /*input#Email {
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus {
+                background-color: #fff !important;
+                font-size: 21px !important;
+                height: 56px;
+            }
+
+            height: 56px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            background-color: #fff !important;
+            font-size: 21px !important;
+
+            &:before{
+
+            }
+        }
+
+        input#Password {
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus {
+                background-color: rgb(255,255,255) !important;
+                font-size: 21px !important;
+            }
+
+            height: 56px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            background-color: #fff !important;
+            font-size: 21px !important;
+        }*/
+
+        .input-group {
+            background-color: #fff;
+
+            .input-group-text {
+                border-top: 2px solid #000;
+                border-right: 0;
+                border-left: 2px solid #000;
+                border-bottom: 2px solid #000;
+                border-radius: 15px;
+                background-color: #fff !important;
+            }
+
+            @-webkit-keyframes autofill {
+                to {
+                    background-color: #fff !important;
+                    font-size: 21px !important;
+                }
+            }
+
+            input.form-control.form-control-lg, .form-select {
+                &:-webkit-autofill,
+                &:-webkit-autofill:hover,
+                &:-webkit-autofill:focus {
+                    -webkit-animation-name: autofill;
+                    -webkit-animation-fill-mode: both;
+                    background-color: rgb(255,255,255) !important;
+                    font-size: 21px !important;
+                }
+
+                border-top: 2px solid #000;
+                border-right: 2px solid #000;
+                border-left: 0;
+                border-bottom: 2px solid #000;
+                border-radius: 15px;
+                background-color: #fff !important;
+                font-size: 21px !important;
+
+                &:focus {
+                    background-color: #fff !important;
+                    //box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+                }
+
+                &::placeholder {
+                    font-size: 21px !important;
+                    color: lightgray;
+                }
+            }
+        }
+
+
+        .ComeIn {
+            height: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            background-color: #18191F;
+            color: #fff;
+            font-size: 21px;
+        }
+
+        .ToRegister {
+            font-size: 13px;
+            color: #000;
+        }
+
+        .Link {
+            color: #F95A2C;
+        }
+    }
+}
