@@ -47,6 +47,8 @@
 
   <ItemGroup>
 
+    <None Remove="ClientApp\src\api\MeetingsService.ts" />
+
     <None Remove="ClientApp\src\common\ApiError.ts" />
 
     <None Remove="ClientApp\src\common\BottomMenuItems.tsx" />
@@ -167,6 +169,8 @@
   </ItemGroup>
 
   <ItemGroup>
+
+    <TypeScriptCompile Include="ClientApp\src\api\MeetingsService.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\common\IApiError.ts" />
 

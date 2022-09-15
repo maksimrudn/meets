@@ -54,7 +54,90 @@ import JobIconSvg from '../../icons/JobIconSvg';
 import ApiError from '../../common/ApiError';
 import Routes from '../../common/Routes';
 import subscribtionService from '../../api/SubscribtionService';
+import meetingsService from '../../api/MeetingsService';
 
+interface IMeetRequestModalProps {
+    isOpen: boolean
+    toggle: () => void
+
+    user: any
+}
+
+function MeetRequestModal(props: IMeetRequestModalProps) {
+
+    const inviteOnClick = () => {
+        try {
+            meetingsService.invite(props.user.id);
+            props.toggle();
+        } catch (err: any) {
+            NotificationManager.error(err.message, err.name);
+        }
+    }
+
+
+    return (
+        <Modal
+            isOpen={props.isOpen}
+            toggle={props.toggle}
+            size='md'
+            container='div.container-xl'
+            cssModule={{
+                //'modal-open': 'p-0'
+            }}
+            className="MeetRequestModal"
+            contentClassName="Content"
+        >
+            <ModalHeader
+                toggle={props.toggle}
+                cssModule={{
+                    'modal-title': 'mb-0'
+                }}
+                className="Header"
+            >
+                Приглашение
+            </ModalHeader>
+            <ModalBody
+                className="Body"
+            >
+                <div className="col-12 mb-2">
+                    <label className="form-label">Дата / Время</label>
+                    <DateTime
+                        onChange={birthDateOnChange}
+                        initialValue={props.user.birthDate && moment(props.user.birthDate).format('DD.MM.YYYY')}
+                        inputProps={{ placeholder: 'dd.mm.yyyy' }}
+                        dateFormat="DD.MM.YYYY"
+                        timeFormat={false}
+                        closeOnSelect={true}
+                    />
+                </div>
+
+                <div className="col-12 mb-2">
+                    <label className="form-label">Сообщение</label>
+                    <input className="form-control" type="text" defaultValue={props.user.fullName} onChange={fullNameOnChange} />
+                </div>
+
+                <div className="col-12 mb-2 d-flex justify-content-between align-items-center">
+                    <span className="form-label">Онлайн встреча</span>
+                    <div className="Switch">
+                        <input type="checkbox" id="isOnline" defaultChecked={defaultChecked} onChange={onChange} />
+                        <label htmlFor="isOnline"></label>
+                    </div>
+                </div>
+
+                <div className="col-12 mb-2">
+                    <span className="form-label">Место встречи</span>
+                    <input className="form-control" type="text" defaultValue={props.user.fullName} onChange={fullNameOnChange} />
+                </div>
+
+                <button type="button" className="SaveBtn btn mt-3"><span className="fs-6 text-white">Указать на карте</span></button>
+
+                <button type="button" className="SaveBtn btn mt-3" onClick={inviteOnClick}><span className="fs-6 text-white">Отправить</span></button>
+
+            </ModalBody>
+
+        </Modal>
+    );
+}
 
 interface UserCardProps {
     userInfo: any,
@@ -89,7 +172,7 @@ function UserCard(props: UserCardProps): JSX.Element {
     let topElement: any = useRef();
 
     useEffect(() => {
-        
+
         update();
     }, [params.id]);
 
@@ -166,7 +249,6 @@ function UserCard(props: UserCardProps): JSX.Element {
         }
     }
 
-
     const onSaveChanges = (fieldName: string, value: any) => {
         let newData = {
             ...user,
@@ -215,8 +297,8 @@ function UserCard(props: UserCardProps): JSX.Element {
     var seo = getSEO();
 
     return (
-        
-        <>            
+
+        <>
             {isLoading ?
                 <div>ожидание</div>
                 :
@@ -310,10 +392,10 @@ function UserCard(props: UserCardProps): JSX.Element {
                             {(props.userInfo.user.id !== user.id) &&
                                 <div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
-                                        <Link className="SendMEessageBtn btn btn-white p-2" to={`/messanger/${user.id}`}>
+                                        <button className="Invite btn" type="button">
                                             <span className="me-4"><MessageIcon /></span>
-                                            <span className="fs-5 text-black">Написать</span>
-                                        </Link>
+                                            <span className="fs-5 text-black">Пригласить</span>
+                                        </button>
                                     </div>
 
                                     <div className="col-3 d-flex justify-content-center">
@@ -356,7 +438,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                                     }
                                 </div>
                                 <div className="ms-2">
-                                    {!user.Tags?.length ? 'не указано' : user.tags.map((tag: any) =>
+                                    {!user.tags?.length ? 'не указано' : user.tags.map((tag: any) =>
                                         <span key={tag} className="Tag badge bg-secondary rounded-pill text-black py-2 px-3 me-2">{tag}</span>
                                     )}
                                 </div>
