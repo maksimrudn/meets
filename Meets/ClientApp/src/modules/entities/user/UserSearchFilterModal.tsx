@@ -34,9 +34,21 @@ interface IUserSearchFilterModalProps {
 }
 
 export default function UserSearchFilterModal(props: IUserSearchFilterModalProps) {
+    const [filter, setFilter] = useState<IFilter>(() => props.filter);
+
+    /**
+     * onChange обработчик DaData вызывается только когда выбирается город в меню подсказок, когда значение удаляется обработчик не вызывается (и выбранный город сохраняется),
+     * для этого надо пробрасывать еще один обработчик onChange в inputProps, который меняет значение при изменении инпута (e.target.value)
+     * @param e
+     */
+    const inputCityOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFilter({ ...filter, city: e.target.value })
+    }
+
     const findOnClick = () => {
-        props.toggle();
+        props.setFilter(filter);
         props.onFilterSubmit(props.filter);
+        props.toggle();
     }
 
     return (
@@ -50,6 +62,12 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
             }}
             className="UserSearchFilterModal"
             contentClassName="Content"
+            /**
+             особенности rectstrap модалки: при закрытии занчения state модалки сохраняется,
+             если значение для state родительского компонента UserSearch не сохранилось при отправке, выведутся сохраненные значения state модалки,
+             поэтому в обработчике onClosed повторно устанавливется значение для state модалки из родительского компонента UserSearch
+             */
+            onClosed={() => setFilter(props.filter)}
         >
             <ModalHeader
                 toggle={props.toggle}
@@ -67,27 +85,21 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                     <label className="form-label">Город</label>
                     <AddressSuggestions
                         token={AppConfig.TokenDadata}
-                        value={{ value: props.filter.city }}
-                        onChange={(data: any) => props.setFilter({ ...props.filter, city: data?.value || '' })}
+                        value={{ value: filter.city }}
+                        onChange={(data: any) => setFilter({ ...filter, city: data.value || undefined })}
                         minChars={3}
                         filterFromBound="city"
                         filterToBound="settlement"
-                        inputProps={{ className: 'form-control' }}
+                        inputProps={{ className: 'form-control', onChange: inputCityOnChange }}
                     />
-                    {/*<input
-                        className="form-control"
-                        type="text"
-                        defaultValue={props.filter.city}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, city: e.target.value })}
-                    />*/}
                 </div>
 
                 <div className="col-12 mb-3">
                     <label className="form-label">Интересы</label>
                     <Select
                         isMulti
-                        defaultValue={props.filter.tags && props.filter.tags.map((x: any) => { return { label: x, value: x } })}
-                        onChange={(res: any) => props.setFilter({ ...props.filter, tags: res.map((x: any) => x.value) })}
+                        defaultValue={filter.tags && filter.tags.map((x: any) => { return { label: x, value: x } })}
+                        onChange={(res: any) => setFilter({ ...filter, tags: res.map((x: any) => x.value) })}
                     />
                 </div>
 
@@ -98,15 +110,15 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                         <input
                             className="form-control me-4"
                             type="number"
-                            defaultValue={props.filter.growthFrom}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, growthFrom: e.target.valueAsNumber })}
+                            defaultValue={filter.growthFrom}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, growthFrom: e.target.valueAsNumber })}
                         />
                         <span className="fw-light text-muted me-3">до</span>
                         <input
                             className="form-control"
                             type="number"
-                            defaultValue={props.filter.growthTo}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, growthTo: e.target.valueAsNumber })}
+                            defaultValue={filter.growthTo}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, growthTo: e.target.valueAsNumber })}
                         />
                     </div>
                 </div>
@@ -118,15 +130,15 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                         <input
                             className="form-control me-4"
                             type="number"
-                            defaultValue={props.filter.weightFrom}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, weightFrom: e.target.valueAsNumber })}
+                            defaultValue={filter.weightFrom}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, weightFrom: e.target.valueAsNumber })}
                         />
                         <span className="fw-light text-muted me-3">до</span>
                         <input
                             className="form-control"
                             type="number"
-                            defaultValue={props.filter.weightTo}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, weightTo: e.target.valueAsNumber })}
+                            defaultValue={filter.weightTo}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, weightTo: e.target.valueAsNumber })}
                         />
                     </div>
                 </div>
@@ -138,15 +150,15 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                         <input
                             className="form-control me-4"
                             type="number"
-                            defaultValue={props.filter.ageFrom}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, ageFrom: e.target.valueAsNumber })}
+                            defaultValue={filter.ageFrom}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, ageFrom: e.target.valueAsNumber })}
                         />
                         <span className="fw-light text-muted me-3">до</span>
                         <input
                             className="form-control"
                             type="number"
-                            defaultValue={props.filter.ageTo}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, ageTo: e.target.valueAsNumber })}
+                            defaultValue={filter.ageTo}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, ageTo: e.target.valueAsNumber })}
                         />
                     </div>
                 </div>
@@ -156,8 +168,8 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                     <input
                         className="form-control"
                         type="text"
-                        defaultValue={props.filter.company}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, work: e.target.value })}
+                        defaultValue={filter.company}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, company: e.target.value })}
                     />
                 </div>
 
@@ -166,8 +178,8 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                     <input
                         className="form-control"
                         type="text"
-                        defaultValue={props.filter.learning}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, learning: e.target.value })}
+                        defaultValue={filter.learning}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, learning: e.target.value })}
                     />
                 </div>
 
@@ -176,8 +188,8 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                     <input
                         className="form-control"
                         type="text"
-                        defaultValue={props.filter.activity}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...props.filter, activity: e.target.value })}
+                        defaultValue={filter.activity}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...filter, activity: e.target.value })}
                     />
                 </div>
 
