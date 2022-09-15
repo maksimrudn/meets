@@ -65,6 +65,8 @@
 
     <None Remove="ClientApp\src\contracts\learning\Learning.ts" />
 
+    <None Remove="ClientApp\src\contracts\meeting\MeetingRequest.ts" />
+
     <None Remove="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
     <None Remove="ClientApp\src\contracts\user\ByUserIdRequest.ts" />
@@ -104,6 +106,8 @@
     <None Remove="ClientApp\src\icons\HeartIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\JobIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\LocateMapIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\LocationIconSvg.tsx" />
 
@@ -188,6 +192,8 @@
 
     <TypeScriptCompile Include="ClientApp\src\contracts\learning\Learning.ts" />
 
+    <TypeScriptCompile Include="ClientApp\src\contracts\meeting\MeetingRequest.ts" />
+
     <TypeScriptCompile Include="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\ByUserIdRequest.ts" />
@@ -203,6 +209,8 @@
     <TypeScriptCompile Include="ClientApp\src\icons\BlockedIcon.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+
+    <TypeScriptCompile Include="ClientApp\src\icons\LocateMapIcon.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\LockOutlineIcon.tsx">
       <SubType>Code</SubType>

@@ -144,9 +144,9 @@
 
 
 .MeetRequestModal {
-    //height: 90vh !important;
-    //display: flex !important;
-    //align-items: end !important;
+    height: calc(90vh + 50px) !important;
+    display: flex !important;
+    align-items: end !important;
 
     .Content {
         background-color: #fff;
@@ -160,6 +160,11 @@
         }
 
         .Body {
+            .form-label{
+                font-size: 21px;
+                margin-left: 0.5rem;
+            }
+
             .form-control {
                 border: 2px solid #000;
                 border-radius: 10px;
@@ -181,7 +186,7 @@
                     width: 60px;
                     height: 36px;
                     border: 2px solid #000;
-                    background-color: gray;
+                    background-color: #E9E7FC;
                     display: block;
                     border-radius: 50rem;
                     position: relative;
@@ -203,12 +208,12 @@
                     &:before {
                         content: '';
                         position: absolute;
-                        top: 9px;
-                        left: 9px;
+                        top: 8px;
+                        left: 8px;
                         width: 15px;
                         height: 15px;
-                        background-color: transparent;
-                        //border: 2px solid #000;
+                        background-color: #E9E7FC;
+                        border: 2px solid #000;
                         border-radius: 50rem;
                         box-sizing: border-box;
                         z-index: 2;
@@ -229,7 +234,7 @@
                         transform: translateX(-100%);
                         background: #FFBD12;
                         border: 2px solid #000;
-                        transition: background 0.1s ease-out 0.2s, border 0.15s ease-out 0.2s;
+                        //transition: background 0.1s ease-out 0.2s, border 0.15s ease-out 0.2s;
                         //transition-delay: 0.15s;
                     }
                 }
@@ -238,15 +243,26 @@
                 }
             }
 
-            .SaveBtn {
+            .SetPlaceBtn {
                 height: 60px;
                 width: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border-radius: 15px;
+                border-radius: 1rem;
+                background-color: #fff;
+                font-size: 21px;
+                color: #000;
+                border: 2px solid #000;
+            }
+
+            .SaveBtn {
+                height: 60px;
+                width: 100%;
+                border-radius: 1rem;
                 background-color: #18191F;
                 font-size: 21px;
+                color: #fff;
             }
         }
     }

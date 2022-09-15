@@ -1,10 +1,9 @@
 ﻿import ByUserIdRequest from "../contracts/ByUserIdRequest";
+import MeetingRequest from "../contracts/meeting/MeetingRequest";
 import BaseService from "./BaseService";
 
 class MeetingsService extends BaseService {
-    invite(userid: any): void {
-        var data = new ByUserIdRequest(userid);
-
+    invite(data: MeetingRequest): void {
         this.executeRequestXHR('/api/meetings/invite', 'post', JSON.stringify(data));
     }
 }
