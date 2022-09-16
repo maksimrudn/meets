@@ -12,12 +12,12 @@ interface ITabItem {
 }
 
 interface SwiperTabsProps {
-    tabs: any
+    tabs: any[]
     selectedTab: any
     setSelectedTab: any
 
-    user: any
-    userInfo: any
+    user?: any
+    userInfo?: any
 }
 
 export default function SwiperTabs(props: SwiperTabsProps) {
@@ -32,7 +32,45 @@ export default function SwiperTabs(props: SwiperTabsProps) {
             //onTouchMove={e => console.log(e)}
             //onSlideChange={e => console.log(e)}
             >
-                {props.tabs && props.tabs.filter((item: ITabItem) => {
+                {(() => {
+                    if (props.tabs.every((item: any) => typeof item === 'string')) {
+                        return props.tabs && props.tabs.map((item: any) =>
+                            <SwiperSlide
+                                key={item}
+                                className={'Tab ' + (props.selectedTab === item ? 'Active rounded-pill text-white' : 'text-black')}
+                                onClick={() => props.setSelectedTab(item)}
+                            //onTouchEnd={() => props.setSelectedTab(item)}
+                            >
+                                <div className="fs-6 fw-bold d-flex justify-content-center align-items-center">
+                                    {item}
+                                </div>
+                            </SwiperSlide>
+                        );
+                    } else {
+                        return props.tabs && props.tabs.filter((item: ITabItem) => {
+                            if (props.user?.id !== props.userInfo?.user.id) {
+                                return item.count > 0
+                            } else {
+                                return item;
+                            }
+                        }).map((item: ITabItem, i: any) =>
+                            <SwiperSlide
+                                key={i}
+                                className={'Tab ' + (props.selectedTab === item.title ? 'Active rounded-pill text-white' : 'text-black')}
+                                onClick={() => props.setSelectedTab(item.title)}
+                            //onTouchEnd={() => props.setSelectedTab(item)}
+                            >
+                                <div className="fs-6 fw-bold d-flex justify-content-center align-items-center">
+                                    <span className="me-2">{item.title}</span>
+                                    {item.title !== UserCardTabsNames.Info &&
+                                        <div className="Counter">{item.count}</div>
+                                    }
+                                </div>
+                            </SwiperSlide>
+                        );
+                    }
+                })()}
+                {/*props.tabs && props.tabs.filter((item: ITabItem) => {
                     if (props.user.id !== props.userInfo.user.id) {
                         return item.count > 0
                     } else {
@@ -52,7 +90,7 @@ export default function SwiperTabs(props: SwiperTabsProps) {
                             }
                         </div>
                     </SwiperSlide>
-                )}
+                )*/}
 
             </Swiper>
         </div>

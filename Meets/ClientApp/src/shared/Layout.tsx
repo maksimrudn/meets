@@ -33,10 +33,12 @@ import ForgotPasswordStep3 from '../pages/account/ForgotPasswordStep3';
 import ForgotPasswordStep4 from '../pages/account/ForgotPasswordStep4';
 import Error from '../pages/common/Error';
 import Routes  from '../common/Routes';
+import MeetingList from '../pages/meeting/MeetingList';
+import UserAuthInfo from '../contracts/UserAuthInfo';
 
 
 interface LayoutProps {
-    userInfo: any
+    userInfo: UserAuthInfo
 }
 
 function Layout(props: LayoutProps) {
@@ -50,8 +52,8 @@ function Layout(props: LayoutProps) {
                 setSelectedMenuItem(BottomMenuItems.UserSearch);
                 setLeftMenuIsOpen(false);
                 break;
-            case BottomMenuItems.Messanger:
-                setSelectedMenuItem(BottomMenuItems.Messanger);
+            case BottomMenuItems.Meetings:
+                setSelectedMenuItem(BottomMenuItems.Meetings);
                 setLeftMenuIsOpen(false);
                 break;
         }
@@ -134,6 +136,8 @@ function Layout(props: LayoutProps) {
                                         <Route path="/user/Search">
                                             <UserSearch userInfo={props.userInfo} />
                                         </Route>
+
+                                        <Route path={Routes.MeetingList} render={(props) => <MeetingList userInfo={props.userInfo} {...props} />} />
                                         
                                         <Route path={ Routes.Error } render={() => <Error />} />
                                     </Switch>

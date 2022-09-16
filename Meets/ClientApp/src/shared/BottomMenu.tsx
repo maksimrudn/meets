@@ -56,8 +56,8 @@ export default function BottomMenu(props: BottomMenuProps) {
                     <DocumentIcon />
                 </span>
 
-                <span className={props.selectedMenuItem === BottomMenuItems.Messanger ? "MenuItem active" : "MenuItem"}>
-                    <Link to="/messanger" onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Messanger)}>
+                <span className={props.selectedMenuItem === BottomMenuItems.Meetings ? "MenuItem active" : "MenuItem"}>
+                    <Link to="/meetings" onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Messanger)}>
                         <MessageIcon />
                     </Link>
                 </span>

@@ -76,6 +76,33 @@ namespace Meets.Controllers.api
 
         [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
+        public async Task<ActionResult<List<MeetingDTO>>> GetList()
+        {
+            var meetings = await _db.Meetings.Where(x=>x.OwnerId == User.GetUserId() || x.TargetId == User.GetUserId()).ToListAsync();
+            List<MeetingDTO> list = new List<MeetingDTO>();
+
+            foreach(var meet in meetings)
+            {
+                var dto = new MeetingDTO();
+
+                dto.Id = meet.Id;
+                dto.MeetingDate = meet.MeetingDate;
+                dto.OwnerId = meet.OwnerId;
+                dto.Owner = meet.Owner;
+                dto.TargetId = meet.TargetId;
+                dto.Target = meet.Target;
+                dto.IsOnline = meet.IsOnline;
+                dto.Place = meet.Place;
+                dto.Status = meet.Status;
+
+                list.Add(dto);
+            }
+
+            return list;
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> UnSubscribe(ByUserIdRequest request)
         {
             if (!ModelState.IsValid)
