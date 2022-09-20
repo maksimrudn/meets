@@ -28,5 +28,7 @@ namespace Meets.Controllers.api.dto.Meeting
         public string Place { get; set; }
 
         public MeetingStatus Status { get; set; }
+
+        public int MessageCount { get; set; }
     }
 }

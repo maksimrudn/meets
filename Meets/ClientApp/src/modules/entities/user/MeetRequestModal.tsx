@@ -17,6 +17,12 @@ import LocateMapIcon from '../../../icons/LocateMapIcon';
 
 import './MeetRequestModal.scss';
 
+interface IMeeting{
+    date: any
+    isOnline: boolean
+    place: string
+}
+
 interface IMeetRequestModalProps {
     isOpen: boolean
     toggle: () => void
@@ -32,20 +38,28 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
 
     const history = useHistory();
 
-    const [meetingDate, setMeetingDate] = useState<any>(moment().format('DD MMMM YYYY HH:mm'));
-    const [message, setMessage] = useState<string>('');
-    const [isOnline, setIsOnline] = useState(false);
-    const [place, setPlace] = useState<string>('');
+    const [meeting, setMeeting] = useState<IMeeting>({
+        date: moment().format('DD MMMM YYYY HH:mm'),
+        isOnline: false,
+        place: ''
+    });
 
     const messageRef: React.MutableRefObject<HTMLTextAreaElement> = useRef();
+
+    useEffect(() => {
+        setMeeting({
+            ...meeting,
+            place: props.meetingAddress
+        });
+    }, [props.meetingAddress]);
 
     const inviteOnClick = () => {
         try {
             let mt = new MeetingRequest();
             mt.targetId = props.user.id;
-            mt.meetingDate = moment(meetingDate, 'DD MMMM YYYY HH:mm').toISOString(); //.format('DD-MM-YYYYTHH:mm:ss');
-            mt.isOnline = isOnline;
-            mt.place = place;
+            mt.meetingDate = moment(meeting.date, 'DD MMMM YYYY HH:mm').toISOString(); //.format('DD-MM-YYYYTHH:mm:ss');
+            mt.isOnline = meeting.isOnline;
+            mt.place = meeting.place;
             mt.message = messageRef.current.value;
 
             meetingsService.invite(mt);
@@ -84,8 +98,8 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                 <div className="col-12 mb-2">
                     <label className="form-label">Дата / Время</label>
                     <DateTime
-                        onChange={(res: any) => setMeetingDate(res)}
-                        initialValue={meetingDate}
+                        onChange={(res: any) => setMeeting({ ...meeting, date: res })}
+                        initialValue={meeting.date}
                         inputProps={{ placeholder: 'dd.mm.yyyy hh:mm' }}
                         dateFormat="DD MMMM YYYY"
                         timeFormat="HH:mm"
@@ -99,7 +113,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                     <label className="form-label">Сообщение</label>
                     <textarea
                         className="form-control"
-                        value={`Привет ${props.user.fullName}! Приглашаю тебя попить кофе ${moment(meetingDate, 'DD MMMM YYYY HH:mm').format('DD MMMM')} в ${moment(meetingDate, 'DD MMMM YYYY HH:mm').format('HH:mm')}`}
+                        value={`Привет ${props.user.fullName}! Приглашаю тебя попить кофе ${moment(meeting.date, 'DD MMMM YYYY HH:mm').format('DD MMMM')} в ${moment(meeting.date, 'DD MMMM YYYY HH:mm').format('HH:mm')}`}
                         ref={messageRef}
                         rows={4}
                         readOnly
@@ -112,24 +126,24 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                         <input
                             type="checkbox"
                             id="isOnline"
-                            checked={isOnline}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIsOnline(e.target.checked)}
+                            checked={meeting.isOnline}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMeeting({ ...meeting, place: '', isOnline: e.target.checked })}
                         />
                         <label htmlFor="isOnline"></label>
                     </div>
                 </div>
 
                 {(() => {
-                    if (!isOnline) {
+                    if (!meeting.isOnline) {
                         return (
                             <>
                                 <div className="col-12 mb-2">
                                     <span className="form-label">Место встречи</span>
                                     <textarea
                                         className="form-control"
-                                        defaultValue={props.meetingAddress || place}
+                                        defaultValue={meeting.place}
                                         placeholder="Тверская ул., 22, Москва, 127006"
-                                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPlace(e.target.value)}
+                                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeeting({ ...meeting, place: e.target.value })}
                                         rows={4}
                                     />
                                 </div>
@@ -148,8 +162,8 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                     <textarea
                                         className="form-control"
                                         placeholder="zoomid ….."
-                                        defaultValue={place}
-                                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setPlace(e.target.value)}
+                                        defaultValue={meeting.place}
+                                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeeting({ ...meeting, place: e.target.value })}
                                         rows={4}
                                     />
                                 </div>

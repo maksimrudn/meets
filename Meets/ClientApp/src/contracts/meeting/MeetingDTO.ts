@@ -9,4 +9,5 @@
     isOnline: any
     place: any
     status: any
+    messageCount: number = 0
 }

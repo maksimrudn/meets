@@ -94,6 +94,7 @@ namespace Meets.Controllers.api
                 dto.IsOnline = meet.IsOnline;
                 dto.Place = meet.Place;
                 dto.Status = meet.Status;
+                dto.MessageCount = meet.Messages.Count;
 
                 list.Add(dto);
             }

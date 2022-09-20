@@ -17,12 +17,32 @@ import moment from 'moment';
 import './MeetingList.scss';
 import AccessTimeIcon from '../../icons/AccessTimeIcon';
 import CalendarAltIcon from '../../icons/CalendarAltIcon';
+import CommentIcon from '../../icons/CommentIcon';
 
-const MeetingStatus = {
-    Invite: 'Приглашение',
-    Discussion: 'Обсуждение',
-    Confirmed: 'Подтверждено',
-    Canceled: 'Завершено'
+interface IMeetingStatusItem {
+    Title: string
+    Code: string
+}
+
+type MeetingStatusItems = 'Invite' | 'Discussion' | 'Confirmed' | 'Canceled';
+
+const MeetingStatus: Record<MeetingStatusItems, IMeetingStatusItem> = {
+    Invite: {
+        Title: 'Приглашение',
+        Code: 'Invite'
+    },
+    Discussion: {
+        Title: 'Обсуждение',
+        Code: 'Discussion'
+    },
+    Confirmed: {
+        Title: 'Подтверждено',
+        Code: 'Confirmed'
+    },
+    Canceled: {
+        Title: 'Завершено',
+        Code: 'Canceled'
+    }
 }
 
 const MeetingListTabs = {
@@ -88,7 +108,25 @@ function MeetingList(props: IMeetingsListProps) {
                                             <span className="me-2"><CalendarAltIcon /></span>
                                             <span className="">{moment(item.meetingDate).format('DD MMMM, YYYY')} ({moment(item.meetingDate).format('ddd')})</span>
                                         </div>
-                                        <div className="Status">{MeetingStatus[item.status]}</div>
+                                        <div className="Status">{MeetingStatus[item.status as MeetingStatusItems].Title}</div>
+                                        <div className="Counters">
+                                            {(item.status === MeetingStatus.Discussion.Code || item.status === MeetingStatus.Canceled.Code) &&
+                                                <>
+                                                    <span className="Icon"><CommentIcon /></span>
+                                                    <span className="Count">{item.messageCount}</span>
+                                                </>
+                                            }
+                                            {/*(() => {
+                                                if (item.status === MeetingStatus.Discussion.Code || item.status === MeetingStatus.Canceled.Code) {
+                                                    return (
+                                                        <>
+                                                            <span className="Icon"><CommentIcon /></span>
+                                                            <span className="Count">{item.messageCount}</span>
+                                                        </>
+                                                    );
+                                                }
+                                            })()*/}
+                                        </div>
                                     </div>
                                 </div>
                             );
@@ -111,7 +149,25 @@ function MeetingList(props: IMeetingsListProps) {
                                             <span className="me-2"><CalendarAltIcon /></span>
                                             <span className="">{moment(item.meetingDate).format('DD MMMM, YYYY')} ({moment(item.meetingDate).format('ddd')})</span>
                                         </div>
-                                        <div className="Status">{MeetingStatus[item.status]}</div>
+                                        <div className="Status">{MeetingStatus[item.status as MeetingStatusItems].Title}</div>
+                                        <div className="Counters">
+                                            {(item.status === MeetingStatus.Discussion.Code || item.status === MeetingStatus.Canceled.Code) &&
+                                                <>
+                                                    <span className="Icon"><CommentIcon /></span>
+                                                    <span className="Count">{item.messageCount}</span>
+                                                </>
+                                            }
+                                            {/*(() => {
+                                                if (item.status === MeetingStatus.Discussion.Code || item.status === MeetingStatus.Canceled.Code) {
+                                                    return (
+                                                        <>
+                                                            <span className="Icon"><CommentIcon /></span>
+                                                            <span className="Count">{item.messageCount}</span>
+                                                        </>
+                                                    );
+                                                }
+                                            })()*/}
+                                        </div>
                                     </div>
                                 </div>
                             );

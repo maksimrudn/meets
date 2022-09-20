@@ -62,129 +62,12 @@ import LocateMapIcon from '../../icons/LocateMapIcon';
 import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
 import YMapsGeoSelector from '../../modules/geo/YMapsGeoSelector';
 import getPosition from '../../common/GeoUtils';
-
-type MapSelectorModalState = {
-    latitude: number,
-    longitude: number,
-    address?: string
-}
-
-type IMapSelectorModalProps = {
-    isOpen: boolean,
-    toggle(): void,
-    setMeetingAddress: React.Dispatch<SetStateAction<string>>
-    //latitude: number,
-    //longitude: number,
-    //address?: string,
-    //onChangeCoordinates(latitude: number, longitude: number, address?: string): void //  - функция, в которую возвращается результат изменения геопозиции
-}
-
-function MapSelectorModal(props: IMapSelectorModalProps) {
-    const [coords, setCoords] = useState<MapSelectorModalState>({
-        latitude: 0,
-        longitude: 0,
-        address: ''
-    });
-
-    //const addresRef = useRef<HTMLTextAreaElement>();
-
-    /*useEffect(() => {
-        setCoords({
-            latitude: props.latitude,
-            longitude: props.longitude,
-            address: props.address
-        });
-    }, [props.latitude, props.longitude]);*/
-
-
-
-    const onChangeCoordinatesModal = (latitude: number, longitude: number, address?: string) => {
-        setCoords({
-            latitude,
-            longitude,
-            address
-        });
-    }
-
-    const onDetetctGeoposition = async () => {
-
-        try {
-            let coordinates = await getPosition();
-
-            setCoords({
-                ...coords,
-                latitude: coordinates.latitude,
-                longitude: coordinates.longitude
-            });
-        } catch (err) {
-        }
-    }
-
-    const onSave = () => {
-        props.setMeetingAddress(coords.address as string);
-        props.toggle();
-    }
-
-    return (
-        <Modal
-            isOpen={props.isOpen}
-            toggle={props.toggle}
-            size='md'
-            container='div.container-xl'
-            cssModule={{
-                //'modal-open': 'p-0'
-            }}
-            className="MapSelectorModal"
-            contentClassName="Content"
-        >
-            <ModalHeader
-                toggle={props.toggle}
-                cssModule={{
-                    'modal-title': 'mb-0'
-                }}
-                className="Header"
-            >
-                Место встречи
-            </ModalHeader>
-            <ModalBody
-                className="Body"
-            >
-                <button type="button" className="SetPlaceBtn btn mt-3" onClick={onDetetctGeoposition}>
-                    <span className="me-3"><LocateMapIcon /></span>
-                    <span>Текущее местоположение</span>
-                </button>
-
-                <div className="Map">
-                    <YMapsGeoSelector
-                        editable={true}
-                        latitude={coords.latitude}
-                        longitude={coords.longitude}
-                        onChangeCoordinates={onChangeCoordinatesModal}
-                    />
-                </div>
-
-                <div className="col-12 mb-2">
-                    <label className="form-label">Адрес</label>
-                    <textarea
-                        className="form-control"
-                        value={coords.address}
-                        //ref={addresRef}
-                        rows={4}
-                        readOnly
-                    />
-                </div>
-
-                <button type="button" className="SaveBtn btn mt-3" onClick={onSave}>Выбрать</button>
-
-            </ModalBody>
-
-        </Modal>
-    );
-}
-
+import CoffeeIcon from '../../icons/CoffeeIcon';
+import UserAuthInfo from '../../contracts/UserAuthInfo';
+import MapSelectorModal from '../../modules/entities/user/MapSelectorModal';
 
 interface UserCardProps {
-    userInfo: any,
+    userInfo: UserAuthInfo,
     UpdateUserInfo: any
 }
 
@@ -449,7 +332,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                                 <div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
                                         <button className="Invite btn" type="button" onClick={meetRequestModalToggle}>
-                                            <span className="me-4"><MessageIcon /></span>
+                                            <span className="me-4"><CoffeeIcon /></span>
                                             <span className="fs-5 text-black">Пригласить</span>
                                         </button>
                                     </div>
@@ -562,6 +445,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             isOpen={isOpenMapSelectModal}
                             toggle={mapSelectModalToggle}
                             setMeetingAddress={setMeetingAddress}
+                            userInfo={props.userInfo}
                         />
 
                         <ShowUserAvatar

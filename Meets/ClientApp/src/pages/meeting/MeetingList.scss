@@ -68,7 +68,7 @@
                 .Name {
                     font-size: 21px;
                     font-weight: bold;
-                    margin-bottom: .5rem;
+                    margin-bottom: .25rem;
                 }
 
                 .Time {
@@ -98,7 +98,25 @@
                     padding: 1px .7rem;
                     display: flex;
                     justify-content: center;
-                    //margin-bottom: .5rem;
+                    margin-bottom: .25rem;
+                }
+
+                .Counters {
+                    display: flex;
+                    align-items: center;
+
+                    .Icon {
+                        margin-right: .5rem;
+
+                        img {
+                            width: 17px;
+                            height: 17px;
+                        }
+                    }
+
+                    .Count {
+                        font-size: 13px;
+                    }
                 }
             }
         }

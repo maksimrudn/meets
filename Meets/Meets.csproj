@@ -87,6 +87,8 @@
 
     <None Remove="ClientApp\src\icons\CheckIcon.tsx" />
 
+    <None Remove="ClientApp\src\icons\CoffeeIcon.tsx" />
+
     <None Remove="ClientApp\src\icons\CommentIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\CompanyIconSvg.tsx" />
@@ -152,6 +154,7 @@
 
     <None Remove="ClientApp\src\modules\entities\user\edit\Date.tsx" />
     <None Remove="ClientApp\src\modules\datatable\event\PlansDataTable.tsx" />
+    <None Remove="ClientApp\src\modules\entities\user\MapSelectorModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\MeetRequestModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\ShowUserAvatar.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\UserCardAvatarModal.tsx" />
@@ -207,6 +210,8 @@
     <TypeScriptCompile Include="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\ByUserIdRequest.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\CoffeeIcon.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\EmptyAvatarIcon.tsx" />
 
@@ -346,6 +351,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\modules\entities\learning\LearningEditorModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ConfirmationModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\MapSelectorModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\MeetRequestModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ShowUserAvatar.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserCardAvatarModal.tsx" />

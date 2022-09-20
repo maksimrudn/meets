@@ -74,6 +74,8 @@ namespace Meets.Controllers.api
                 if (user.Latitude != 0 && user.Longitude != 0)
                 {
                     res.HasGeolocation = true;
+                    res.Latitude = user.Latitude;
+                    res.Longitude = user.Longitude;
                 }
             }
 

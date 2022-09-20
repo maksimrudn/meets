@@ -3,6 +3,8 @@ import { Component, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { YMaps, Map, Placemark, YMapsApi } from 'react-yandex-maps';
 import AppConfig from 'common/AppConfig';
 import YMapsConfig from '../../common/YMapsConfig';
+import UserAuthInfo from '../../contracts/UserAuthInfo';
+import YMapsIcons from '../../common/YMapsIcons';
 
 
 /**
@@ -22,7 +24,8 @@ export interface YMapsGeoSelectorProps {
     editable: boolean, // при истине, карта, при клике на определённое место, будет возвращать данные геопозиции
     latitude: number,
     longitude: number,
-    onChangeCoordinates(latitude: number, longitude: number, address: string): void //  - функция, в которую возвращается результат изменения геопозиции
+    onChangeCoordinates(latitude: number, longitude: number, address: string): void, //  - функция, в которую возвращается результат изменения геопозиции
+    userInfo: UserAuthInfo
 }
 
 
@@ -61,7 +64,7 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
             this.objPlacemark = new this.ymapsApi.Placemark(coords,
                 {},
                 {
-                    preset: 'islands#violetDotIconWithCaption',
+                    preset: YMapsIcons.MeetingAddress,
                 });
 
             if (this.mapRef != null)
@@ -90,7 +93,7 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
 
         // Обработчик клика по карте. 
         if (this.props.editable) {
-            this.mapRef.events.add('click', async (e: any) => {
+            this.mapRef.events.add('dblclick', async (e: any) => {
 
                 var coords = await e.get('coords');
 
@@ -113,7 +116,7 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
             });
         }
 
-        
+
 
         // Определяем адрес по координатам (обратное геокодирование).
         const getAddress = async (coords: any) => {
@@ -125,7 +128,7 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
         };
     }
 
-    
+
 
     render() {
         let centerLatitude = YMapsConfig.DefaultLatitude;
@@ -134,11 +137,14 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
         if (this.props.latitude) {
             centerLatitude = this.props.latitude;
             centerLongitude = this.props.longitude;
+        } else {
+            centerLatitude = this.props.userInfo.latitude;
+            centerLongitude = this.props.userInfo.longitude;
         }
 
         return (
             <>
-               
+
                 <YMaps query={{ apikey: YMapsConfig.YandexApiKey, lang: "ru_RU", load: "package.full" }} >
                     <Map
                         modules={[
@@ -159,6 +165,15 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
                         onLoad={ymaps => this.onLoadMap(ymaps)}
 
                     >
+                        {this.props.userInfo.hasGeolocation &&
+                            <Placemark
+                                geometry={[this.props.userInfo.latitude, this.props.userInfo.longitude]}
+                                options={{
+                                    preset: YMapsIcons.MyPosition,
+                                    //iconColor: 'red'
+                                }}
+                            />
+                        }
                     </Map>
                 </YMaps>
             </>);
