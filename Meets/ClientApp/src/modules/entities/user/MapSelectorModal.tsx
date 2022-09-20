@@ -30,6 +30,15 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
         address: ''
     });
 
+    const [isNavigatorEnabled, setIsNavigatorEnabled] = useState(() => {
+        try {
+            let coordinates = (async () => await getPosition())()
+            return true;
+        } catch (err) {
+            return false
+        }
+    });
+
     const onChangeCoordinatesModal = (latitude: number, longitude: number, address?: string) => {
         setCoords({
             latitude,
@@ -38,8 +47,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
         });
     }
 
-    const onDetectGeoposition = async (e: React.ChangeEvent<HTMLButtonElement>) => {
-        console.log('detect ', e.target);
+    const onDetectGeoposition = async () => {
         try {
             let coordinates = await getPosition();
 
@@ -49,15 +57,8 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
                 longitude: coordinates.longitude
             });
         } catch (err) {
+            let res;
             console.error(err);
-        }
-    }
-
-    const onDetetctGeoposition2 = () => {
-
-        try {
-            console.log('asdf');
-        } catch (err) {
         }
     }
 
@@ -77,6 +78,8 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
             }}
             className="MapSelectorModal"
             contentClassName="Content"
+            //onEnter={navigatorCondition}
+            //onOpened={navigatorCondition}
         >
             <ModalHeader
                 toggle={props.toggle}
@@ -90,7 +93,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
             <ModalBody
                 className="Body"
             >
-                <button type="button" className="SetPlaceBtn btn mt-3" onClick={onDetectGeoposition}>
+                <button type="button" className="SetPlaceBtn btn mt-3" onClick={onDetectGeoposition} disabled={isNavigatorEnabled}>
                     <span className="me-3"><LocateMapIcon /></span>
                     <span>Текущее местоположение</span>
                 </button>

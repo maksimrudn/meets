@@ -18,37 +18,8 @@ import './MeetingList.scss';
 import AccessTimeIcon from '../../icons/AccessTimeIcon';
 import CalendarAltIcon from '../../icons/CalendarAltIcon';
 import CommentIcon from '../../icons/CommentIcon';
-
-interface IMeetingStatusItem {
-    Title: string
-    Code: string
-}
-
-type MeetingStatusItems = 'Invite' | 'Discussion' | 'Confirmed' | 'Canceled';
-
-const MeetingStatus: Record<MeetingStatusItems, IMeetingStatusItem> = {
-    Invite: {
-        Title: 'Приглашение',
-        Code: 'Invite'
-    },
-    Discussion: {
-        Title: 'Обсуждение',
-        Code: 'Discussion'
-    },
-    Confirmed: {
-        Title: 'Подтверждено',
-        Code: 'Confirmed'
-    },
-    Canceled: {
-        Title: 'Завершено',
-        Code: 'Canceled'
-    }
-}
-
-const MeetingListTabs = {
-    Outbox: 'Исходящие',
-    Inbox: 'Входящие'
-}
+import { MeetingListTabs } from '../../common/MeetingListTabs';
+import { MeetingStatus, MeetingStatusItems } from '../../common/MeetingStatus';
 
 interface IMeetingsListProps {
     userInfo: UserAuthInfo
@@ -73,7 +44,7 @@ function MeetingList(props: IMeetingsListProps) {
         <div className="MeetingList">
 
             <div className="Header">
-                <span className="GoBackBtn"><GoBackIcon /></span>
+                <span className="GoBackBtn" onClick={()=>history.goBack()}><GoBackIcon /></span>
                 <span className="Title">Встречи</span>
                 <span className="MeetingBtn"><MeetingIcon /></span>
             </div>
@@ -116,16 +87,6 @@ function MeetingList(props: IMeetingsListProps) {
                                                     <span className="Count">{item.messageCount}</span>
                                                 </>
                                             }
-                                            {/*(() => {
-                                                if (item.status === MeetingStatus.Discussion.Code || item.status === MeetingStatus.Canceled.Code) {
-                                                    return (
-                                                        <>
-                                                            <span className="Icon"><CommentIcon /></span>
-                                                            <span className="Count">{item.messageCount}</span>
-                                                        </>
-                                                    );
-                                                }
-                                            })()*/}
                                         </div>
                                     </div>
                                 </div>
@@ -157,16 +118,6 @@ function MeetingList(props: IMeetingsListProps) {
                                                     <span className="Count">{item.messageCount}</span>
                                                 </>
                                             }
-                                            {/*(() => {
-                                                if (item.status === MeetingStatus.Discussion.Code || item.status === MeetingStatus.Canceled.Code) {
-                                                    return (
-                                                        <>
-                                                            <span className="Icon"><CommentIcon /></span>
-                                                            <span className="Count">{item.messageCount}</span>
-                                                        </>
-                                                    );
-                                                }
-                                            })()*/}
                                         </div>
                                     </div>
                                 </div>

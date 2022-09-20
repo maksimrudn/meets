@@ -55,6 +55,10 @@
 
     <None Remove="ClientApp\src\common\IApiError.ts" />
 
+    <None Remove="ClientApp\src\common\MeetingListTabs.ts" />
+
+    <None Remove="ClientApp\src\common\MeetingStatus.ts" />
+
     <None Remove="ClientApp\src\common\UserCardTabsNames.tsx" />
 
     <None Remove="ClientApp\src\common\UserFieldNames.js" />
@@ -192,6 +196,10 @@
     <TypeScriptCompile Include="ClientApp\src\common\BottomMenuItems.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\common\ApiError.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\common\MeetingListTabs.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\common\MeetingStatus.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\common\UserCardTabsNames.tsx" />
 
