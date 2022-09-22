@@ -1,0 +1,324 @@
+﻿@mixin check-box {
+    .CustomCheckBox {
+        .checkbox {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+
+            & + label {
+                display: inline-flex;
+                align-items: center;
+                user-select: none;
+
+                &:before {
+                    content: '';
+                    display: inline-block;
+                    width: 32px;
+                    height: 32px;
+                    //flex-shrink: 0;
+                    //flex-grow: 0;
+                    border: 2px solid #000;
+                    border-radius: .5em;
+                    margin-right: 1em;
+                    background-color: #E9E7FC;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: 50% 50%;
+                }
+            }
+
+            &:checked + label:before {
+                content: '';
+                border-color: #FFBD12;
+                background-color: #FFBD12;
+                background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' id='Group_15' data-name='Group 15' width='16.628' height='11.933' viewBox='0 0 16.628 11.933'><defs><clipPath id='clip-path'><path id='check' d='M14.387.384a1.313,1.313,0,0,1,1.946,1.756l-.09.1L6.935,11.548a1.313,1.313,0,0,1-1.756.09l-.1-.09L.384,6.853A1.313,1.313,0,0,1,2.141,4.907l.1.09L6.007,8.763Z' transform='translate(0 0)' fill='%2318191f'/></clipPath></defs><path id='check-2' data-name='check' d='M14.387.384a1.313,1.313,0,0,1,1.946,1.756l-.09.1L6.935,11.548a1.313,1.313,0,0,1-1.756.09l-.1-.09L.384,6.853A1.313,1.313,0,0,1,2.141,4.907l.1.09L6.007,8.763Z' transform='translate(0 0)' fill='%2318191f'/><g id='Mask_Group_15' data-name='Mask Group 15' clip-path='url(%23clip-path)'><g id='COLOR_black' data-name='COLOR/ black' transform='translate(-2.188 -4.55)'><rect id='Rectangle' width='21' height='21' fill='%23fff'/></g></g></svg>");
+            }
+        }
+    }
+}
+
+
+.ProfileSettings {
+    background-color: #fff;
+    padding: 24px;
+
+    .Header {
+        height: 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        @mixin button($bg-color) {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            //padding: $padding;
+            border-radius: 50%;
+            background-color: $bg-color;
+            cursor: pointer;
+            box-shadow: 0 2px 1px 1px #000;
+        }
+
+        .GoBackBtn {
+            @include button(#fff);
+
+            img {
+                width: 17px;
+                height: 23px;
+            }
+        }
+
+        .Title {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .SaveChangesBtn {
+            @include button(#00C6AE);
+        }
+    }
+
+    .card {
+        border: 2px solid #000;
+        border-radius: 1rem;
+        padding: 24px;
+        margin-bottom: .5rem;
+
+        .ConfirmEmail {
+            .Link {
+                &:hover {
+                    color: inherit;
+                }
+
+                .Row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .Wrap {
+                        display: flex;
+                        align-items: center;
+
+                        &:before {
+                            content: "";
+                            display: inline;
+                            width: 24px;
+                            height: 24px;
+                            border: 2px solid #000;
+                            border-radius: 50%;
+                            background-color: #FFBD12;
+                            margin-right: .5rem;
+                        }
+
+                        .Text {
+                            font-size: 17px;
+                        }
+                    }
+
+                    .Icon {
+                        width: 24px;
+                        height: 24px;
+                        cursor: pointer;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            transform: rotate(180deg);
+                        }
+                    }
+                }
+
+                .Message {
+                    font-size: 14px;
+                    color: #F95A2C;
+                    text-align: left;
+                    margin-top: .5rem;
+                }
+            }
+        }
+
+        .ChangePassword {
+            @extend .ConfirmEmail;
+            margin-top: 1.5rem;
+        }
+    }
+
+    .TG {
+        .form-label {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            background-color: #fff;
+            box-shadow: 0 2px 1px 1px #000;
+            border-radius: 15px;
+
+            .input-group-text {
+                border-top: 2px solid #000;
+                border-right: 0;
+                border-left: 2px solid #000;
+                border-bottom: 2px solid #000;
+                border-radius: 15px;
+                background-color: #fff !important;
+                font-size: 21px;
+                padding-top: 0;
+                padding-bottom: 0;
+                //display: flex;
+                //justify-content: center;
+                //align-items: center;
+                //max-height: 35px;
+            }
+
+            .form-control {
+                border-top: 2px solid #000;
+                border-right: 2px solid #000;
+                border-left: 0;
+                border-bottom: 2px solid #000;
+                border-radius: 15px;
+                background-color: #fff !important;
+                font-size: 21px !important;
+            }
+        }
+    }
+
+    .Invite {
+        @include check-box;
+        //display: flex;
+        //flex-direction: row;
+
+        .Title {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .Desc {
+            font-size: 15px;
+            color: #474A57;
+            text-align: left;
+        }
+    }
+
+    .Search {
+        @include check-box;
+
+        .Title {
+            font-size: 17px;
+            font-weight: bold;
+        }
+    }
+
+    .GeoTracking {
+        .Switch {
+            input[id=switch] {
+                height: 0;
+                width: 0;
+                visibility: hidden;
+            }
+
+            label {
+                cursor: pointer;
+                text-indent: -9999px;
+                width: 60px;
+                height: 36px;
+                border: 2px solid #000;
+                background-color: #E9E7FC;
+                display: block;
+                border-radius: 50rem;
+                position: relative;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    top: -2px;
+                    left: -2px;
+                    width: 36px;
+                    height: 36px;
+                    background: #fff;
+                    border: 2px solid #000;
+                    border-radius: 50rem;
+                    transition: 0.1s;
+                    box-sizing: border-box;
+                }
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: 8px;
+                    left: 8px;
+                    width: 15px;
+                    height: 15px;
+                    background-color: #E9E7FC;
+                    border: 2px solid #000;
+                    border-radius: 50rem;
+                    box-sizing: border-box;
+                    z-index: 2;
+                    transition: 0.2s;
+                }
+            }
+
+            input:checked + label {
+                background: #FFBD12;
+
+                &:after {
+                    left: calc(100% + 2px);
+                    transform: translateX(-100%);
+                }
+
+                &:before {
+                    left: calc(100% - 8px);
+                    transform: translateX(-100%);
+                    background: #FFBD12;
+                    border: 2px solid #000;
+                    //transition: background 0.1s ease-out 0.2s, border 0.15s ease-out 0.2s;
+                    //transition-delay: 0.15s;
+                }
+            }
+
+            label:active:after {
+            }
+        }
+
+        .Title {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .Desc {
+            font-size: 15px;
+            color: #474A57;
+            text-align: left;
+        }
+    }
+
+    .Activity, .Company, .Post {
+        .form-label {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border: 2px solid #000;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 1px 1px #000;
+            font-size: 21px;
+        }
+    }
+
+    .LogOut, .RemoveAccount {
+        display: block;
+        height: 60px;
+        width: 100%;
+        //display: flex;
+        //justify-content: center;
+        //align-items: center;
+        border-radius: 1rem;
+        background-color: #1947E5;
+        font-size: 21px;
+        color: #fff;
+    }
+}

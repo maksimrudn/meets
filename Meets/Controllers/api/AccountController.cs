@@ -16,6 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Meets.Extensions;
 
 namespace Meets.Controllers.api
 {
@@ -99,6 +100,17 @@ namespace Meets.Controllers.api
             {
                 throw new RegistrationException(result.Errors.Select(e => e.Description));
             }
+        }
+
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<ActionResult> RemoveAccount()
+        {
+            var user = await _db.Users.FindAsync(User.GetUserId());
+            
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+
+            return Ok();
         }
 
         /**

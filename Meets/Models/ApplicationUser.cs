@@ -78,6 +78,13 @@ namespace Meets.Models
 
         public int Weight { get; set; }
 
+        public bool IsInvitable { get; set; } = true;
+
+        public bool IsSearchable { get; set; } = true;
+
+        public bool IsGeoTracking { get; set; } = false;
+
+        public string Telegram { get; set; }
 
 
         /// <summary>
