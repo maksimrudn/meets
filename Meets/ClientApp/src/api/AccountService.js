@@ -22,6 +22,10 @@ class AccountService extends BaseService {
         return this.executeRequestXHR('/api/account/register', 'post', JSON.stringify(data));
     }
 
+    removeAccount() {
+        this.executeRequestXHR('/api/account/removeAccount', 'post');
+    }
+
     registerConfirmation() {
 
     }

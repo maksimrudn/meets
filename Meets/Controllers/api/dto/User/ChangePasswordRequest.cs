@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Meets.Controllers.api.dto.User
 {
-    public class ChangePasswordDTO
+    public class ChangePasswordRequest
     {
         [Required(ErrorMessage ="Поле Пароль должно быть заполнено")]
         [DataType(DataType.Password)]

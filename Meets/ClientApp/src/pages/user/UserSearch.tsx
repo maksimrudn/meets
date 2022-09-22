@@ -8,10 +8,11 @@ import friendRequestService from '../../api/FriendRequestService';
 import { Helmet } from 'react-helmet';
 import { getAvatarPathForUser, objectToFormData } from '../../common/Utils';
 import UserItem from './UserItem';
+import UserAuthInfo from '../../contracts/UserAuthInfo';
 
 
 interface UserSearchProps {
-    userInfo: any
+    userInfo: UserAuthInfo
 }
 
 export default function UserSearch(props: UserSearchProps) {

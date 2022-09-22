@@ -1,0 +1,13 @@
+<svg id="Group_15" data-name="Group 15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16.628" height="11.933" viewBox="0 0 16.628 11.933">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="check" d="M14.387.384a1.313,1.313,0,0,1,1.946,1.756l-.09.1L6.935,11.548a1.313,1.313,0,0,1-1.756.09l-.1-.09L.384,6.853A1.313,1.313,0,0,1,2.141,4.907l.1.09L6.007,8.763Z" transform="translate(0 0)" fill="#18191f"/>
+    </clipPath>
+  </defs>
+  <path id="check-2" data-name="check" d="M14.387.384a1.313,1.313,0,0,1,1.946,1.756l-.09.1L6.935,11.548a1.313,1.313,0,0,1-1.756.09l-.1-.09L.384,6.853A1.313,1.313,0,0,1,2.141,4.907l.1.09L6.007,8.763Z" transform="translate(0 0)" fill="#18191f"/>
+  <g id="Mask_Group_15" data-name="Mask Group 15" clip-path="url(#clip-path)">
+    <g id="COLOR_black" data-name="COLOR/ black" transform="translate(-2.188 -4.55)">
+      <rect id="Rectangle" width="21" height="21" fill="#fff"/>
+    </g>
+  </g>
+</svg>

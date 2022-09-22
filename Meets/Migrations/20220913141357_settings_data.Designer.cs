@@ -4,6 +4,7 @@ using Meets.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220913141357_settings_data")]
+    partial class settings_data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,16 +136,13 @@ namespace Meets.Migrations
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
+                    b.Property<bool>("GeoTracking")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Growth")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsGeoTracking")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsInvitable")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSearchable")
+                    b.Property<bool>("Invitedable")
                         .HasColumnType("bit");
 
                     b.Property<string>("Job")
@@ -182,6 +181,9 @@ namespace Meets.Migrations
                     b.Property<decimal?>("RoleId")
                         .HasColumnType("decimal(20,0)");
 
+                    b.Property<bool>("Searchable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -194,9 +196,6 @@ namespace Meets.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
-
-                    b.Property<string>("Telegram")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -231,10 +230,9 @@ namespace Meets.Migrations
                             Email = "admin@admin",
                             EmailConfirmed = false,
                             FullName = "Администратор",
+                            GeoTracking = false,
                             Growth = 0,
-                            IsGeoTracking = false,
-                            IsInvitable = true,
-                            IsSearchable = true,
+                            Invitedable = true,
                             Latitude = 0.0,
                             LockoutEnabled = false,
                             Longitude = 0.0,
@@ -242,6 +240,7 @@ namespace Meets.Migrations
                             NormalizedUserName = "ADMIN@ADMIN",
                             PasswordHash = "AQAAAAEAACcQAAAAENx3L07KWVLeM5I4Gl87fgefl6BbDM98CTVFpDmkbUgI+CstAB1oaMPITqT4DQ4r4g==",
                             PhoneNumberConfirmed = false,
+                            Searchable = true,
                             SecurityStamp = "b8db65e3-df56-4cc6-ad87-16e1c108db13",
                             Tags = "",
                             TwoFactorEnabled = false,

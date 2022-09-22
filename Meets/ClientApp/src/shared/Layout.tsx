@@ -1,4 +1,4 @@
-﻿import React, { Component, useState } from 'react';
+﻿import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
 import { connect } from 'react-redux';
@@ -8,9 +8,6 @@ import mapDispatchToProps from '../store/mapDispatchToProps';
 
 import UserCard from '../pages/user/UserCard';
 import UserSearch from '../pages/user/UserSearch';
-
-import TopMenu from './TopMenu';
-import LeftMenu from './LeftMenu';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../styles/scss/main.scss';
@@ -32,11 +29,16 @@ import ConfirmEmailError from '../pages/account/ConfirmEmailError';
 import ForgotPasswordStep3 from '../pages/account/ForgotPasswordStep3';
 import ForgotPasswordStep4 from '../pages/account/ForgotPasswordStep4';
 import Error from '../pages/common/Error';
-import Routes  from '../common/Routes';
+import Routes from '../common/Routes';
+import ProfileSettings from '../pages/user/ProfileSettings';
+import UserChangePassword from '../pages/user/UserChangePassword';
+import UserConfirmEmail from '../pages/user/UserConfirmEmail';
+import UserAuthInfo from '../contracts/UserAuthInfo';
 
 
 interface LayoutProps {
-    userInfo: any
+    userInfo: UserAuthInfo,
+    UpdateUserInfo: any
 }
 
 function Layout(props: LayoutProps) {
@@ -50,22 +52,12 @@ function Layout(props: LayoutProps) {
                 setSelectedMenuItem(BottomMenuItems.UserSearch);
                 setLeftMenuIsOpen(false);
                 break;
-            case BottomMenuItems.Messanger:
-                setSelectedMenuItem(BottomMenuItems.Messanger);
+            case BottomMenuItems.Profie:
+                setSelectedMenuItem(BottomMenuItems.Profie);
                 setLeftMenuIsOpen(false);
                 break;
         }
 
-    }
-
-    const openLeftMenu = () => {
-        setLeftMenuIsOpen(true);
-        setSelectedMenuItem(BottomMenuItems.LeftMenu)
-    }
-
-    const hideLeftMenu = () => {
-        setLeftMenuIsOpen(false);
-        setSelectedMenuItem('');
     }
 
 
@@ -98,53 +90,42 @@ function Layout(props: LayoutProps) {
                         </div>
                     </Route>
                     <Route path='/' >
-                        <TopMenu />
 
                         <div className="main">
-                            {props.userInfo.isAuthenticated &&
-                                <LeftMenu
-                                    leftMenuIsOpen={leftMenuIsOpen}
-                                    hideLeftMenu={hideLeftMenu}
-                                />
-                            }
+                            
 
                             <div className="body d-flex">
                                 <div className="container-xl">
                                     <Switch>
 
-                                        {(() => {
-                                            if (props.userInfo.isAuthenticated) {
-                                                return (
-                                                    <Route exact path="/">
-                                                        <Redirect to="/user/search" />
-                                                    </Route>);
-                                            }
-                                            else {
-                                                return (
-                                                    <Route exact path="/">
-                                                        <Redirect to="/account/login" />
-                                                    </Route>);
-                                            }
-                                        })()
+
+                                        <Route exact path="/" render={(routeProps) => {
+                                            return props.userInfo.isAuthenticated ? <UserSearch userInfo={props.userInfo} /> : <Login />
+                                        }} />
+
+
+                                        {props.userInfo.isAuthenticated &&
+                                            <>
+                                                <Route path={Routes.UserCard} render={(props) => <UserCard userInfo={props.userInfo} {...props} />}></Route>
+                                                <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings userInfo={props.userInfo} {...props} />}></Route>
+                                                <Route path="/user/Search">
+                                                    <UserSearch userInfo={props.userInfo} />
+                                                </Route>
+                                                <Route path={Routes.UserChangePassword} render={props => <UserChangePassword {...props} />} />
+                                                <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail userInfo={props.userInfo} />} />
+                                                <Route path={Routes.Error} render={() => <Error />} />
+                                            </>
                                         }
-
-                                        
-
-                                        <Route path={ Routes.UserCard } render={(props) => <UserCard userInfo={props.userInfo} {...props} />}></Route>
-                                        <Route path="/user/Search">
-                                            <UserSearch userInfo={props.userInfo} />
-                                        </Route>
-                                        
-                                        <Route path={ Routes.Error } render={() => <Error />} />
                                     </Switch>
                                 </div>
                             </div>
 
                             {props.userInfo.isAuthenticated &&
                                 <BottomMenu
+                                    userInfo={props.userInfo}
                                     selectedMenuItem={selectedMenuItem}
                                     selectMenuItemOnClick={selectMenuItemOnClick}
-                                    openLeftMenu={openLeftMenu}
+                                //openLeftMenu={openLeftMenu}
                                 />
                             }
 
