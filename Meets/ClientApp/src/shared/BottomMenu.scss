@@ -3,37 +3,30 @@
 
 .BottomMenu {
     .Menu {
-        border-top: 2px solid #000;
-        height: 61px;
+        //border-top: 2px solid #000;
+        height: 76px;
         max-width: $main_width;
         display: flex;
         justify-content: space-evenly;
-        background-color: #fff;
+        background-color: #18191F;
         z-index: 1000;
         //flex-direction: row;
 
         .MenuItem {
             //height: 61px;
-            width: 61px;
-            background-color: #FFE8E8;
+            width: 71px;
+            background-color: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
             //place-content: center;
             margin: 5px;
-            border-radius: 10px;
+            border-radius: 1rem;
+            border: 2px solid #fff;
+            cursor: pointer;
 
             &.active {
                 background-color: #F95A2C;
-            }
-
-            img {
-                height: auto;
-                width: auto;
-                max-width: 45px;
-                max-height: 45px;
-                padding: 7px;
-                cursor: pointer;
             }
         }
     }

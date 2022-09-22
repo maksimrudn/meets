@@ -54,6 +54,8 @@ import JobIconSvg from '../../icons/JobIconSvg';
 import ApiError from '../../common/ApiError';
 import Routes from '../../common/Routes';
 import subscribtionService from '../../api/SubscribtionService';
+import ProfileSettingsIcon from '../../icons/ProfileSettingsIcon';
+
 
 
 interface UserCardProps {
@@ -270,6 +272,12 @@ function UserCard(props: UserCardProps): JSX.Element {
                                 </span>
                             </div>
 
+                            {user.specialization && // сфера деятельности
+                                <div className="col-12 d-flex align-items-center justify-content-center">
+                                    <span>{user.specialization}</span>
+                                </div>
+                            }
+
                             {user.company &&
                                 <div className="col-12 d-flex align-items-center justify-content-center">
                                     <span className="text-white me-3">
@@ -280,7 +288,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             }
 
                             {user.job &&
-                                <div className="col-12 d-flex align-items-center justify-content-center">
+                                <div className="col-12 d-flex align-items-center justify-content-center mb-2">
                                     <span className="text-white me-3">
                                         <JobIconSvg />
                                     </span>
@@ -307,8 +315,8 @@ function UserCard(props: UserCardProps): JSX.Element {
                                 }
                             })()}
 
-                            {(props.userInfo.user.id !== user.id) &&
-                                <div className="d-flex justify-content-around">
+                            {(props.userInfo.user.id !== user.id)
+                                ? (<div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
                                         <Link className="SendMEessageBtn btn btn-white p-2" to={`/messanger/${user.id}`}>
                                             <span className="me-4"><MessageIcon /></span>
@@ -324,7 +332,15 @@ function UserCard(props: UserCardProps): JSX.Element {
                                         />
                                     </div>
 
-                                </div>
+                                </div>)
+                                : (
+                                    <div className="col-12">
+                                        <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettingsBuild(user.id)}>
+                                            <span className="me-4"><ProfileSettingsIcon /></span>
+                                            <span className="fs-5 text-black">Настройки</span>
+                                        </Link>
+                                    </div>
+                                )
                             }
 
                         </div>

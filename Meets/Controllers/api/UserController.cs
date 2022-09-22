@@ -20,6 +20,11 @@ using System.Dynamic;
 using Meets.Controllers.api.dto.User;
 using System.Security.Claims;
 using Meets.Exceptions;
+using Meets.Controllers.api.dto;
+using Meets.Services;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
 
 namespace Meets.Controllers.api
 {
@@ -174,6 +179,54 @@ namespace Meets.Controllers.api
             });
             return response;
             
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<ActionResult<ProfileSettingsDTO>> GetProfileSettings(ByUserIdRequest request)
+        {
+            ApplicationUser user = await _db.Users.FindAsync(request.UserId);
+
+            ProfileSettingsDTO settingsDTO = new ProfileSettingsDTO();
+            settingsDTO.Email = user.Email;
+            settingsDTO.EmailConfirmed = user.EmailConfirmed;
+            settingsDTO.IsInvitable = user.IsInvitable;
+            settingsDTO.IsSearchable = user.IsSearchable;
+            settingsDTO.IsGeoTracking = user.IsGeoTracking;
+            settingsDTO.Company = user.Company;
+            settingsDTO.Specialization = user.Specialization;
+            settingsDTO.Job = user.Job;
+            settingsDTO.Telegram = user.Telegram;
+
+            return settingsDTO;
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<IActionResult> EditProfileSettings(EditProfileSettingsDTO request)
+        {
+            ApplicationUser user = await _db.Users.FindAsync(request.UserId);
+
+            if(user is not null)
+            {
+                user.EmailConfirmed = request.EmailConfirmed;
+                user.IsInvitable = request.IsInvitable;
+                user.IsSearchable = request.IsSearchable;
+                user.IsGeoTracking = request.IsGeoTracking;
+                user.Company = request.Company;
+                user.Specialization = request.Specialization;
+                user.Job = request.Job;
+                
+                if(!string.IsNullOrEmpty(request.Telegram))
+                    user.Telegram = request.Telegram.StartsWith('@') ? request.Telegram : "@" + request.Telegram;
+                else
+                    user.Telegram = "";
+
+                _db.Entry(user).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+            }
+
+            return Ok();
         }
 
         [HttpPost("[area]/[controller]/[action]")]
@@ -449,9 +502,9 @@ namespace Meets.Controllers.api
 
         [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
-        public async Task<ActionResult> ChangePassword([FromForm]ChangePasswordDTO model)
+        public async Task<ActionResult> ChangePassword(ChangePasswordRequest model)
         {
-            ApplicationUser user = _db.Users.Find(User.GetUserId());
+            ApplicationUser user = await _db.Users.FindAsync(User.GetUserId());
 
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
@@ -462,6 +515,33 @@ namespace Meets.Controllers.api
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<ActionResult> ConfirmEmail(ConfirmEmailDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if(user is null)
+            {
+                throw new Exception("Email не подтвержден, не верные данные");
+            }
+
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = $"{Request.Scheme}://{Request.Host}/account/confirmEmail?userId={user.Id}&code={code}";
+
+            //await _userManager.UpdateSecurityStampAsync(user);
+            //await _signInManager.SignInAsync(user, isPersistent: false);
+
+            EmailService emailService = new EmailService();
+            await emailService.SendEmailAsync(request.Email,
+                                                "Подтверждение EMail",
+                                                $"Подтвердите ваш email по ссылке <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>кликнув здесь</a>.");
+
             return Ok();
         }
 

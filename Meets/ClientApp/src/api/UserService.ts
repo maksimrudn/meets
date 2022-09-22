@@ -2,6 +2,9 @@
 import AppConfig from "../common/AppConfig";
 import ByUserIdRequest from "../contracts/ByUserIdRequest";
 import UserCardResponse from "../contracts/user/UserCardResponse";
+import ProfileSettingsDTO from "../contracts/user/ProfileSettingsDTO";
+import EditProfileSettingsDTO from "../contracts/user/EditProfileSettingsDTO";
+import ChangePasswordRequest from "../contracts/user/ChangePasswordRequest";
 
 class UserService extends BaseService {
     getAuthInfo() {
@@ -78,6 +81,28 @@ class UserService extends BaseService {
         return res;
     }
 
+
+    getProfileSettings(userid: any): ProfileSettingsDTO {
+        if (!userid) {
+            throw new Error('Передано пустое/неверное значение');
+        }
+
+        var res = null;
+
+        var data = new ByUserIdRequest(userid);
+
+        res = this.executeRequestXHR(`/api/user/getProfileSettings`, "post", JSON.stringify(data));
+
+        return res;
+    }
+
+    editProfileSettings(data: EditProfileSettingsDTO): void {
+        if (!data) {
+            throw new Error('Передано пустое/неверное значение');
+        }
+
+        this.executeRequestXHR(`/api/user/editProfileSettings`, "post", JSON.stringify(data));
+    }
     /**
      * Изменяet данные профиля пользователя
      * @param {FormData} formData
@@ -114,12 +139,20 @@ class UserService extends BaseService {
      * 
      * @returns {void}
      */
-    changePassword(formData) { // todo ошибки выводятся в консоли
-        if (!formData) {
+    changePassword(oldPassword: string, newPassword: string, confirmPassword: string): void { // todo ошибки выводятся в консоли
+        if (!(oldPassword && newPassword && confirmPassword)) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        this.executeRequestXHR('/api/user/ChangePassword', 'post', formData);
+        this.executeRequestXHR('/api/user/ChangePassword', 'post', JSON.stringify(new ChangePasswordRequest(oldPassword, newPassword, confirmPassword)));
+    }
+
+    confirmEmail(data: any): void {
+        if (!data) {
+            throw new Error('Передано пустое/неверное значение');
+        }
+
+        this.executeRequestXHR('/api/user/confirmEmail', 'post', JSON.stringify(data));
     }
 
     /**
