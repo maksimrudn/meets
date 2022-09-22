@@ -89,8 +89,23 @@
         background-color: #000;
         color: #fff;
 
-        .SendMEessageBtn {
+        @mixin send-message-settings-btn($img-height, $img-width) {
             height: 60px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+
+            img{
+                width: $img-width;
+                height: $img-height;
+            }
+        }
+
+        .SendMEessageBtn {
+            @include send-message-settings-btn(20px, 20px);
+            /*height: 60px;
             width: 100%;
             display: flex;
             align-items: center;
@@ -100,7 +115,18 @@
             img {
                 width: 20px;
                 height: 20px;
-            }
+            }*/
+        }
+
+        .SettingsBtn {
+            @include send-message-settings-btn(30px, 30px);
+
+            /*@extend .SendMEessageBtn;
+
+            img {
+                width: 33px;
+                height: 33px;
+            }*/
         }
 
         .FriendAddBtn {

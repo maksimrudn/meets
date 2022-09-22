@@ -7,7 +7,8 @@ function mapStateToProps(component) {
 		case "TopMenu": 
 		case "LeftMenu": 
 		case "Layout": 
-		case "UserCard": {
+		case "UserCard":
+		case "ProfileSettings": {
 			return function (state) {
 				return {
 					userInfo: state.userInfo,
