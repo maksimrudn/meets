@@ -119,6 +119,15 @@ namespace Meets.Controllers.api
                 userCard.Subscribers = user.Subscribers.Count;
                 userCard.Subscriptions = user.Subscribtions.Count;
 
+                if(_db.Meetings.Where(x => x.OwnerId == User.GetUserId() && x.TargetId == request.UserId).Count() != 0)
+                {
+                    userCard.IsInvited = true;
+                }
+                else
+                {
+                    userCard.IsInvited = false;
+                }
+
                 userCard.Meetings = await _db.Meetings.Where(x => (x.OwnerId == user.Id && x.Status == MeetingStatus.Canceled) ||
                                                              (x.TargetId == user.Id && x.Status == MeetingStatus.Canceled)).CountAsync();
 

@@ -99,6 +99,10 @@
             background-color: #fff;
             color: #000;
 
+            &:disabled{
+                background-color: lightgray;
+            }
+
             img {
                 width: 20px;
                 height: 20px;

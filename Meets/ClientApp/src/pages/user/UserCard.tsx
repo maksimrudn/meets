@@ -331,7 +331,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             {(props.userInfo.user.id !== user.id) &&
                                 <div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
-                                        <button className="Invite btn" type="button" onClick={meetRequestModalToggle}>
+                                        <button className="Invite btn" type="button" onClick={meetRequestModalToggle} disabled={user.isInvited}>
                                             <span className="me-4"><CoffeeIcon /></span>
                                             <span className="fs-5 text-black">Пригласить</span>
                                         </button>
@@ -439,6 +439,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             user={user}
                             mapSelectModalToggle={mapSelectModalToggle}
                             meetingAddress={meetingAddress}
+                            updateUser={update}
                         />
 
                         <MapSelectorModal

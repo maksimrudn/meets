@@ -55,6 +55,7 @@ namespace Meets.Controllers.api
             mt.TargetId = request.TargetId;
             mt.MeetingDate = request.MeetingDate;
             mt.Status = Domain.MeetingStatus.Invite;
+            mt.Place = request.Place;
 
             _db.Meetings.Add(mt);
             await _db.SaveChangesAsync();

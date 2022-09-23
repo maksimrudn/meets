@@ -37,6 +37,9 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
     constructor(props: YMapsGeoSelectorProps) {
         super(props);
         this.mapRef = React.createRef();
+        this.state = {
+            coordsIP: []
+        }
     }
 
     componentWillUpdate(nextProps: any, nextState: any) {
@@ -81,6 +84,14 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
     onLoadMap = (ymaps: any) => {
         this.ymapsApi = ymaps;
 
+        /// определение геопозиции по ip
+        ymaps.geolocation.get({ provider: 'yandex', mapStateAutoApply: true }).then((res: any) => {
+            if (res.geoObjects.position) {
+                this.setState({ coordsIP: res.geoObjects.position });
+            }
+        });
+
+
         // если запущено в режиме показа - то отключить зум скроллом мышки
         if (!this.props.editable)
             this.mapRef.behaviors.disable('scrollZoom');
@@ -117,7 +128,6 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
         }
 
 
-
         // Определяем адрес по координатам (обратное геокодирование).
         const getAddress = async (coords: any) => {
             return await ymaps.geocode(coords).then((res: any) => {
@@ -126,9 +136,8 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
                 return firstGeoObject.getAddressLine();
             });
         };
+
     }
-
-
 
     render() {
         let centerLatitude = YMapsConfig.DefaultLatitude;
@@ -137,9 +146,14 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
         if (this.props.latitude) {
             centerLatitude = this.props.latitude;
             centerLongitude = this.props.longitude;
-        } else {
+        } else if (this.props.userInfo.hasGeolocation) {
             centerLatitude = this.props.userInfo.latitude;
             centerLongitude = this.props.userInfo.longitude;
+        } else if (this.state.coordsIP) {
+            //let coords = this.getCoordsByIP();
+            centerLatitude = this.state.coordsIP[0];
+            centerLongitude = this.state.coordsIP[1];
+            console.log();
         }
 
         return (
