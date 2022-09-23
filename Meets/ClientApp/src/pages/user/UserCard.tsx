@@ -57,7 +57,6 @@ import subscribtionService from '../../api/SubscribtionService';
 import ProfileSettingsIcon from '../../icons/ProfileSettingsIcon';
 
 
-
 interface UserCardProps {
     userInfo: any,
     UpdateUserInfo: any

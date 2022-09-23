@@ -31,26 +31,30 @@ class UserService extends BaseService {
     /**
      * Получает список пользователей
      * 
-     * @param {FormData} formData
+     * @param {any} filter
      * структура данных содержит поля:
-     * name - имя пользователя
-     * tag - тэги пользователя
+     * city - имя пользователя
+     * tags - тэги пользователя
+     * growthTo - рост до (для сортиовки)
+     * growthFrom - рост от (для сортировки)
+     * weightTo - вес до (для сортиовки)
+     * weightFrom - вес от (для сортировки)
      * ageTo - возраст до (для сортиовки)
      * ageFrom - возраст от (для сортировки)
-     * gender - пол пользователя
-     * radius - радиус между пользователями
-     * city - город пользователя
+     * work - место работы
+     * learning - учебные заведния, курсы
+     * activity - активнности
      * 
      * @returns {object[]}
      */
-    getList(formData) {
-        if (!formData) {
+    getList(filter) {
+        if (!filter) {
             throw new Error('Передано пустое/неверное значение');
         }
 
         let res;
 
-        res = this.executeRequestXHR('/api/user/getList', 'post', formData);
+        res = this.executeRequestXHR('/api/user/getList', 'post', JSON.stringify(filter));
 
         return res;
     }
