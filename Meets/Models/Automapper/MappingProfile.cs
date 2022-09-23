@@ -14,9 +14,9 @@ namespace Meets.Models.Automapper
         {
 
             CreateMap<ApplicationUser, UserDTO>()
-                .ForMember(x => x.Tags, opt => opt.MapFrom(c => !string.IsNullOrEmpty(c.Tags) ? c.Tags.Split(";", StringSplitOptions.None) : null));
-                //.ForMember(x => x.Subscribers, opt => opt.MapFrom(a => a.InboxFriendRequests.Count()))
-                //.ForMember(x => x.Subscriptions, opt => opt.MapFrom(a => a.OutboxFriendRequests.Count()));
+                 .ForMember(x => x.Tags, opt => opt.MapFrom(c => !string.IsNullOrEmpty(c.Tags) ? c.Tags.Split(";", StringSplitOptions.None) : null));
+            //.ForMember(x => x.Subscribers, opt => opt.MapFrom(a => a.InboxFriendRequests.Count()))
+            //.ForMember(x => x.Subscriptions, opt => opt.MapFrom(a => a.OutboxFriendRequests.Count()));
 
             CreateMap<UserDTO, ApplicationUser>()
                 .ForMember(x => x.Tags, opt => opt.MapFrom(c => c.Tags != null ? string.Join(";", c.Tags) : ""))

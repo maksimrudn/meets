@@ -28,6 +28,15 @@
             &.active {
                 background-color: #F95A2C;
             }
+
+            img {
+                height: auto;
+                width: auto;
+                max-width: 45px;
+                max-height: 45px;
+                padding: 7px;
+                cursor: pointer;
+            }
         }
     }
 }

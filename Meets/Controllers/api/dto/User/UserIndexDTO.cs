@@ -36,5 +36,9 @@ namespace Meets.Models.User
         public List<string> Tags { get; set; }
 
         public bool IsSubscribed { get; set; }
+
+        public string Company { get; set; }
+
+        public string Job { get; set; }
     }
 }

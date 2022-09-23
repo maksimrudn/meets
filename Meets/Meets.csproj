@@ -49,7 +49,7 @@
 
     <None Remove="ClientApp\src\common\ApiError.ts" />
 
-    <None Remove="ClientApp\src\common\BottomMenuItems.ts" />
+    <None Remove="ClientApp\src\common\BottomMenuItems.tsx" />
 
     <None Remove="ClientApp\src\common\IApiError.ts" />
 
@@ -67,10 +67,6 @@
 
     <None Remove="ClientApp\src\contracts\user\ByUserIdRequest.ts" />
 
-    <None Remove="ClientApp\src\contracts\user\EditProfileSettingsDTO.ts" />
-
-    <None Remove="ClientApp\src\contracts\user\ProfileSettingsDTO.ts" />
-
     <None Remove="ClientApp\src\contracts\work\Work.tsx" />
 
     <None Remove="ClientApp\src\icons\AccessTimeIcon.tsx" />
@@ -85,11 +81,7 @@
 
     <None Remove="ClientApp\src\icons\CheckIcon.tsx" />
 
-    <None Remove="ClientApp\src\icons\CheckMarkIconSvg.tsx" />
-
     <None Remove="ClientApp\src\icons\CommentIcon.tsx" />
-
-    <None Remove="ClientApp\src\icons\CompanyIconSvg.tsx" />
 
     <None Remove="ClientApp\src\icons\DocumentIcon.tsx" />
 
@@ -107,8 +99,6 @@
 
     <None Remove="ClientApp\src\icons\HeartIcon.tsx" />
 
-    <None Remove="ClientApp\src\icons\JobIcon.tsx" />
-
     <None Remove="ClientApp\src\icons\LocationIconSvg.tsx" />
 
     <None Remove="ClientApp\src\icons\LockOutlineIcon.tsx" />
@@ -119,23 +109,13 @@
 
     <None Remove="ClientApp\src\icons\MessageIcon.tsx" />
 
-    <None Remove="ClientApp\src\icons\MessageIconSvg.tsx" />
-
-    <None Remove="ClientApp\src\icons\NotificationIconSvg.tsx" />
-
     <None Remove="ClientApp\src\icons\PlusIcon.tsx" />
-
-    <None Remove="ClientApp\src\icons\ProfileIconSvg.tsx" />
-
-    <None Remove="ClientApp\src\icons\ProfileSettingsIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\RepeatIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\RoubleSignIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\SettingsIcon.tsx" />
-
-    <None Remove="ClientApp\src\icons\TimeIconSvg.tsx" />
 
     <None Remove="ClientApp\src\icons\UserCheckedIcon.tsx" />
 
@@ -144,8 +124,6 @@
     <None Remove="ClientApp\src\icons\UserPlusIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\UserSearchIcon.tsx" />
-
-    <None Remove="ClientApp\src\icons\UserSearchIconSvg.tsx" />
 
     <None Remove="ClientApp\src\icons\WalkingIcon.tsx" />
 
@@ -164,8 +142,6 @@
     <None Remove="ClientApp\src\modules\entities\user\UserCardTabs.tsx" />
     <None Remove="ClientApp\src\modules\entities\work\WorkEditorModal.tsx" />
     <None Remove="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
-    <None Remove="ClientApp\src\pages\user\ProfileSettings.tsx" />
-    <None Remove="ClientApp\src\pages\user\UserConfirmEmail.tsx" />
     <None Remove="ClientApp\src\shared\BottomMenu.tsx" />
 
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
@@ -190,7 +166,7 @@
 
     <TypeScriptCompile Include="ClientApp\src\common\IApiError.ts" />
 
-    <TypeScriptCompile Include="ClientApp\src\common\BottomMenuItems.ts" />
+    <TypeScriptCompile Include="ClientApp\src\common\BottomMenuItems.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\common\ApiError.ts" />
 
@@ -207,32 +183,6 @@
     <TypeScriptCompile Include="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\ByUserIdRequest.ts" />
-
-    <TypeScriptCompile Include="ClientApp\src\contracts\user\EditProfileSettingsDTO.ts" />
-
-    <TypeScriptCompile Include="ClientApp\src\contracts\user\ProfileSettingsDTO.ts" />
-
-    <TypeScriptCompile Include="ClientApp\src\icons\CheckMarkIconSvg.tsx" />
-
-    <TypeScriptCompile Include="ClientApp\src\icons\ProfileIconSvg.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-
-    <TypeScriptCompile Include="ClientApp\src\icons\MessageIconSvg.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-
-    <TypeScriptCompile Include="ClientApp\src\icons\NotificationIconSvg.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-
-    <TypeScriptCompile Include="ClientApp\src\icons\ProfileSettingsIcon.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-
-    <TypeScriptCompile Include="ClientApp\src\icons\TimeIconSvg.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\icons\ExclamationIcon.tsx">
       <SubType>Code</SubType>
@@ -260,21 +210,13 @@
 
     <TypeScriptCompile Include="ClientApp\src\contracts\work\Work.tsx" />
 
-    <TypeScriptCompile Include="ClientApp\src\icons\JobIcon.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-
     <TypeScriptCompile Include="ClientApp\src\icons\PlusIcon.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
 
-    <TypeScriptCompile Include="ClientApp\src\icons\CompanyIconSvg.tsx" />
-
     <TypeScriptCompile Include="ClientApp\src\icons\UserCheckedIcon.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-
-    <TypeScriptCompile Include="ClientApp\src\icons\UserSearchIconSvg.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\WalkingIcon.tsx">
       <SubType>Code</SubType>
@@ -384,10 +326,6 @@
     </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
-
-    <TypeScriptCompile Include="ClientApp\src\pages\user\ProfileSettings.tsx" />
-
-    <TypeScriptCompile Include="ClientApp\src\pages\user\UserConfirmEmail.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\shared\BottomMenu.tsx" />
 
