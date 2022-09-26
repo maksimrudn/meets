@@ -35,6 +35,7 @@ import Error from '../pages/common/Error';
 import Routes  from '../common/Routes';
 import MeetingList from '../pages/meeting/MeetingList';
 import UserAuthInfo from '../contracts/UserAuthInfo';
+import Meeting from '../pages/meeting/Meeting';
 
 
 interface LayoutProps {
@@ -138,6 +139,7 @@ function Layout(props: LayoutProps) {
                                         </Route>
 
                                         <Route path={Routes.MeetingList} render={(props) => <MeetingList userInfo={props.userInfo} {...props} />} />
+                                        <Route path={Routes.Meeting} render={(routeProps) => <Meeting userInfo={props.userInfo} {...routeProps} />} />
                                         
                                         <Route path={ Routes.Error } render={() => <Error />} />
                                     </Switch>

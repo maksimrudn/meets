@@ -1,0 +1,23 @@
+﻿.Message {
+    .Sender {
+        max-width: 70%;
+
+        .card {
+            border: 2px solid #000;
+            background-color: #FFBD12;
+            border-radius: 1rem;
+            font-size: 17px;
+        }
+    }
+
+    .Receiver {
+        max-width: 70%;
+
+        .card {
+            border: 2px solid #000;
+            background-color: #00C6AE;
+            border-radius: 1rem;
+            font-size: 17px;
+        }
+    }
+}

@@ -1,0 +1,240 @@
+﻿.Meeting {
+    background-color: #fff;
+    //padding: 24px;
+    min-height: calc(90vh + 50px);
+
+    .Header {
+        //height: 80px;
+        //display: flex;
+        //justify-content: space-between;
+        //align-items: center;
+        margin-bottom: 1rem;
+        background-color: #FFF4CC;
+        padding: 24px;
+        border-bottom: 2px solid #000;
+
+        .Title {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .GoBackBtn, .MeetingBtn {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+            cursor: pointer;
+            box-shadow: 0 2px 1px 1px #000;
+        }
+
+        @mixin expand-btn($icon-rotate) {
+            .ExpandBtn {
+                width: 48px;
+                height: 48px;
+                border: 2px solid #000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                border-radius: 50%;
+                background-color: #fff;
+                cursor: pointer;
+                box-shadow: 0 2px 1px 1px #000;
+                margin-left: auto;
+                margin-right: auto;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    transform: rotate($icon-rotate);
+                }
+            }
+        }
+
+        .NotExpanded {
+            display: flex;
+            justify-content: center;
+
+            .DateTime {
+                justify-content: center;
+
+                .CalendarIcon {
+                    img {
+                        width: 13.48px;
+                        height: 15.41px;
+                    }
+                }
+
+                .TimeIcon {
+                    img {
+                        width: 15.07px;
+                        height: 14.44px;
+                    }
+                }
+
+                .EditIcon {
+                    img {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+            }
+
+            .Place {
+                .EditIcon {
+                    img {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+            }
+
+            .Companion {
+                display: flex;
+                align-items: center;
+            }
+
+            .Status {
+                height: 24px;
+                width: 100%;
+                background-color: #E9E7FC;
+                border: 2px solid #000;
+                border-radius: 50rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            @include expand-btn(calc(180deg + 90deg));
+        }
+
+        .Expanded {
+            display: flex;
+            justify-content: center;
+
+            .Date {
+                font-size: 21px;
+
+                .CalendarIcon {
+                    img {
+                        width: 22.24px;
+                        height: 25.42px;
+                    }
+                }
+
+                .EditIcon {
+                    img {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+            }
+
+            .Time {
+                font-size: 21px;
+
+                .TimeIcon {
+                    img {
+                        width: 24.1px;
+                        height: 23.1px;
+                    }
+                }
+
+                .EditIcon {
+                    img {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+            }
+
+            .Place {
+                .EditIcon {
+                    img {
+                        width: 22px;
+                        height: 22px;
+                    }
+                }
+            }
+
+            .Companion {
+                display: flex;
+                align-items: center;
+
+                .Avatar {
+                    width: 54px;
+                    height: 54px;
+                    border: 2px solid #000;
+                    border-radius: 50%;
+                    overflow: hidden !important;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .EmptyAvatar {
+                    width: 54px;
+                    height: 54px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: 2px solid #000;
+                    border-radius: 50%;
+                    overflow: hidden !important;
+                    //padding: 12%;
+                    background-color: #FFBD12;
+                }
+
+                .Name {
+                    font-size: 21px;
+                }
+            }
+
+            .Status {
+                height: 32px;
+                width: 100%;
+                display: inline-flex;
+                font-size: 21px;
+                padding-bottom: .5rem;
+                border-bottom: 2px solid #000;
+                box-sizing: content-box;
+
+                .Badge {
+                    width: 100%;
+                    background-color: #E9E7FC;
+                    border: 2px solid #000;
+                    border-radius: 50rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+            .StatusBtn {
+                height: 32px;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #fff;
+                border: 2px solid #000;
+                border-radius: 50rem;
+                font-size: 21px;
+                margin-bottom: .5rem;
+            }
+
+            @include expand-btn(90deg);
+        }
+    }
+
+    .Messanger {
+        background-color: #fff;
+    }
+}

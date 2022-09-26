@@ -3,6 +3,8 @@
     UserCardBuild: (userId) => `/user/card/${userId}`,
 
     MeetingList: '/meetings',
+    Meeting: '/meeting/:id',
+    MeetingBuild: (targetid: any) => `/meeting/${targetid}`,
 
     Error: "/error",
 }

@@ -69,9 +69,13 @@
 
     <None Remove="ClientApp\src\contracts\learning\Learning.ts" />
 
+    <None Remove="ClientApp\src\contracts\meeting\GetMeetingDTO.ts" />
+
     <None Remove="ClientApp\src\contracts\meeting\MeetingDTO.ts" />
 
     <None Remove="ClientApp\src\contracts\meeting\MeetingRequest.ts" />
+
+    <None Remove="ClientApp\src\contracts\message\MessageDTO.ts" />
 
     <None Remove="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
@@ -131,11 +135,15 @@
 
     <None Remove="ClientApp\src\icons\MessageIcon.tsx" />
 
+    <None Remove="ClientApp\src\icons\PersonIcon.tsx" />
+
     <None Remove="ClientApp\src\icons\PlusIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\RepeatIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\RoubleSignIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\SendMessageIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\SettingsIcon.tsx" />
 
@@ -166,6 +174,7 @@
     <None Remove="ClientApp\src\modules\entities\user\UserCardTabs.tsx" />
     <None Remove="ClientApp\src\modules\entities\work\WorkEditorModal.tsx" />
     <None Remove="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
+    <None Remove="ClientApp\src\pages\meeting\Meeting.tsx" />
     <None Remove="ClientApp\src\pages\meeting\MeetingList.tsx" />
     <None Remove="ClientApp\src\shared\BottomMenu.tsx" />
 
@@ -211,15 +220,23 @@
 
     <TypeScriptCompile Include="ClientApp\src\contracts\learning\Learning.ts" />
 
+    <TypeScriptCompile Include="ClientApp\src\contracts\meeting\GetMeetingDTO.ts" />
+
     <TypeScriptCompile Include="ClientApp\src\contracts\meeting\MeetingDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\meeting\MeetingRequest.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\message\MessageDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\ByUserIdRequest.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\CoffeeIcon.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\SendMessageIcon.tsx">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\icons\EmptyAvatarIcon.tsx" />
 
@@ -246,6 +263,8 @@
     </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\icons\MeetingIcon.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\PersonIcon.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\UserOutlineIcon.tsx">
       <SubType>Code</SubType>
@@ -377,6 +396,8 @@
     </TypeScriptCompile>
 
     <TypeScriptCompile Include="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\pages\meeting\Meeting.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\pages\meeting\MeetingList.tsx" />
 
