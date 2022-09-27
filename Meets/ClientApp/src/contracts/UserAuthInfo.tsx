@@ -7,4 +7,6 @@ export default class UserAuthInfo {
     isAuthenticated: boolean = false
     isAdmin: boolean = false
     hasGeolocation: boolean = false
+    latitude: number = 0
+    longitude: number = 0
 }

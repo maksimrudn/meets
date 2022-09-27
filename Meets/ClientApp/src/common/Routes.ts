@@ -10,6 +10,8 @@
     UserConfirmEmail: '/user/confirmemail/:id',
     UserConfirmEmailBuild: (userId) => `/user/confirmemail/${userId}`,
 
+    MeetingList: '/meetings',
+
     Error: "/error",
 }
 

@@ -1,4 +1,4 @@
-﻿import React, { Component, useEffect, useRef, useState } from 'react';
+﻿import React, { Component, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import Moment from 'react-moment';
 import moment from 'moment';
@@ -56,9 +56,20 @@ import Routes from '../../common/Routes';
 import subscribtionService from '../../api/SubscribtionService';
 import ProfileSettingsIcon from '../../icons/ProfileSettingsIcon';
 
+import meetingsService from '../../api/MeetingsService';
+import 'moment-timezone';
+import 'moment/locale/ru';
+import MeetingRequest from '../../contracts/meeting/MeetingRequest';
+import LocateMapIcon from '../../icons/LocateMapIcon';
+import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
+import YMapsGeoSelector from '../../modules/geo/YMapsGeoSelector';
+import getPosition from '../../common/GeoUtils';
+import CoffeeIcon from '../../icons/CoffeeIcon';
+import UserAuthInfo from '../../contracts/UserAuthInfo';
+import MapSelectorModal from '../../modules/entities/user/MapSelectorModal';
 
 interface UserCardProps {
-    userInfo: any,
+    userInfo: UserAuthInfo,
     UpdateUserInfo: any
 }
 
@@ -86,11 +97,15 @@ function UserCard(props: UserCardProps): JSX.Element {
     const [removeAvatarModalIsOpen, setRemoveAvatarModalIsOpen] = useState(false);
     const [isShowAvatar, setIsShowAvatar] = useState(false);
 
+    const [meetingAddress, setMeetingAddress] = useState<string>('');
+    const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
+    const [isOpenMapSelectModal, setIsOpenMapSelectModal] = useState(false);
+
     // элемент к которому скроллит после изменеия id пользователя
     let topElement: any = useRef();
 
     useEffect(() => {
-        
+
         update();
     }, [params.id]);
 
@@ -126,6 +141,14 @@ function UserCard(props: UserCardProps): JSX.Element {
 
     const showAvatarToggle = () => {
         setIsShowAvatar(!isShowAvatar);
+    }
+
+    const meetRequestModalToggle = () => {
+        setIsOpenMeetModal(!isOpenMeetModal);
+    }
+
+    const mapSelectModalToggle = () => {
+        setIsOpenMapSelectModal(!isOpenMapSelectModal);
     }
 
     const onClickEditIcon = (fieldName: any) => {
@@ -166,7 +189,6 @@ function UserCard(props: UserCardProps): JSX.Element {
             NotificationManager.error(err.message, err.name);
         }
     }
-
 
     const onSaveChanges = (fieldName: string, value: any) => {
         let newData = {
@@ -216,8 +238,8 @@ function UserCard(props: UserCardProps): JSX.Element {
     var seo = getSEO();
 
     return (
-        
-        <>            
+
+        <>
             {isLoading ?
                 <div>ожидание</div>
                 :
@@ -317,10 +339,10 @@ function UserCard(props: UserCardProps): JSX.Element {
                             {(props.userInfo.user.id !== user.id)
                                 ? (<div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
-                                        <Link className="SendMEessageBtn btn btn-white p-2" to={`/messanger/${user.id}`}>
-                                            <span className="me-4"><MessageIcon /></span>
-                                            <span className="fs-5 text-black">Написать</span>
-                                        </Link>
+                                        <button className="Invite btn" type="button" onClick={meetRequestModalToggle} disabled={user.isInvited}>
+                                            <span className="me-4"><CoffeeIcon /></span>
+                                            <span className="fs-5 text-black">Пригласить</span>
+                                        </button>
                                     </div>
 
                                     <div className="col-3 d-flex justify-content-center">
@@ -371,7 +393,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                                     }
                                 </div>
                                 <div className="ms-2">
-                                    {!user.Tags?.length ? 'не указано' : user.tags.map((tag: any) =>
+                                    {!user.tags?.length ? 'не указано' : user.tags.map((tag: any) =>
                                         <span key={tag} className="Tag badge bg-secondary rounded-pill text-black py-2 px-3 me-2">{tag}</span>
                                     )}
                                 </div>
@@ -427,6 +449,21 @@ function UserCard(props: UserCardProps): JSX.Element {
                             contextMenuModalToggle={settingsModalToggle}
                         />
 
+                        <MeetRequestModal
+                            isOpen={isOpenMeetModal}
+                            toggle={meetRequestModalToggle}
+                            user={user}
+                            mapSelectModalToggle={mapSelectModalToggle}
+                            meetingAddress={meetingAddress}
+                            updateUser={update}
+                        />
+
+                        <MapSelectorModal
+                            isOpen={isOpenMapSelectModal}
+                            toggle={mapSelectModalToggle}
+                            setMeetingAddress={setMeetingAddress}
+                            userInfo={props.userInfo}
+                        />
 
                         <ShowUserAvatar
                             isOpen={isShowAvatar}

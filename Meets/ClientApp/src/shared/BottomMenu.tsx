@@ -68,8 +68,10 @@ export default function BottomMenu(props: BottomMenuProps) {
                     <UserSearchIconSvg />
                 </NavLink>
 
-                <span className="MenuItem">
-                    <MessageIconSvg />
+                <span className={props.selectedMenuItem === BottomMenuItems.Meetings ? "MenuItem active" : "MenuItem"}>
+                    <Link to="/meetings" onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Messanger)}>
+                        <MessageIcon />
+                    </Link>
                 </span>
 
                 <NavLink

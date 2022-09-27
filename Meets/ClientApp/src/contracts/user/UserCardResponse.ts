@@ -26,4 +26,5 @@ export default class UserCardResponse {
     isSubscribed: boolean = false
     friendRequestIsRejected: any
     meetings: number = 0
+    isInvited: boolean = false
 }

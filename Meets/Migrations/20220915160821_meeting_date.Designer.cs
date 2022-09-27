@@ -4,6 +4,7 @@ using Meets.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220915160821_meeting_date")]
+    partial class meeting_date
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,13 +217,11 @@ namespace Meets.Migrations
                         {
                             Id = 1m,
                             AccessFailedCount = 0,
-                            Company = "VIClouds",
                             ConcurrencyStamp = "3a770767-445a-4eef-93a3-2389c7949bb5",
                             Email = "admin@admin",
                             EmailConfirmed = false,
                             FullName = "Администратор",
                             Growth = 0,
-                            Job = "Администратор",
                             Latitude = 0.0,
                             LockoutEnabled = false,
                             Longitude = 0.0,
@@ -233,30 +233,6 @@ namespace Meets.Migrations
                             Tags = "",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin",
-                            Weight = 0
-                        },
-                        new
-                        {
-                            Id = 2m,
-                            AccessFailedCount = 0,
-                            Company = "Администратор",
-                            ConcurrencyStamp = "3a770767-445a-4eef-93a3-2389c7949bb5",
-                            Email = "loader@loader",
-                            EmailConfirmed = false,
-                            FullName = "Загрузчик",
-                            Growth = 0,
-                            Job = "VIClouds",
-                            Latitude = 0.0,
-                            LockoutEnabled = false,
-                            Longitude = 0.0,
-                            NormalizedEmail = "loader@loader",
-                            NormalizedUserName = "LOADER@LOADER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM0ZQUtQTujF33s3DNg2JAmlO/QceeCykr10VbntxSs+mwM8PBbEkqaeObrzCaE4XA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "b8db65e3-df56-4cc6-ad87-16e1c108db13",
-                            Tags = "",
-                            TwoFactorEnabled = false,
-                            UserName = "loader@loader",
                             Weight = 0
                         });
                 });

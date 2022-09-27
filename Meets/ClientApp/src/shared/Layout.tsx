@@ -34,6 +34,7 @@ import ProfileSettings from '../pages/user/ProfileSettings';
 import UserChangePassword from '../pages/user/UserChangePassword';
 import UserConfirmEmail from '../pages/user/UserConfirmEmail';
 import UserAuthInfo from '../contracts/UserAuthInfo';
+import MeetingList from '../pages/meeting/MeetingList';
 
 
 interface LayoutProps {
@@ -54,6 +55,8 @@ function Layout(props: LayoutProps) {
                 break;
             case BottomMenuItems.Profie:
                 setSelectedMenuItem(BottomMenuItems.Profie);
+            case BottomMenuItems.Meetings:
+                setSelectedMenuItem(BottomMenuItems.Meetings);
                 setLeftMenuIsOpen(false);
                 break;
         }
@@ -113,6 +116,7 @@ function Layout(props: LayoutProps) {
                                                 </Route>
                                                 <Route path={Routes.UserChangePassword} render={props => <UserChangePassword {...props} />} />
                                                 <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail userInfo={props.userInfo} />} />
+                                                <Route path={Routes.MeetingList} render={(props) => <MeetingList userInfo={props.userInfo} {...props} />} />
                                                 <Route path={Routes.Error} render={() => <Error />} />
                                             </>
                                         }

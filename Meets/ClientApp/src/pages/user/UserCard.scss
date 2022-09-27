@@ -103,7 +103,7 @@
             }
         }
 
-        .SendMEessageBtn {
+        .Invite {
             @include send-message-settings-btn(20px, 20px);
             /*height: 60px;
             width: 100%;
@@ -111,6 +111,12 @@
             align-items: center;
             justify-content: center;
             border-radius: 1rem;
+            background-color: #fff;
+            color: #000;
+
+            &:disabled{
+                background-color: lightgray;
+            }
 
             img {
                 width: 20px;
