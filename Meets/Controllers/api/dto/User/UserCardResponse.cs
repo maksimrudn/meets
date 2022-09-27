@@ -82,5 +82,7 @@ namespace Meets.Controllers.api.dto.User
         public string Job { get; set; }
 
         public string Specialization { get; set; }
+
+        public bool IsInvited { get; set; }
     }
 }

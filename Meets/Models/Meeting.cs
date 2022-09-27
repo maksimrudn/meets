@@ -19,7 +19,8 @@ namespace Meets.Models
 
         public DateTime CreateDate { get; set; }
 
-        
+        public DateTime MeetingDate { get; set; }
+
         public ulong OwnerId { get; set; }
 
         [JsonIgnore]
