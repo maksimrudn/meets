@@ -122,6 +122,21 @@ namespace Meets.Controllers.api
 
         [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
+        public async Task<IActionResult> Edit(EditMeetingRequest request)
+        {
+            var mt = await _db.Meetings.FindAsync(request.Id);
+
+            mt.MeetingDate = request.MeetingDate;
+            mt.Place = request.Place;
+
+            _db.Entry(mt).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> Discuss(ByMeetingIdRequest request)
         {
             var meeting = await _db.Meetings.FindAsync(request.MeetingId);

@@ -55,6 +55,8 @@
 
     <None Remove="ClientApp\src\common\IApiError.ts" />
 
+    <None Remove="ClientApp\src\common\MeetingFieldNames.ts" />
+
     <None Remove="ClientApp\src\common\MeetingListTabs.ts" />
 
     <None Remove="ClientApp\src\common\MeetingStatus.ts" />
@@ -162,6 +164,7 @@
     <None Remove="ClientApp\src\modules\entities\activity\ActivityEditorModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\fact\FactEditorModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\learning\LearningEditorModal.tsx" />
+    <None Remove="ClientApp\src\modules\entities\meeting\MeetingEditModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\ConfirmationModal.tsx" />
 
     <None Remove="ClientApp\src\modules\entities\user\edit\Date.tsx" />
@@ -205,6 +208,8 @@
     <TypeScriptCompile Include="ClientApp\src\common\BottomMenuItems.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\common\ApiError.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\common\MeetingFieldNames.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\common\MeetingListTabs.ts" />
 
@@ -377,6 +382,7 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\modules\entities\learning\LearningEditorModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\meeting\MeetingEditModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ConfirmationModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\MapSelectorModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\MeetRequestModal.tsx" />

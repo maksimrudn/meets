@@ -21,6 +21,10 @@ class MeetingsService extends BaseService {
         return res;
     }
 
+    edit(data: any) {
+        this.executeRequestXHR('/api/meetings/edit', 'post', JSON.stringify(data));
+    }
+
     discuss(meetingId: any) {
         let res: any = null;
         res = this.executeRequestXHR('/api/meetings/discuss', 'post', JSON.stringify({ meetingId }));

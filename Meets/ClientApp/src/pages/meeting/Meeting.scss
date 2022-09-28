@@ -1,17 +1,24 @@
-﻿.Meeting {
+﻿@import '../../styles/scss/main.scss';
+
+.Meeting {
     background-color: #fff;
     //padding: 24px;
     min-height: calc(90vh + 50px);
+    position: relative;
 
     .Header {
         //height: 80px;
         //display: flex;
         //justify-content: space-between;
         //align-items: center;
-        margin-bottom: 1rem;
+        position: fixed;
+        //margin-bottom: 1rem;
         background-color: #FFF4CC;
         padding: 24px;
         border-bottom: 2px solid #000;
+        z-index: 15;
+        max-width: $main_width;
+        overflow: hidden !important;
 
         .Title {
             font-size: 36px;
@@ -238,3 +245,4 @@
         background-color: #fff;
     }
 }
+

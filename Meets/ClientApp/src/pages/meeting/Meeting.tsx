@@ -1,5 +1,6 @@
 ﻿import { Location } from 'history';
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import meetingsService from '../../api/MeetingsService';
 import Routes from '../../common/Routes';
@@ -7,8 +8,9 @@ import MeetingDTO from '../../contracts/meeting/MeetingDTO';
 import UserAuthInfo from '../../contracts/UserAuthInfo';
 import ArrowIcon from '../../icons/GoBackIcon';
 import MeetingIcon from '../../icons/MeetingIcon';
-import 'moment-timezone';
 import moment from 'moment';
+import 'moment-timezone';
+import 'moment/locale/ru';
 
 import './Meeting.scss';
 import CalendarAltIcon from '../../icons/CalendarAltIcon';
@@ -23,6 +25,14 @@ import EmptyAvatarIcon from '../../icons/EmptyAvatarIcon';
 import messageService from '../../api/MessageService';
 import MessageList from '../messanger/MessageList';
 import MessageDTO from '../../contracts/message/MessageDTO';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { AddressSuggestions } from 'react-dadata';
+import 'react-dadata/dist/react-dadata.css';
+import DateTime from 'react-date-time-new';
+import 'react-date-time-new/css/react-datetime.css'
+import AppConfig from '../../common/AppConfig';
+import MeetingFieldNames from '../../common/MeetingFieldNames';
+import MeetingEditModal from '../../modules/entities/meeting/MeetingEditModal';
 
 interface IMeetingParams {
     id?: string
@@ -34,6 +44,7 @@ interface ILocationState{
 
 interface IMeetingProps {
     userInfo: UserAuthInfo,
+    setIsOpenMeeting: any,
     location: Location<ILocationState>
 }
 
@@ -44,12 +55,23 @@ export default function Meeting(props: IMeetingProps) {
     const [meeting, setMeeting] = useState<GetMeetingDTO>(new GetMeetingDTO());
     const [messages, setMessages] = useState<MessageDTO[]>([]);
 
+    const [isOpenMeetingModal, setIsOpenMeetingModal] = useState(false);
+    const [selectedFieldName, setSelectedFieldName] = useState<string>('');
+
     const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
         updateMeeting();
         updateMessages();
     }, []);
+
+    useEffect(() => {
+        props.setIsOpenMeeting(true);
+
+        return () => {
+            props.setIsOpenMeeting(false);
+        };
+    });
 
     const updateMeeting = () => {
         try {
@@ -108,6 +130,40 @@ export default function Meeting(props: IMeetingProps) {
         }
     }
 
+    const onEditMeetingSave = (value: string, fieldName: string) => {
+        try {
+            let mt = {
+                id: props.location.state.meetingId,
+                place: '',
+                meetingDate: ''
+            }
+
+            if (fieldName === MeetingFieldNames.Date) {
+                mt.place = meeting.place;
+                mt.meetingDate = value;
+            } else {
+                mt.meetingDate = meeting.meetingDate;
+                mt.place = value;
+            }
+
+            meetingsService.edit(mt);
+            updateMeeting();
+            meetingModalToggle();
+
+        } catch (err) {
+            history.push(Routes.Error, err);
+        }
+    }
+
+    const editOnClick = (fieldName: string) => {
+        setSelectedFieldName(fieldName);
+        meetingModalToggle();
+    }
+
+    const meetingModalToggle = () => {
+        setIsOpenMeetingModal(!isOpenMeetingModal);
+    }
+
     const expandToggle = () => {
         setIsExpanded(!isExpanded);
     }
@@ -115,7 +171,7 @@ export default function Meeting(props: IMeetingProps) {
     return (
         <div className="Meeting">
 
-            <div className="Header">
+            <div className="Header col-12">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <span className="GoBackBtn" onClick={() => history.goBack()}><ArrowIcon /></span>
                     <span className="Title">Встреча</span>
@@ -132,12 +188,16 @@ export default function Meeting(props: IMeetingProps) {
                                         <span className="me-3">{moment(meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meeting.meetingDate).format('ddd')})</span>
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
                                         <span className="me-2">{moment(meeting.meetingDate).format('HH:mm')}</span>
-                                        <span className="EditIcon"><EditIcon /></span>
+                                        {meeting.isOwner &&
+                                            <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
+                                        }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
                                         <span className="me-2">{meeting.place}</span>
-                                        <span className="EditIcon"><EditIcon /></span>
+                                        {meeting.isOwner &&
+                                            <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
+                                        }
                                     </div>
                                     <div className="Companion mb-2">
                                         <span className="me-2"><PersonIcon /></span>
@@ -155,17 +215,23 @@ export default function Meeting(props: IMeetingProps) {
                                     <div className="Date mb-2">
                                         <span className="CalendarIcon me-2"><CalendarAltIcon /></span>
                                         <span className="me-3">{moment(meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meeting.meetingDate).format('ddd')})</span>
-                                        <span className="EditIcon"><EditIcon /></span>
+                                        {meeting.isOwner &&
+                                            <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
+                                        }
                                     </div>
                                     <div className="Time mb-2">
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
                                         <span className="me-2">{moment(meeting.meetingDate).format('HH:mm')}</span>
-                                        <span className="EditIcon"><EditIcon /></span>
+                                        {meeting.isOwner &&
+                                            <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
+                                        }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
                                         <span className="me-2">{meeting.place}</span>
-                                        <span className="EditIcon"><EditIcon /></span>
+                                        {meeting.isOwner &&
+                                            <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
+                                        }
                                     </div>
                                     <div className="Companion mb-2">
                                         {meeting.companion?.avatar
@@ -178,16 +244,13 @@ export default function Meeting(props: IMeetingProps) {
                                         <span className="me-2">Статус</span>
                                         <span className="Badge">{MeetingStatus[meeting.status as MeetingStatusItems]?.Title}</span>
                                     </div>
-                                    {meeting.isOwner
-                                        ? <>
-                                            <button className="StatusBtn" type="button" onClick={cancelOnClick}>Завершить</button>
-                                        </>
-                                        : <>
+                                    {!meeting.isOwner &&
+                                        <>
                                             <button className="StatusBtn" type="button" onClick={discussOnClick}>Обсудить</button>
                                             <button className="StatusBtn" type="button" onClick={confirmOnClick}>Подтвердить</button>
-                                            <button className="StatusBtn" type="button" onClick={cancelOnClick}>Завершить</button>
                                         </>
                                     }
+                                    <button className="StatusBtn" type="button" onClick={cancelOnClick}>Завершить</button>
                                     <button className="ExpandBtn" type="button" onClick={expandToggle}><ArrowIcon /></button>
                                 </div>
                             </div>
@@ -204,6 +267,14 @@ export default function Meeting(props: IMeetingProps) {
                     isCanSendMessage={meeting.status === MeetingStatus.Discussion.Code || meeting.status === MeetingStatus.Confirmed.Code}
                 />
             </div>
+
+            <MeetingEditModal
+                isOpen={isOpenMeetingModal}
+                toggle={meetingModalToggle}
+                fieldName={selectedFieldName}
+                meeting={meeting}
+                onSaveChanges={onEditMeetingSave}
+            />
         </div>
     );
 }

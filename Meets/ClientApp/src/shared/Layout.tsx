@@ -1,5 +1,5 @@
 ﻿import React, { Component, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect, useRouteMatch, matchPath, useLocation } from "react-router-dom";
 
 import { connect } from 'react-redux';
 import mapStateToProps from '../store/mapStateToProps';
@@ -43,6 +43,10 @@ interface LayoutProps {
 }
 
 function Layout(props: LayoutProps) {
+    const [isOpenMeeting, setIsOpenMeeting] = useState(false);
+    //const meetingPage = useRouteMatch({ path: Routes.Meeting }); //{ path: Routes.Meeting }
+    //const meetingPage = matchPath('/meeting/', { path: Routes.Meeting, exact: true });
+
     const [selectedMenuItem, setSelectedMenuItem] = useState('');
     const [leftMenuIsOpen, setLeftMenuIsOpen] = useState(false);
 
@@ -139,14 +143,20 @@ function Layout(props: LayoutProps) {
                                         </Route>
 
                                         <Route path={Routes.MeetingList} render={(props) => <MeetingList userInfo={props.userInfo} {...props} />} />
-                                        <Route path={Routes.Meeting} render={(routeProps) => <Meeting userInfo={props.userInfo} {...routeProps} />} />
+                                        <Route path={Routes.Meeting} render={(routeProps) => (
+                                            <Meeting
+                                                userInfo={props.userInfo}
+                                                setIsOpenMeeting={setIsOpenMeeting}
+                                                {...routeProps}
+                                            />
+                                        )} />
                                         
                                         <Route path={ Routes.Error } render={() => <Error />} />
                                     </Switch>
                                 </div>
                             </div>
 
-                            {props.userInfo.isAuthenticated &&
+                            {(props.userInfo.isAuthenticated && !isOpenMeeting) &&
                                 <BottomMenu
                                     selectedMenuItem={selectedMenuItem}
                                     selectMenuItemOnClick={selectMenuItemOnClick}
