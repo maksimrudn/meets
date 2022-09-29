@@ -175,7 +175,7 @@ export default function Meeting(props: IMeetingProps) {
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <span className="GoBackBtn" onClick={() => history.goBack()}><ArrowIcon /></span>
                     <span className="Title">Встреча</span>
-                    <span className="MeetingBtn"><MeetingIcon /></span>
+                    <span className="MeetingBtn" onClick={() => history.push(Routes.MeetingList)}><MeetingIcon /></span>
                 </div>
 
                 {(() => {
@@ -188,14 +188,14 @@ export default function Meeting(props: IMeetingProps) {
                                         <span className="me-3">{moment(meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meeting.meetingDate).format('ddd')})</span>
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
                                         <span className="me-2">{moment(meeting.meetingDate).format('HH:mm')}</span>
-                                        {meeting.isOwner &&
+                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
                                         <span className="me-2">{meeting.place}</span>
-                                        {meeting.isOwner &&
+                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
                                         }
                                     </div>
@@ -215,21 +215,21 @@ export default function Meeting(props: IMeetingProps) {
                                     <div className="Date mb-2">
                                         <span className="CalendarIcon me-2"><CalendarAltIcon /></span>
                                         <span className="me-3">{moment(meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meeting.meetingDate).format('ddd')})</span>
-                                        {meeting.isOwner &&
+                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Time mb-2">
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
                                         <span className="me-2">{moment(meeting.meetingDate).format('HH:mm')}</span>
-                                        {meeting.isOwner &&
+                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
                                         <span className="me-2">{meeting.place}</span>
-                                        {meeting.isOwner &&
+                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
                                         }
                                     </div>
@@ -244,13 +244,29 @@ export default function Meeting(props: IMeetingProps) {
                                         <span className="me-2">Статус</span>
                                         <span className="Badge">{MeetingStatus[meeting.status as MeetingStatusItems]?.Title}</span>
                                     </div>
-                                    {!meeting.isOwner &&
-                                        <>
-                                            <button className="StatusBtn" type="button" onClick={discussOnClick}>Обсудить</button>
-                                            <button className="StatusBtn" type="button" onClick={confirmOnClick}>Подтвердить</button>
-                                        </>
+                                    {(() => {
+                                        if (!meeting.isOwner) {
+
+                                            if (meeting.status !== MeetingStatus.Discussion.Code &&
+                                                meeting.status !== MeetingStatus.Confirmed.Code &&
+                                                meeting.status !== MeetingStatus.Canceled.Code) {
+                                                return (<button className="StatusBtn" type="button" onClick={discussOnClick}>Обсудить</button>);
+                                            }
+                                        }
+                                    })()}
+                                    {(() => {
+                                        if (!meeting.isOwner) {
+
+                                            if (meeting.status !== MeetingStatus.Confirmed.Code &&
+                                                meeting.status !== MeetingStatus.Canceled.Code) {
+                                                return (<button className="StatusBtn" type="button" onClick={confirmOnClick}>Подтвердить</button>);
+                                            }
+                                        }
+                                    })()}
+                                    {meeting.status !== MeetingStatus.Canceled.Code &&
+                                        <button className="StatusBtn" type="button" onClick={cancelOnClick}>Завершить</button>
                                     }
-                                    <button className="StatusBtn" type="button" onClick={cancelOnClick}>Завершить</button>
+
                                     <button className="ExpandBtn" type="button" onClick={expandToggle}><ArrowIcon /></button>
                                 </div>
                             </div>

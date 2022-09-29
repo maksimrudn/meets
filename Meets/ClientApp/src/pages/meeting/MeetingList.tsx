@@ -46,7 +46,7 @@ function MeetingList(props: IMeetingsListProps) {
             <div className="Header">
                 <span className="GoBackBtn" onClick={()=>history.goBack()}><GoBackIcon /></span>
                 <span className="Title">Встречи</span>
-                <span className="MeetingBtn"><MeetingIcon /></span>
+                <span></span>
             </div>
 
             <div className="TabsToggle">
