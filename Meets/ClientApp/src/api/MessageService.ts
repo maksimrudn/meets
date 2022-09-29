@@ -1,4 +1,5 @@
-﻿import BaseService from "./BaseService";
+﻿import MessageDTO from "../contracts/message/MessageDTO";
+import BaseService from "./BaseService";
 
 
 class MessageService extends BaseService {
@@ -13,12 +14,12 @@ class MessageService extends BaseService {
         return res;
     }
 
-    getMessages(targetUserId) {
-        if (!targetUserId) {
+    getMessages(meetingId: any): MessageDTO[] {
+        if (!meetingId) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        var data = { targetUserId };
+        var data = { meetingId };
 
         var res = this.executeRequestXHR(`/api/message/getMessages`, 'post', JSON.stringify(data));
 
@@ -43,7 +44,7 @@ class MessageService extends BaseService {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        this.executeRequestXHR('/api/message/sendMessage', 'post', data);
+        this.executeRequestXHR('/api/message/sendMessage', 'post', JSON.stringify(data));
     }
 }
 

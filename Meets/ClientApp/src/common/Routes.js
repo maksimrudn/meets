@@ -9,6 +9,9 @@ var Routes = {
     UserChangePasswordBuild: function (userId) { return "/user/cnangepassword/".concat(userId); },
     UserConfirmEmail: '/user/confirmemail/:id',
     UserConfirmEmailBuild: function (userId) { return "/user/confirmemail/".concat(userId); },
+    MeetingList: '/meetings',
+    Meeting: '/meeting/:id',
+    MeetingBuild: function (targetid) { return "/meeting/".concat(targetid); },
     Error: "/error",
 };
 exports.default = Routes;

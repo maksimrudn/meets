@@ -35,6 +35,7 @@ import UserChangePassword from '../pages/user/UserChangePassword';
 import UserConfirmEmail from '../pages/user/UserConfirmEmail';
 import UserAuthInfo from '../contracts/UserAuthInfo';
 import MeetingList from '../pages/meeting/MeetingList';
+import Meeting from '../pages/meeting/Meeting';
 
 
 interface LayoutProps {
@@ -43,6 +44,10 @@ interface LayoutProps {
 }
 
 function Layout(props: LayoutProps) {
+    const [isOpenMeeting, setIsOpenMeeting] = useState(false);
+    //const meetingPage = useRouteMatch({ path: Routes.Meeting }); //{ path: Routes.Meeting }
+    //const meetingPage = matchPath('/meeting/', { path: Routes.Meeting, exact: true });
+
     const [selectedMenuItem, setSelectedMenuItem] = useState('');
     const [leftMenuIsOpen, setLeftMenuIsOpen] = useState(false);
 
@@ -117,6 +122,13 @@ function Layout(props: LayoutProps) {
                                                 <Route path={Routes.UserChangePassword} render={props => <UserChangePassword {...props} />} />
                                                 <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail userInfo={props.userInfo} />} />
                                                 <Route path={Routes.MeetingList} render={(props) => <MeetingList userInfo={props.userInfo} {...props} />} />
+                                                <Route path={Routes.Meeting} render={(routeProps) => (
+                                                    <Meeting
+                                                            userInfo={props.userInfo}
+                                                            setIsOpenMeeting={setIsOpenMeeting}
+                                                            {...routeProps}
+                                                        />
+                                                    )} />
                                                 <Route path={Routes.Error} render={() => <Error />} />
                                             </>
                                         }
@@ -124,7 +136,7 @@ function Layout(props: LayoutProps) {
                                 </div>
                             </div>
 
-                            {props.userInfo.isAuthenticated &&
+                            {(props.userInfo.isAuthenticated && !isOpenMeeting) &&
                                 <BottomMenu
                                     userInfo={props.userInfo}
                                     selectedMenuItem={selectedMenuItem}

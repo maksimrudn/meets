@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Meets.Controllers.api
 {
@@ -36,9 +38,11 @@ namespace Meets.Controllers.api
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult GetMessages(GetMessagesParamsDTO paramsDTO)
+        public async Task<List<Message>> GetMessages(GetMessagesParamsDTO paramsDTO)
         {
-            try
+            var res = await _db.Messages.Where(x => x.MeetingId == paramsDTO.MeetingId).ToListAsync();
+            return res;
+            /*try
             {
                 ApplicationUser targetUser = _db.Users.Find(paramsDTO.TargetUserId);
 
@@ -66,7 +70,7 @@ namespace Meets.Controllers.api
                                                     description = ex.Message
                                                 }}
                                         });
-            }
+            }*/
         }
 
 
@@ -146,9 +150,22 @@ namespace Meets.Controllers.api
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult SendMessage([FromForm]MessageDTO message)
+        public async Task<ActionResult> SendMessage(MessageDTO message)
         {
-            try
+            if (message.ReceiverId == User.GetUserId()) throw new Exception("Сообщение не может быть отправлено самому себе");
+
+            Message msg = new Message();
+            msg.SenderId = User.GetUserId();
+            msg.ReceiverId = message.ReceiverId;
+            msg.Createdate = DateTime.Now;
+            msg.Text = message.Text;
+            msg.MeetingId = message.MeetingId;
+
+            _db.Messages.Add(msg);
+             await _db.SaveChangesAsync();
+
+            return Ok();
+            /*try
             {
                 if (message.ReceiverId == User.GetUserId()) throw new Exception("Сообщение не может быть отправлено самому себе");
 
@@ -175,7 +192,7 @@ namespace Meets.Controllers.api
                                                     description = ex.Message 
                                                 }}
                                         });
-            }
+            }*/
         }
 
     }

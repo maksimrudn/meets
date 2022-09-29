@@ -11,6 +11,8 @@
     UserConfirmEmailBuild: (userId) => `/user/confirmemail/${userId}`,
 
     MeetingList: '/meetings',
+    Meeting: '/meeting/:id',
+    MeetingBuild: (targetid: any) => `/meeting/${targetid}`,
 
     Error: "/error",
 }
