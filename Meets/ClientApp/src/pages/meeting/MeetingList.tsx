@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import meetingsService from '../../api/MeetingsService';
 import Routes from '../../common/Routes';
 import { getAvatarPathForUser } from '../../common/Utils';
@@ -46,7 +46,7 @@ function MeetingList(props: IMeetingsListProps) {
             <div className="Header">
                 <span className="GoBackBtn" onClick={()=>history.goBack()}><GoBackIcon /></span>
                 <span className="Title">Встречи</span>
-                <span className="MeetingBtn"><MeetingIcon /></span>
+                <span></span>
             </div>
 
             <div className="TabsToggle">
@@ -70,7 +70,19 @@ function MeetingList(props: IMeetingsListProps) {
                                         }
                                     </div>
                                     <div className="Data">
-                                        <div className="Name">{item.target.fullName}</div>
+                                        <div className="Name">
+                                            <Link
+                                                to={location => ({
+                                                    ...location,
+                                                    pathname: Routes.MeetingBuild(item.targetId),
+                                                    state: {
+                                                        meetingId: item.id
+                                                    }
+                                                })}
+                                            >
+                                                {item.target.fullName}
+                                            </Link>
+                                        </div>
                                         <div className="Time">
                                             <span className="me-2"><AccessTimeIcon /></span>
                                             <span className="">{moment(item.meetingDate).format('HH:mm')}</span>
@@ -101,7 +113,19 @@ function MeetingList(props: IMeetingsListProps) {
                                         }
                                     </div>
                                     <div className="Data">
-                                        <div className="Name">{item.owner.fullName}</div>
+                                        <div className="Name">
+                                            <Link
+                                                to={location => ({
+                                                    ...location,
+                                                    pathname: Routes.MeetingBuild(item.ownerId),
+                                                    state: {
+                                                        meetingId: item.id
+                                                    }
+                                                })}
+                                            >
+                                                {item.owner.fullName}
+                                            </Link>
+                                        </div>
                                         <div className="Time">
                                             <span className="me-2"><AccessTimeIcon /></span>
                                             <span className="">{moment(item.meetingDate).format('HH:mm')}</span>

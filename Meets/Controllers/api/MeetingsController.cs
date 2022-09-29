@@ -105,6 +105,80 @@ namespace Meets.Controllers.api
 
         [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
+        public async Task<ActionResult<GetMeetingDTO>> Get(ByMeetingIdRequest request)
+        {
+            var meeting = await _db.Meetings.FindAsync(request.MeetingId);
+
+            var dto = new GetMeetingDTO();
+            dto.MeetingDate = meeting.MeetingDate;
+            dto.Place = meeting.Place;
+            dto.CompanionId = meeting.TargetId == User.GetUserId() ? meeting.OwnerId : meeting.TargetId;
+            dto.Companion = meeting.TargetId == User.GetUserId() ? meeting.Owner : meeting.Target;
+            dto.Status = meeting.Status;
+            dto.IsOwner = meeting.OwnerId == User.GetUserId();
+
+            return dto;
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<IActionResult> Edit(EditMeetingRequest request)
+        {
+            var mt = await _db.Meetings.FindAsync(request.Id);
+
+            mt.MeetingDate = request.MeetingDate;
+            mt.Place = request.Place;
+
+            _db.Entry(mt).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<IActionResult> Discuss(ByMeetingIdRequest request)
+        {
+            var meeting = await _db.Meetings.FindAsync(request.MeetingId);
+
+            meeting.Status = Domain.MeetingStatus.Discussion;
+
+            _db.Entry(meeting).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<IActionResult> Cancel(ByMeetingIdRequest request)
+        {
+            var meeting = await _db.Meetings.FindAsync(request.MeetingId);
+
+            meeting.Status = Domain.MeetingStatus.Canceled;
+
+            _db.Entry(meeting).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<IActionResult> Confirm(ByMeetingIdRequest request)
+        {
+            var meeting = await _db.Meetings.FindAsync(request.MeetingId);
+
+            meeting.Status = Domain.MeetingStatus.Confirmed;
+
+            _db.Entry(meeting).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> UnSubscribe(ByUserIdRequest request)
         {
             if (!ModelState.IsValid)
