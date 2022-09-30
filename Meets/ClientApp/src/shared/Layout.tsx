@@ -36,6 +36,9 @@ import UserConfirmEmail from '../pages/user/UserConfirmEmail';
 import UserAuthInfo from '../contracts/UserAuthInfo';
 import MeetingList from '../pages/meeting/MeetingList';
 import Meeting from '../pages/meeting/Meeting';
+import NotificationList from '../pages/notifications/NotificationList';
+import NotificationDTO from '../contracts/notifications/NotificationDTO';
+import notificationService from '../api/NotificationService';
 
 
 interface LayoutProps {
@@ -48,27 +51,40 @@ function Layout(props: LayoutProps) {
     //const meetingPage = useRouteMatch({ path: Routes.Meeting }); //{ path: Routes.Meeting }
     //const meetingPage = matchPath('/meeting/', { path: Routes.Meeting, exact: true });
 
-    const [selectedMenuItem, setSelectedMenuItem] = useState('');
+    const [selectedMenuItem, setSelectedMenuItem] = useState(BottomMenuItems.UserSearch);
     const [leftMenuIsOpen, setLeftMenuIsOpen] = useState(false);
+
+    const [notifications, setNotifications] = useState<NotificationDTO[]>([]);
+
+    useEffect(() => { updateNotifications(); }, []);
 
     const selectMenuItemOnClick = (item: string) => {
         //const item = e.target.dataset.item;
         switch (item) {
             case BottomMenuItems.UserSearch:
                 setSelectedMenuItem(BottomMenuItems.UserSearch);
-                setLeftMenuIsOpen(false);
                 break;
             case BottomMenuItems.Profie:
                 setSelectedMenuItem(BottomMenuItems.Profie);
+                break;
             case BottomMenuItems.Meetings:
                 setSelectedMenuItem(BottomMenuItems.Meetings);
-                setLeftMenuIsOpen(false);
+                break;
+            case BottomMenuItems.Notifications:
+                setSelectedMenuItem(BottomMenuItems.Notifications);
                 break;
         }
 
     }
 
-
+    const updateNotifications = () => {
+        try {
+            let res = notificationService.getList();
+            setNotifications(res);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <Router basename="/">
@@ -100,7 +116,7 @@ function Layout(props: LayoutProps) {
                     <Route path='/' >
 
                         <div className="main">
-                            
+
 
                             <div className="body d-flex">
                                 <div className="container-xl">
@@ -114,7 +130,14 @@ function Layout(props: LayoutProps) {
 
                                         {props.userInfo.isAuthenticated &&
                                             <>
-                                                <Route path={Routes.UserCard} render={(props) => <UserCard userInfo={props.userInfo} {...props} />}></Route>
+                                                <Route path={Routes.UserCard} render={(routeProps) => (
+                                                    <UserCard
+                                                        userInfo={props.userInfo}
+                                                        //updateNotifications={updateNotifications}
+                                                        {...routeProps}
+                                                    />
+
+                                                )}></Route>
                                                 <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings userInfo={props.userInfo} {...props} />}></Route>
                                                 <Route path="/user/Search">
                                                     <UserSearch userInfo={props.userInfo} />
@@ -124,11 +147,18 @@ function Layout(props: LayoutProps) {
                                                 <Route path={Routes.MeetingList} render={(props) => <MeetingList userInfo={props.userInfo} {...props} />} />
                                                 <Route path={Routes.Meeting} render={(routeProps) => (
                                                     <Meeting
-                                                            userInfo={props.userInfo}
-                                                            setIsOpenMeeting={setIsOpenMeeting}
-                                                            {...routeProps}
-                                                        />
-                                                    )} />
+                                                        userInfo={props.userInfo}
+                                                        setIsOpenMeeting={setIsOpenMeeting}
+                                                        //updateNotifications={updateNotifications}
+                                                        {...routeProps}
+                                                    />
+                                                )} />
+                                                <Route path={Routes.Notifications} render={() => (
+                                                    <NotificationList
+                                                        userInfo={props.userInfo}
+                                                        notifications={notifications}
+                                                    />
+                                                )} />
                                                 <Route path={Routes.Error} render={() => <Error />} />
                                             </>
                                         }

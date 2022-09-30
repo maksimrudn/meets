@@ -52,39 +52,30 @@ export default function BottomMenu(props: BottomMenuProps) {
                     <TimeIconSvg />
                 </span>
 
-                <span className="MenuItem">
-                    <NotificationIconSvg />
-                </span>
-
-                <NavLink
-                    exact
-                    to="/user/search"
-                    activeClassName="active"
-                    className="MenuItem"
-                    isActive={(match, location) => {
-                        return (!!match || location.pathname === '/');
-                    }}
-                >
-                    <UserSearchIconSvg />
-                </NavLink>
-
-                <span className={props.selectedMenuItem === BottomMenuItems.Meetings ? "MenuItem active" : "MenuItem"}>
-                    <Link to="/meetings" onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Messanger)}>
-                        <MessageIcon />
+                <span className={props.selectedMenuItem === BottomMenuItems.Notifications ? "MenuItem active" : "MenuItem"}>
+                    <span className="Notify"></span>
+                    <Link to={Routes.Notifications} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Notifications)}>
+                        <NotificationIconSvg />
                     </Link>
                 </span>
 
-                <NavLink
-                    //exact
-                    to={`/user/card/${props.userInfo.user.id}`}
-                    activeClassName="active"
-                    className="MenuItem"
-                    isActive={(match, location) => {
-                        return (match || location.pathname.includes('settings') || location.pathname.includes('cnangepassword') || location.pathname.includes('confirmemail'));
-                    }}
-                >
-                    <ProfileIconSvg />
-                </NavLink>
+                <span className={props.selectedMenuItem === BottomMenuItems.UserSearch ? "MenuItem active" : "MenuItem"}>
+                    <Link to={Routes.UserSearch} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.UserSearch)}>
+                        <UserSearchIconSvg />
+                    </Link>
+                </span>
+
+                <span className={props.selectedMenuItem === BottomMenuItems.Meetings ? "MenuItem active" : "MenuItem"}>
+                    <Link to={Routes.MeetingList} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Meetings)}>
+                        <MessageIconSvg width='46' hieght='37' />
+                    </Link>
+                </span>
+
+                <span className={props.selectedMenuItem === BottomMenuItems.Profie ? "MenuItem active" : "MenuItem"}>
+                    <Link to={Routes.UserCardBuild(props.userInfo.user.id)} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Profie)}>
+                        <ProfileIconSvg />
+                    </Link>
+                </span>
 
             </div>
         </div>
