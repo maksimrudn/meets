@@ -30,6 +30,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
+using Meets.Services;
 
 namespace Meets
 {
@@ -92,6 +93,8 @@ namespace Meets
             });
 
             services.AddScoped<Services.TokenManager>();
+
+            services.AddScoped<NotificationService>();
 
             //services.AddIdentityServer()
             //    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Meets.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220912073242_2")]
-    partial class _2
+    [Migration("20220930084251_update_notifications")]
+    partial class update_notifications
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,6 +139,15 @@ namespace Meets.Migrations
                     b.Property<int>("Growth")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsGeoTracking")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInvitable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSearchable")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Job")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -188,6 +197,9 @@ namespace Meets.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
+                    b.Property<string>("Telegram")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -217,11 +229,16 @@ namespace Meets.Migrations
                         {
                             Id = 1m,
                             AccessFailedCount = 0,
+                            Company = "VIClouds",
                             ConcurrencyStamp = "3a770767-445a-4eef-93a3-2389c7949bb5",
                             Email = "admin@admin",
                             EmailConfirmed = false,
                             FullName = "Администратор",
                             Growth = 0,
+                            IsGeoTracking = false,
+                            IsInvitable = true,
+                            IsSearchable = true,
+                            Job = "Администратор",
                             Latitude = 0.0,
                             LockoutEnabled = false,
                             Longitude = 0.0,
@@ -233,6 +250,33 @@ namespace Meets.Migrations
                             Tags = "",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin",
+                            Weight = 0
+                        },
+                        new
+                        {
+                            Id = 2m,
+                            AccessFailedCount = 0,
+                            Company = "VIClouds",
+                            ConcurrencyStamp = "3a770767-445a-4eef-93a3-2389c7949bb5",
+                            Email = "loader@loader",
+                            EmailConfirmed = false,
+                            FullName = "Загрузчик",
+                            Growth = 0,
+                            IsGeoTracking = false,
+                            IsInvitable = true,
+                            IsSearchable = true,
+                            Job = "Администратор",
+                            Latitude = 0.0,
+                            LockoutEnabled = false,
+                            Longitude = 0.0,
+                            NormalizedEmail = "loader@loader",
+                            NormalizedUserName = "LOADER@LOADER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM0ZQUtQTujF33s3DNg2JAmlO/QceeCykr10VbntxSs+mwM8PBbEkqaeObrzCaE4XA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "b8db65e3-df56-4cc6-ad87-16e1c108db13",
+                            Tags = "",
+                            TwoFactorEnabled = false,
+                            UserName = "loader@loader",
                             Weight = 0
                         });
                 });
@@ -309,6 +353,9 @@ namespace Meets.Migrations
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("MeetingDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("OwnerId")
                         .HasColumnType("decimal(20,0)");
 
@@ -360,6 +407,41 @@ namespace Meets.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Meets.Models.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MeetingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ReceiverId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal>("SenderId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeetingId");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Meets.Models.Subscribtion", b =>
@@ -620,6 +702,33 @@ namespace Meets.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("Meets.Models.Notification", b =>
+                {
+                    b.HasOne("Meets.Models.Meeting", "Meeting")
+                        .WithMany("Notifications")
+                        .HasForeignKey("MeetingId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Meets.Models.ApplicationUser", "Receiver")
+                        .WithMany("IncomingNotifications")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Meets.Models.ApplicationUser", "Sender")
+                        .WithMany("OutgoingNotifications")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Meeting");
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("Meets.Models.Subscribtion", b =>
                 {
                     b.HasOne("Meets.Models.ApplicationUser", "Owner")
@@ -709,9 +818,13 @@ namespace Meets.Migrations
 
                     b.Navigation("IncomingMeetings");
 
+                    b.Navigation("IncomingNotifications");
+
                     b.Navigation("Learnings");
 
                     b.Navigation("OutgoingMeetings");
+
+                    b.Navigation("OutgoingNotifications");
 
                     b.Navigation("Subscribers");
 
@@ -723,6 +836,8 @@ namespace Meets.Migrations
             modelBuilder.Entity("Meets.Models.Meeting", b =>
                 {
                     b.Navigation("Messages");
+
+                    b.Navigation("Notifications");
                 });
 #pragma warning restore 612, 618
         }

@@ -71,6 +71,7 @@ import MapSelectorModal from '../../modules/entities/user/MapSelectorModal';
 interface UserCardProps {
     userInfo: UserAuthInfo,
     UpdateUserInfo: any
+    //updateNotifications: () => void
 }
 
 interface UserCardParams {
@@ -456,6 +457,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             mapSelectModalToggle={mapSelectModalToggle}
                             meetingAddress={meetingAddress}
                             updateUser={update}
+                            //updateNotifications={props.updateNotifications}
                         />
 
                         <MapSelectorModal

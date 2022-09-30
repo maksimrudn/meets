@@ -33,7 +33,9 @@ interface IMeetRequestModalProps {
     mapSelectModalToggle: () => void
     meetingAddress: string
 
-    updateUser: ()=>void
+    updateUser: () => void
+
+    //updateNotifications: () => void
 }
 
 export default function MeetRequestModal(props: IMeetRequestModalProps) {
@@ -67,6 +69,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
             mt.message = messageRef.current.value;
 
             meetingsService.invite(mt);
+            //props.updateNotifications();
             props.toggle();
         } catch (err: any) {
             history.push(Routes.Error, err);
