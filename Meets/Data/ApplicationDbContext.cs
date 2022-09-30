@@ -18,6 +18,7 @@ namespace Meets.Data
                 
         public virtual DbSet<Message> Messages { get; set; }
 
+        public virtual DbSet<Notification> Notifications { get; set; }
 
         public virtual DbSet<Learning> Learnings { get; set; }
 
@@ -99,10 +100,23 @@ namespace Meets.Data
 
 
 
+            modelBuilder.Entity<Notification>()
+                .HasOne(x => x.Sender)
+                .WithMany(x => x.OutgoingNotifications)
+                .HasForeignKey(x => x.SenderId)
+                .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Notification>()
+                .HasOne(x => x.Receiver)
+                .WithMany(x => x.IncomingNotifications)
+                .HasForeignKey(x => x.ReceiverId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-
-
+            modelBuilder.Entity<Notification>()
+                .HasOne(x => x.Meeting)
+                .WithMany(x => x.Notifications)
+                .HasForeignKey(x => x.MeetingId)
+                .OnDelete(DeleteBehavior.NoAction);
 
 
             modelBuilder.Entity<Learning>()

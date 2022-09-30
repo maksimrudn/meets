@@ -6,5 +6,7 @@ export const BottomMenuItems = {
     //Messanger: 'Messanger',
     // объявления
     // ...
-    Profie: 'Profie'
+    Profie: 'Profile',
+    Meetings: 'Meetings',
+    Notifications: 'Notifications'
 }

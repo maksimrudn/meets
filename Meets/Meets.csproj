@@ -49,6 +49,8 @@
 
     <None Remove="ClientApp\src\api\MeetingsService.ts" />
 
+    <None Remove="ClientApp\src\api\NotificationService.ts" />
+
     <None Remove="ClientApp\src\common\ApiError.ts" />
 
     <None Remove="ClientApp\src\common\BottomMenuItems.tsx" />
@@ -78,6 +80,8 @@
     <None Remove="ClientApp\src\contracts\meeting\MeetingRequest.ts" />
 
     <None Remove="ClientApp\src\contracts\message\MessageDTO.ts" />
+
+    <None Remove="ClientApp\src\contracts\notifications\NotificationDTO.ts" />
 
     <None Remove="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
@@ -118,6 +122,8 @@
     <None Remove="ClientApp\src\icons\GrowthIconSvg.tsx" />
 
     <None Remove="ClientApp\src\icons\HeartIcon.tsx" />
+
+    <None Remove="ClientApp\src\icons\InfoIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\JobIcon.tsx" />
 
@@ -177,6 +183,7 @@
     <None Remove="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
     <None Remove="ClientApp\src\pages\meeting\Meeting.tsx" />
     <None Remove="ClientApp\src\pages\meeting\MeetingList.tsx" />
+    <None Remove="ClientApp\src\pages\notifications\NotificationList.tsx" />
     <None Remove="ClientApp\src\shared\BottomMenu.tsx" />
 
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
@@ -200,6 +207,8 @@
   <ItemGroup>
 
     <TypeScriptCompile Include="ClientApp\src\api\MeetingsService.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\api\NotificationService.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\common\IApiError.ts" />
 
@@ -231,11 +240,15 @@
 
     <TypeScriptCompile Include="ClientApp\src\contracts\message\MessageDTO.ts" />
 
+    <TypeScriptCompile Include="ClientApp\src\contracts\notifications\NotificationDTO.ts" />
+
     <TypeScriptCompile Include="ClientApp\src\contracts\participations\ParticipationRequestDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\ByUserIdRequest.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\CoffeeIcon.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\icons\InfoIcon.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\SendMessageIcon.tsx">
       <SubType>Code</SubType>
@@ -398,6 +411,8 @@
     <TypeScriptCompile Include="ClientApp\src\pages\meeting\Meeting.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\pages\meeting\MeetingList.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\pages\notifications\NotificationList.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\shared\BottomMenu.tsx" />
 

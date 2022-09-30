@@ -4,6 +4,7 @@ using Meets.Data;
 using Meets.Exceptions;
 using Meets.Extensions;
 using Meets.Models;
+using Meets.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +21,12 @@ namespace Meets.Controllers.api
     public class MeetingsController : ControllerBase
     {
         private ApplicationDbContext _db;
+        private NotificationService _notification;
 
-        public MeetingsController(ApplicationDbContext db)
+        public MeetingsController(ApplicationDbContext db, NotificationService notification)
         {
             _db = db;
+            _notification = notification;
         }
 
 
@@ -71,6 +74,8 @@ namespace Meets.Controllers.api
 
             _db.Messages.Add(message);
             await _db.SaveChangesAsync();
+
+            await _notification.Invite(meeting);
 
             return Ok();
         }
@@ -132,6 +137,8 @@ namespace Meets.Controllers.api
             _db.Entry(mt).State = EntityState.Modified;
             await _db.SaveChangesAsync();
 
+            await _notification.Edit(mt);
+
             return Ok();
         }
 
@@ -145,6 +152,8 @@ namespace Meets.Controllers.api
 
             _db.Entry(meeting).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+
+            await _notification.Discuss(meeting);
 
             return Ok();
         }
@@ -160,6 +169,8 @@ namespace Meets.Controllers.api
             _db.Entry(meeting).State = EntityState.Modified;
             await _db.SaveChangesAsync();
 
+            await _notification.Cancel(meeting, User.GetUserId());
+
             return Ok();
         }
 
@@ -173,6 +184,8 @@ namespace Meets.Controllers.api
 
             _db.Entry(meeting).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+
+            await _notification.Confirm(meeting);
 
             return Ok();
         }
