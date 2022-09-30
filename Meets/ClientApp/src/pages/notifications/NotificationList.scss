@@ -1,0 +1,96 @@
+﻿.NotificationList {
+    background-color: #fff;
+    min-height: calc(90vh + 50px);
+    padding: 24px;
+
+    .Header {
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        margin-right: 48px;
+
+        @media only screen and (max-width: 415px){
+            margin-right: 0;
+        }
+
+        .Title {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .GoBackBtn {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+            cursor: pointer;
+            box-shadow: 0 2px 1px 1px #000;
+        }
+    }
+
+    .Content {
+        background-color: #fff;
+
+        .Today, .Yesterday, .Past {
+            margin-bottom: 2rem;
+
+            .Title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: .25rem;
+            }
+
+            .Notifications {
+                .Item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .InfoIcon {
+                        width: 48px;
+                        height: 48px;
+                        border: 2px solid #000;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 8px;
+                        border-radius: 50%;
+                        background-color: #FFBD12;
+                        cursor: pointer;
+                        box-shadow: 0 2px 1px 1px #000;
+                    }
+
+                    .Message {
+                        font-size: 15px;
+                        color: #474A57;
+
+                        .Title {
+                            font-weight: 900;
+
+                            .Link, .Link:hover {
+                                color: #474A57;
+                            }
+                        }
+
+                        .Text {
+                            font-family: "Montserrat-Regular", sans-serif;
+                            //font-weight: 100;
+                        }
+                    }
+
+                    .Time {
+                        font-size: 11px;
+                        color: #9FA4B4;
+                    }
+                }
+            }
+        }
+    }
+}

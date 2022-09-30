@@ -46,6 +46,7 @@ interface IMeetingProps {
     userInfo: UserAuthInfo,
     setIsOpenMeeting: any,
     location: Location<ILocationState>
+    //updateNotifications: () => void
 }
 
 export default function Meeting(props: IMeetingProps) {
@@ -107,6 +108,7 @@ export default function Meeting(props: IMeetingProps) {
         try {
             meetingsService.discuss(props.location.state.meetingId);
             updateMeeting();
+            //props.updateNotifications();
         } catch (err) {
             history.push(Routes.Error, err);
         }
@@ -116,6 +118,7 @@ export default function Meeting(props: IMeetingProps) {
         try {
             meetingsService.cancel(props.location.state.meetingId);
             updateMeeting();
+            //props.updateNotifications();
         } catch (err) {
             history.push(Routes.Error, err);
         }
@@ -125,6 +128,7 @@ export default function Meeting(props: IMeetingProps) {
         try {
             meetingsService.confirm(props.location.state.meetingId);
             updateMeeting();
+            //props.updateNotifications();
         } catch (err) {
             history.push(Routes.Error, err);
         }
@@ -148,6 +152,7 @@ export default function Meeting(props: IMeetingProps) {
 
             meetingsService.edit(mt);
             updateMeeting();
+            //props.updateNotifications();
             meetingModalToggle();
 
         } catch (err) {

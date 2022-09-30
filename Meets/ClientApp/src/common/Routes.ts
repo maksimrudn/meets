@@ -2,6 +2,8 @@
     UserCard: "/user/card/:id",
     UserCardBuild: (userId) => `/user/card/${userId}`,
 
+    UserSearch: '/user/search',
+
     ProfileSettings: '/user/settings/:id',
     ProfileSettingsBuild: (userId) => `/user/settings/${userId}`,
     UserChangePassword: '/user/cnangepassword/:id',
@@ -13,6 +15,8 @@
     MeetingList: '/meetings',
     Meeting: '/meeting/:id',
     MeetingBuild: (targetid: any) => `/meeting/${targetid}`,
+
+    Notifications: '/notifications',
 
     Error: "/error",
 }
