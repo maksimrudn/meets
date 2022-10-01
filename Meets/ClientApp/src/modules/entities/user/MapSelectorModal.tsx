@@ -19,7 +19,7 @@ type MapSelectorModalState = {
 type IMapSelectorModalProps = {
     isOpen: boolean,
     toggle(): void,
-    setMeetingAddress: React.Dispatch<SetStateAction<string>>,
+    setMeetingAddress(address: string):void,
     userInfo: UserAuthInfo
 }
 
