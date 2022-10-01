@@ -67,6 +67,12 @@ export default class BaseService {
                 let response = JSON.parse(xhr.response);
                 errorCode = 400;
                 errorFlag = true;
+                errorText = response.errors?.map(err => err.description).join('<br/>');
+            }
+            else if (xhr.status === 401) {
+                let response = JSON.parse(xhr.response);
+                errorCode = 401;
+                errorFlag = true;
                 errorText = Object.values(response.errors).join('<br/>');
             }
             else if (xhr.status === 500) {
