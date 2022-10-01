@@ -85,15 +85,15 @@ function UserCard(props: UserCardProps): JSX.Element {
 
     const [user, setUser] = useState<UserCardResponse>(new UserCardResponse());
 
-    const [userEditModalIsOpen, setUserEditModalIsOpen] = useState(false);
+    const [isOpenUserEditModal, setIsOpenUserEditModal] = useState(false);
     const [fieldName, setFieldName] = useState<any>('');
 
     const [selectedTab, setSelectedTab] = useState<any>(UserCardTabsNames.Info);
-    const [settingsModalIsOpen, setSettingsModalIsOpen] = useState(false);
+    const [isOpenSettingsModal, setIsOpenSettingsModal] = useState(false);
 
-    const [avatarModalIsOpen, setAvatarModalIsOpen] = useState(false);
-    const [removeAvatarModalIsOpen, setRemoveAvatarModalIsOpen] = useState(false);
-    const [isShowAvatar, setIsShowAvatar] = useState(false);
+    const [isOpenAvatarModal, setIsOpenAvatarModal] = useState(false);
+    const [isOpenRemoveAvatarModal, setIsOpenRemoveAvatarModal] = useState(false);
+    const [isOpenShowAvatarModal, setIsShowAvatar] = useState(false);
 
     const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
 
@@ -119,27 +119,27 @@ function UserCard(props: UserCardProps): JSX.Element {
     }
 
 
-    const settingsModalToggle = () => {
-        setSettingsModalIsOpen(!settingsModalIsOpen);
+    const toggleSettingsModal = () => {
+        setIsOpenSettingsModal(!isOpenSettingsModal);
     }
 
-    const userEditorModalToggle = () => {
-        setUserEditModalIsOpen(!userEditModalIsOpen);
+    const toggleUserEditorModal = () => {
+        setIsOpenUserEditModal(!isOpenUserEditModal);
     }
 
-    const avatarModalToggler = () => {
-        setAvatarModalIsOpen(!avatarModalIsOpen);
+    const toggleAvatarModal = () => {
+        setIsOpenAvatarModal(!isOpenAvatarModal);
     }
 
-    const removeAvatarModalToggler = () => {
-        setRemoveAvatarModalIsOpen(!removeAvatarModalIsOpen);
+    const toggleRemoveAvatarModal = () => {
+        setIsOpenRemoveAvatarModal(!isOpenRemoveAvatarModal);
     }
 
-    const showAvatarToggle = () => {
-        setIsShowAvatar(!isShowAvatar);
+    const toggleShowAvatarModal = () => {
+        setIsShowAvatar(!isOpenShowAvatarModal);
     }
 
-    const meetRequestModalToggle = () => {
+    const toggleMeetRequestModal = () => {
         setIsOpenMeetModal(!isOpenMeetModal);
     }
 
@@ -147,7 +147,7 @@ function UserCard(props: UserCardProps): JSX.Element {
 
     const onClickEditIcon = (fieldName: any) => {
         setFieldName(fieldName); //e.target.dataset.fieldName
-        userEditorModalToggle();
+        toggleUserEditorModal();
     }
 
     const removeAvatar = () => {
@@ -155,7 +155,7 @@ function UserCard(props: UserCardProps): JSX.Element {
             userService.removeAvatar();
             update();
 
-            removeAvatarModalToggler();
+            toggleRemoveAvatarModal();
 
             props.UpdateUserInfo(userService.getAuthInfo());
         }
@@ -253,7 +253,7 @@ function UserCard(props: UserCardProps): JSX.Element {
 
                         <div className="Actions mt-3">
                             <span className="Button ms-3" onClick={() => { history.goBack(); }}><GoBackIcon /></span>
-                            <span className="Button me-3" onClick={settingsModalToggle}><SettingsIcon /></span>
+                            <span className="Button me-3" onClick={toggleSettingsModal}><SettingsIcon /></span>
                         </div>
                         {user.avatar
                             ? (
@@ -333,7 +333,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             {(props.userInfo.user.id !== user.id)
                                 ? (<div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
-                                        <button className="Invite btn" type="button" onClick={meetRequestModalToggle} disabled={user.isInvited}>
+                                        <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={user.isInvited}>
                                             <span className="me-4"><CoffeeIcon /></span>
                                             <span className="fs-5 text-black">Пригласить</span>
                                         </button>
@@ -409,44 +409,52 @@ function UserCard(props: UserCardProps): JSX.Element {
                             facts={user?.facts}
                         />
 
-                        <UserEditorModal
-                            user={user}
-                            isOpen={userEditModalIsOpen}
-                            toggle={userEditorModalToggle}
-                            fieldName={fieldName}
-                            onSaveChanges={onSaveChanges}
-                        />
+                        {isOpenUserEditModal &&
+                            <UserEditorModal
+                                user={user}
+                                isOpen={isOpenUserEditModal}
+                                toggle={toggleUserEditorModal}
+                                fieldName={fieldName}
+                                onSaveChanges={onSaveChanges}
+                            />
+                        }
 
-                        <UserCardContextMenuModal
-                            isOpen={settingsModalIsOpen}
-                            toggle={settingsModalToggle}
-                            avatarModalToggle={avatarModalToggler}
-                            removeAvatarModalToggle={removeAvatarModalToggler}
-                            showAvatarToggle={showAvatarToggle}
-                            user={user}
-                            userInfo={props.userInfo}
-                            onSaveChanges={onSaveChanges}
-                        />
+                        {isOpenSettingsModal &&
+                            <UserCardContextMenuModal
+                                isOpen={isOpenSettingsModal}
+                                toggle={toggleSettingsModal}
+                                avatarModalToggle={toggleAvatarModal}
+                                removeAvatarModalToggle={toggleRemoveAvatarModal}
+                                showAvatarToggle={toggleShowAvatarModal}
+                                user={user}
+                                userInfo={props.userInfo}
+                                onSaveChanges={onSaveChanges}
+                            />
+                        }
 
-                        <UserCardAvatarModal
-                            isOpen={avatarModalIsOpen}
-                            toggle={avatarModalToggler}
-                            user={user}
-                            onSaveChanges={onSaveChanges}
-                        />
+                        {isOpenAvatarModal &&
+                            <UserCardAvatarModal
+                                isOpen={isOpenAvatarModal}
+                                toggle={toggleAvatarModal}
+                                user={user}
+                                onSaveChanges={onSaveChanges}
+                            />
+                        }
 
-                        <ConfirmationModal
-                            isOpen={removeAvatarModalIsOpen}
-                            toggle={removeAvatarModalToggler}
-                            message="Удалить ваше фото?"
-                            confirmAction={removeAvatar}
-                            contextMenuModalToggle={settingsModalToggle}
-                        />
+                        {isOpenRemoveAvatarModal &&
+                            <ConfirmationModal
+                                isOpen={isOpenRemoveAvatarModal}
+                                toggle={toggleRemoveAvatarModal}
+                                message="Удалить ваше фото?"
+                                confirmAction={removeAvatar}
+                                contextMenuModalToggle={toggleSettingsModal}
+                            />
+                        }
 
                         {isOpenMeetModal &&
                             <MeetRequestModal
                                 isOpen={isOpenMeetModal}
-                                toggle={meetRequestModalToggle}
+                                toggle={toggleMeetRequestModal}
                                 user={user}
                                 updateUser={update}
                                 userInfo={props.userInfo}
@@ -455,11 +463,13 @@ function UserCard(props: UserCardProps): JSX.Element {
                         }
                         
 
-                        <ShowUserAvatar
-                            isOpen={isShowAvatar}
-                            toggle={showAvatarToggle}
-                            user={user}
-                        />
+                        {isOpenShowAvatarModal &&
+                            <ShowUserAvatar
+                                isOpen={isOpenShowAvatarModal}
+                                toggle={toggleShowAvatarModal}
+                                user={user}
+                            />
+                        }
 
                         {/* UserDetails container: End */}
                     </div>
