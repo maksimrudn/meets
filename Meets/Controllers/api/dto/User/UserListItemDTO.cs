@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Meets.Models.User
 {
-    public class UserIndexDTO
+    public class UserListItemDTO
     {
         public ulong Id { get; set; }
 

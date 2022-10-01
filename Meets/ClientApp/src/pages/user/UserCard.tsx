@@ -67,6 +67,7 @@ import getPosition from '../../common/GeoUtils';
 import CoffeeIcon from '../../icons/CoffeeIcon';
 import UserAuthInfo from '../../contracts/UserAuthInfo';
 import MapSelectorModal from '../../modules/entities/user/MapSelectorModal';
+import WaitingScreen from '../common/WaitingScreen';
 
 interface UserCardProps {
     userInfo: UserAuthInfo,
@@ -242,7 +243,7 @@ function UserCard(props: UserCardProps): JSX.Element {
 
         <>
             {isLoading ?
-                <div>ожидание</div>
+                <WaitingScreen />
                 :
                 <>
                     <div ref={topElement} style={{ position: 'absolute', top: -100, left: 0 }}></div>

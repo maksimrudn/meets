@@ -1,3 +1,4 @@
+
 import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -11,14 +12,24 @@ import CoffeeIcon from '../../icons/CoffeeIcon';
 import JobIcon from '../../icons/JobIcon';
 import CompanyIcon from '../../icons/CompanyIcon';
 import Routes from '../../common/Routes';
+import UserAuthInfo from '../../contracts/UserAuthInfo';
+import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
 
 interface UserItemProps {
-    userInfo: any
+    userInfo: UserAuthInfo
     user: any
 }
 
 export default function UserItem(props: UserItemProps) {
-    
+
+
+    const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
+
+    const meetRequestModalToggle = () => {
+        setIsOpenMeetModal(!isOpenMeetModal);
+    }
+
+
     return (
         <div className="UserItem col-12">
             <div className="Item card teacher-card">
@@ -60,12 +71,28 @@ export default function UserItem(props: UserItemProps) {
                         </div>
                     </div>
 
-                    <button className="Meet" type="button">
-                        <span className="Icon"><CoffeeIcon /></span>
-                        <span className="Text">Пригласить</span>
-                    </button>
+                    {props.user.id != props.userInfo.user.id &&
+                        <button className="Meet btn" type="button" onClick={meetRequestModalToggle} disabled={props.user.isInvited}>
+                            <span className="Icon"><CoffeeIcon /></span>
+                            <span className="Text">Пригласить</span>
+                        </button>
+                    }
+
+                   
                 </div>
             </div>
+
+
+            {/*<MeetRequestModal*/}
+            {/*    isOpen={isOpenMeetModal}*/}
+            {/*    toggle={meetRequestModalToggle}*/}
+            {/*    user={props.user}*/}
+            {/*    mapSelectModalToggle={mapSelectModalToggle}*/}
+            {/*    meetingAddress={meetingAddress}*/}
+            {/*    updateUser={update}*/}
+            {/*//updateNotifications={props.updateNotifications}*/}
+            {/*/>*/}
+
         </div>
     );
 }

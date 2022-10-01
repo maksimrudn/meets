@@ -38,19 +38,15 @@
         margin: 0px auto 0;
         //padding: 0 15px;
         padding-top: 0px !important;
-        margin-top: $top-menu-height-desk;
 
 
         @media only screen and (max-width: $break-small) {
-            margin-top: $top-menu-height-mob;
             padding-left: 0px;
             padding-right: 0px;
             display: block;
         }
 
         .body {
-            padding-top: $padding-from-top-menu;
-
 
             @media only screen and (max-width: $break-small) {
                 padding-left: 0px;

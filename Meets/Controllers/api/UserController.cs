@@ -124,7 +124,10 @@ namespace Meets.Controllers.api
                 userCard.Subscribers = user.Subscribers.Count;
                 userCard.Subscriptions = user.Subscribtions.Count;
 
-                if(_db.Meetings.Where(x => x.OwnerId == User.GetUserId() && x.TargetId == request.UserId).Count() != 0)
+                if(_db.Meetings.Where(x => x.OwnerId == User.GetUserId() && 
+                    x.TargetId == request.UserId &&
+                    x.Status != MeetingStatus.Canceled
+                    ).Count() != 0)
                 {
                     userCard.IsInvited = true;
                 }
@@ -241,7 +244,7 @@ namespace Meets.Controllers.api
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public ActionResult<List<UserIndexDTO>> GetList(GetListRequest request)
+        public ActionResult<List<UserListItemDTO>> GetList(GetListRequest request)
         {
             IQueryable<ApplicationUser> res = _db.Users;//.Where(x => x.Id != User.GetUserId());
 
@@ -315,10 +318,10 @@ namespace Meets.Controllers.api
                 res = res.Where(x => x.Activities.Any(w => w.Title.ToLower().Contains(activityTrimed)));
             }
 
-            List<UserIndexDTO> userIndexList = new List<UserIndexDTO>();
+            List<UserListItemDTO> userIndexList = new List<UserListItemDTO>();
             foreach (var userRes in res)
             {
-                UserIndexDTO userIndexDto = new UserIndexDTO();
+                UserListItemDTO userIndexDto = new UserListItemDTO();
 
                 userIndexDto.Id = userRes.Id;
                 userIndexDto.FullName = userRes.FullName;

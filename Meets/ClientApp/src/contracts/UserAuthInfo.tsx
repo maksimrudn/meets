@@ -1,9 +1,8 @@
-﻿import Coordinates from "./Coordinates";
-import Place from "./Place";
+﻿import UserDTO from "./user/UserDTO"
 
 export default class UserAuthInfo {
     userName: string = ''
-    user: any
+    user: UserDTO
     isAuthenticated: boolean = false
     isAdmin: boolean = false
     hasGeolocation: boolean = false

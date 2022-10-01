@@ -53,6 +53,12 @@ namespace Meets.Middlewares
                         });
                         break;
 
+                    case AuthorizationException ex:
+
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        response.errors = ex.Errors.Select(x => new Error("Неавторизованный доступ", x));
+                        break;
+
                     case RegistrationException ex:
 
                         context.Response.StatusCode = StatusCodes.Status500InternalServerError;

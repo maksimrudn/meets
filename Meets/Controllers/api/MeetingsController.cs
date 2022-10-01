@@ -84,7 +84,7 @@ namespace Meets.Controllers.api
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<List<MeetingDTO>>> GetList()
         {
-            var meetings = await _db.Meetings.Where(x=>x.OwnerId == User.GetUserId() || x.TargetId == User.GetUserId()).ToListAsync();
+            var meetings = await _db.Meetings.Where(x=>x.OwnerId == User.GetUserId() || x.TargetId == User.GetUserId()).OrderByDescending(x=>x.MeetingDate).ToListAsync();
             List<MeetingDTO> list = new List<MeetingDTO>();
 
             foreach(var meet in meetings)
