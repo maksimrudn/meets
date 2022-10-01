@@ -56,17 +56,13 @@ import Routes from '../../common/Routes';
 import subscribtionService from '../../api/SubscribtionService';
 import ProfileSettingsIcon from '../../icons/ProfileSettingsIcon';
 
-import meetingsService from '../../api/MeetingsService';
 import 'moment-timezone';
 import 'moment/locale/ru';
-import MeetingRequest from '../../contracts/meeting/MeetingRequest';
-import LocateMapIcon from '../../icons/LocateMapIcon';
+
 import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
-import YMapsGeoSelector from '../../modules/geo/YMapsGeoSelector';
-import getPosition from '../../common/GeoUtils';
+
 import CoffeeIcon from '../../icons/CoffeeIcon';
 import UserAuthInfo from '../../contracts/UserAuthInfo';
-import MapSelectorModal from '../../modules/entities/user/MapSelectorModal';
 import WaitingScreen from '../common/WaitingScreen';
 
 interface UserCardProps {
@@ -99,9 +95,7 @@ function UserCard(props: UserCardProps): JSX.Element {
     const [removeAvatarModalIsOpen, setRemoveAvatarModalIsOpen] = useState(false);
     const [isShowAvatar, setIsShowAvatar] = useState(false);
 
-    const [meetingAddress, setMeetingAddress] = useState<string>('');
     const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
-    const [isOpenMapSelectModal, setIsOpenMapSelectModal] = useState(false);
 
     // элемент к которому скроллит после изменеия id пользователя
     let topElement: any = useRef();
@@ -149,9 +143,7 @@ function UserCard(props: UserCardProps): JSX.Element {
         setIsOpenMeetModal(!isOpenMeetModal);
     }
 
-    const mapSelectModalToggle = () => {
-        setIsOpenMapSelectModal(!isOpenMapSelectModal);
-    }
+    
 
     const onClickEditIcon = (fieldName: any) => {
         setFieldName(fieldName); //e.target.dataset.fieldName
@@ -451,22 +443,17 @@ function UserCard(props: UserCardProps): JSX.Element {
                             contextMenuModalToggle={settingsModalToggle}
                         />
 
-                        <MeetRequestModal
-                            isOpen={isOpenMeetModal}
-                            toggle={meetRequestModalToggle}
-                            user={user}
-                            mapSelectModalToggle={mapSelectModalToggle}
-                            meetingAddress={meetingAddress}
-                            updateUser={update}
+                        {isOpenMeetModal &&
+                            <MeetRequestModal
+                                isOpen={isOpenMeetModal}
+                                toggle={meetRequestModalToggle}
+                                user={user}
+                                updateUser={update}
+                                userInfo={props.userInfo}
                             //updateNotifications={props.updateNotifications}
-                        />
-
-                        <MapSelectorModal
-                            isOpen={isOpenMapSelectModal}
-                            toggle={mapSelectModalToggle}
-                            setMeetingAddress={setMeetingAddress}
-                            userInfo={props.userInfo}
-                        />
+                            />
+                        }
+                        
 
                         <ShowUserAvatar
                             isOpen={isShowAvatar}

@@ -18,22 +18,17 @@ import { useForm } from 'react-hook-form';
 
 import './MeetRequestModal.scss';
 import UserDTO from '../../../contracts/user/UserDTO';
+import MapSelectorModal from './MapSelectorModal';
+import UserAuthInfo from '../../../contracts/UserAuthInfo';
 
-interface IMeeting {
-    date: any
-    isOnline: boolean
-    place: string
-    message: string
-}
+
 
 interface IMeetRequestModalProps {
     isOpen: boolean
     toggle: () => void
 
     user: UserDTO
-
-    mapSelectModalToggle: () => void
-    meetingAddress: string
+    userInfo: UserAuthInfo
 
     updateUser: () => void
 
@@ -46,19 +41,26 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const [meetingRequest, setMeeting] = useState<MeetingRequest>(MeetingRequest.createWithMessage(props.user));
+    const [meetingRequest, setMeetingRequest] = useState<MeetingRequest>(MeetingRequest.create(props.user));
+
+
+    const [isOpenMapSelectModal, setIsOpenMapSelectModal] = useState(false);
+
+    const mapSelectModalToggle = () => {
+        setIsOpenMapSelectModal(!isOpenMapSelectModal);
+    }
+
+
 
     useEffect(() => {
-        setMeeting({
-            ...meetingRequest,
-            place: props.meetingAddress
-        });
-    }, [props.meetingAddress]);
+        setMeetingRequest({ ...meetingRequest, message: `Привет ${props.user.fullName}! Приглашаю тебя попить кофе` })
+    }, []);
+
 
     const inviteOnSubmit = () => {
         try {
             meetingsService.invite(meetingRequest);
-            //props.updateNotifications();
+            props.updateUser();
             props.toggle();
         } catch (err: any) {
             history.push(Routes.Error, err);
@@ -94,8 +96,8 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                     <div className="col-12 mb-2">
                         <label className="form-label">Дата / Время</label>
                         <DateTime
-                            onChange={(res: any) => setMeeting({ ...meetingRequest, meetingDate: moment(res, 'DD.MM.YYYY HH:mm').toISOString() })}
-                            initialValue={moment(meetingRequest.meetingDate, 'DD.MM.YYYY HH:mm')  }
+                            onChange={(res: any) => setMeetingRequest({ ...meetingRequest, meetingDate: moment(res, 'DD.MM.YYYY HH:mm').toISOString() })}
+                            initialValue={meetingRequest.meetingDate && moment(meetingRequest.meetingDate).format('DD.MM.YYYY HH:mm')  }
                             inputProps={{
                                 placeholder: 'dd.mm.yyyy hh:mm',
                                 ...register('Date',
@@ -118,7 +120,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                         <textarea
                             className="form-control"
                             defaultValue={meetingRequest.message}
-                            onChange={(e: any) => setMeeting({ ...meetingRequest, message: e.target.value })}
+                            onChange={(e: any) => setMeetingRequest({ ...meetingRequest, message: e.target.value })}
                             rows={4}
                             readOnly
                         />
@@ -131,7 +133,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                 type="checkbox"
                                 id="isOnline"
                                 checked={meetingRequest.isOnline}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMeeting({ ...meetingRequest, place: '', isOnline: e.target.checked })}
+                                onChange={(e: any) => setMeetingRequest({ ...meetingRequest, place: '', isOnline: e.target.checked })}
                             />
                             <label htmlFor="isOnline"></label>
                         </div>
@@ -152,13 +154,13 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                             className="form-control"
                                             value={meetingRequest.place}
                                             placeholder="Тверская ул., 22, Москва, 127006"
-                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeeting({ ...meetingRequest, place: e.target.value })}
+                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeetingRequest({ ...meetingRequest, place: e.target.value })}
                                             rows={4}
                                         />
                                         {errors.Place && <p className='w-100 text-center text-danger mt-2'>Обязательно к заполнению</p>}
                                     </div>
 
-                                    <button type="button" className="SetPlaceBtn btn mt-3" onClick={props.mapSelectModalToggle}>
+                                    <button type="button" className="SetPlaceBtn btn mt-3" onClick={mapSelectModalToggle}>
                                         <span className="me-3"><LocateMapIcon /></span>
                                         <span>Указать на карте</span>
                                     </button>
@@ -179,7 +181,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                             placeholder="zoomid ….."
                                             value={meetingRequest.place}
                                             
-                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeeting({ ...meetingRequest, place: e.target.value })}
+                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeetingRequest({ ...meetingRequest, place: e.target.value })}
                                             rows={4}
                                         />
                                         {errors.Place && <p className='w-100 text-center text-danger mt-2'>Обязательно к заполнению</p>}
@@ -193,6 +195,13 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
 
                     <button type="submit" className="SaveBtn btn mt-3">Отправить</button>
                 </form>
+
+                <MapSelectorModal
+                    isOpen={isOpenMapSelectModal}
+                    toggle={mapSelectModalToggle}
+                    setMeetingAddress={(value)=>setMeetingRequest({ ...meetingRequest, place: value  })}
+                    userInfo={props.userInfo}
+                />
             </ModalBody>
 
         </Modal>
