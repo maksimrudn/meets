@@ -175,8 +175,7 @@
     <None Remove="ClientApp\src\modules\datatable\event\PlansDataTable.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\MapSelectorModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\MeetRequestModal.tsx" />
-    <None Remove="ClientApp\src\modules\entities\user\ShowUserAvatar.tsx" />
-    <None Remove="ClientApp\src\modules\entities\user\UserCardAvatarModal.tsx" />
+    <None Remove="ClientApp\src\modules\entities\user\ShowUserAvatarModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\UserCardContextMenuModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\UserCardTabs.tsx" />
     <None Remove="ClientApp\src\modules\entities\work\WorkEditorModal.tsx" />
@@ -388,11 +387,10 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="ClientApp\src\modules\entities\learning\LearningEditorModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\meeting\MeetingEditModal.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ConfirmationModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\ConfirmationModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\MapSelectorModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\MeetRequestModal.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ShowUserAvatar.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserCardAvatarModal.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\modules\entities\user\ShowUserAvatarModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserCardContextMenuModal.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserCardTabs.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\UserEditorModal.tsx" />

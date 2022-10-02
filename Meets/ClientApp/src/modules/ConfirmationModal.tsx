@@ -7,15 +7,21 @@ import './ConfirmationModal.scss';
 interface ConfirmationModalProps {
     isOpen: boolean
     toggle: () => void
-    contextMenuModalToggle?: () => void
     message: string
     confirmAction: () => void
+    parrentToggle(): void
 }
 
 export default function ConfirmationModal(props: ConfirmationModalProps) {
-    const confirmOnClick = () => {
-        props.confirmAction();
-        props.toggle();
+    const onConfirm = () => {
+        props.confirmAction && props.confirmAction();
+
+        if (props.parrentToggle) {
+            props.parrentToggle();
+        }
+        else {
+            props.toggle();
+        }
     }
 
     return (
@@ -27,14 +33,13 @@ export default function ConfirmationModal(props: ConfirmationModalProps) {
             className="ConfirmationModal"
             contentClassName="Content"
             centered={true}
-            onClosed={props.contextMenuModalToggle}
         >
             <ModalBody
                 className="Body"
             >
                 <span className="ms-2">{props.message}</span>
                 <div className="d-flex flex-row mt-3">
-                    <button type="button" className="Action btn me-2" onClick={confirmOnClick}>ДА</button>
+                    <button type="button" className="Action btn me-2" onClick={onConfirm}>ДА</button>
                     <button type="button" className="Cancel btn" onClick={props.toggle}>Отменить</button>
                 </div>
             </ModalBody>

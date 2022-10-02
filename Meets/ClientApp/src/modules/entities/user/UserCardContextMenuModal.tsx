@@ -1,8 +1,10 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import userService from '../../../api/UserService';
 import { UserFieldNames } from '../../../common/UserFieldNames';
 import { getAllowedPhotoFilesByMask } from '../../../common/Utils';
-
+import ConfirmationModal from '../../ConfirmationModal';
+import ShowUserAvatarModal from './ShowUserAvatarModal';
 import './UserCardContextMenuModal.scss';
 
 
@@ -15,12 +17,36 @@ interface UserCardContextMenuModalProps {
 
     onSaveChanges: any
 
-    avatarModalToggle: any
-    removeAvatarModalToggle: any
-    showAvatarToggle: any
+    update(): void
 }
 
 export default function UserCardContextMenuModal(props: UserCardContextMenuModalProps) {
+
+    const [isOpenRemoveAvatarModal, setIsOpenRemoveAvatarModal] = useState(false);
+    const [isOpenShowAvatarModal, setIsShowAvatar] = useState(false);
+
+
+    const toggleRemoveAvatarModal = () => {
+        setIsOpenRemoveAvatarModal(!isOpenRemoveAvatarModal);
+    }
+
+    const toggleShowAvatarModal = () => {
+        setIsShowAvatar(!isOpenShowAvatarModal);
+    }
+
+    const removeAvatar = () => {
+        try {
+            userService.removeAvatar();
+            props.update();
+
+            toggleRemoveAvatarModal();
+        }
+        catch (err: any) {
+
+        }
+    }
+
+
     const onFileUploadChange = async (e: Event | any) => {
         let target = e.target as HTMLInputElement;
         let files = getAllowedPhotoFilesByMask(target.files);
@@ -35,9 +61,6 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
             toggle={props.toggle}
             size='md'
             container='div.container-xl'
-            //cssModule={{
-            //    'modal-open': 'p-0'
-            //}}
             className="UserCardSettingsModal"
             contentClassName="Content"
         >
@@ -45,20 +68,38 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                 className="Body"
             >
                 <div className="d-flex flex-column justify-content-center">
-                    <button type="button" className="Action btn mb-3" onClick={props.showAvatarToggle} disabled={props.user.avatar ? false : true}>Открыть фото</button>
+                    <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={props.user.avatar ? false : true}>Открыть фото</button>
                     {props.user.id === props.userInfo.user.id &&
                         <>
-                            {/*<button type="button" className="Action btn mb-3" onClick={props.avatarModalToggle}>Изменить фото</button>*/}
                             <div className="FileUpload">
                                 <label className="Action btn mb-3" htmlFor="fileupload">Изменить фото</label>
                                 <input type="file" id="fileupload" name="photo" onChange={onFileUploadChange} />
                             </div>
-                            <button type="button" className="Action btn mb-3" onClick={props.removeAvatarModalToggle}>Удалить фото</button>
+                            <button type="button" className="Action btn mb-3" onClick={toggleRemoveAvatarModal}>Удалить фото</button>
                         </>
                     }
-                    <button type="button" className="Action btn mb-3">Поделиться профилем</button>
                     <button type="button" className="Cancel btn" onClick={props.toggle}>Отменить</button>
                 </div>
+
+
+                {isOpenShowAvatarModal &&
+                    <ShowUserAvatarModal
+                        isOpen={isOpenShowAvatarModal}
+                        toggle={toggleShowAvatarModal}
+                        user={props.user}
+                    />
+                }
+
+                {isOpenRemoveAvatarModal &&
+                    <ConfirmationModal
+                        isOpen={isOpenRemoveAvatarModal}
+                        toggle={toggleRemoveAvatarModal}
+                        message="Удалить ваше фото?"
+                        confirmAction={removeAvatar}
+                        parrentToggle={props.toggle}
+                    />
+                }
+
             </ModalBody>
         </Modal>
     );
