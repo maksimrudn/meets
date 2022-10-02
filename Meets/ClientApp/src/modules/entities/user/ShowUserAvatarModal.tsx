@@ -2,22 +2,22 @@
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { getAvatarPathForUser } from '../../../common/Utils';
 
-import './ShowUserAvatar.scss';
+import './ShowUserAvatarModal.scss';
 
 
 
-interface ShowUserAvatarProps {
+interface ShowUserAvatarModalProps {
     isOpen: any
     toggle: () => void
     user: any
 }
 
-export default function ShowUserAvatar(props: ShowUserAvatarProps) {
+export default function ShowUserAvatarModal(props: ShowUserAvatarModalProps) {
     return (
         <Modal
             isOpen={props.isOpen}
             toggle={props.toggle}
-            className="ShowUserAvatar"
+            className="ShowUserAvatarModal"
             contentClassName="Content"
             fade={false}
             fullscreen

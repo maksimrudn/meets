@@ -23,7 +23,7 @@ import learningService from '../../../api/LearningService';
 import { Learning } from '../../../contracts/learning/Learning';
 import CalendarAltIcon from '../../../icons/CalendarAltIcon';
 import MenuCloseIcon from '../../../icons/MenuCloseIcon';
-import ConfirmationModal from './ConfirmationModal';
+import ConfirmationModal from '../../ConfirmationModal';
 import LearningEditorModal from '../learning/LearningEditorModal';
 import { Work } from '../../../contracts/work/Work';
 import workService from '../../../api/WorkService';

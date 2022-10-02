@@ -11,7 +11,7 @@ import './ProfileSettings.scss';
 import ProfileSettingsDTO from '../../contracts/user/ProfileSettingsDTO';
 import EditProfileSettingsDTO from '../../contracts/user/EditProfileSettingsDTO';
 import accountService from '../../api/AccountService';
-import ConfirmationModal from '../../modules/entities/user/ConfirmationModal';
+import ConfirmationModal from '../../modules/ConfirmationModal';
 import { connect } from 'react-redux';
 import mapStateToProps from '../../store/mapStateToProps';
 import mapDispatchToProps from '../../store/mapDispatchToProps';
