@@ -9,9 +9,6 @@ import EmptyAvatarIcon from '../../icons/EmptyAvatarIcon';
 import GoBackIcon from '../../icons/GoBackIcon';
 import MeetingIcon from '../../icons/MeetingIcon';
 import SwiperTabs from '../../modules/tabs/SwiperTabs';
-import mapDispatchToProps from '../../store/mapDispatchToProps';
-import mapStateToProps from '../../store/mapStateToProps';
-import { connect } from 'react-redux';
 import moment from 'moment';
 
 import './MeetingList.scss';
@@ -20,13 +17,15 @@ import CalendarAltIcon from '../../icons/CalendarAltIcon';
 import CommentIcon from '../../icons/CommentIcon';
 import { MeetingListTabs } from '../../common/MeetingListTabs';
 import { MeetingStatus, MeetingStatusItems } from '../../common/MeetingStatus';
+import useCurrentUser from '../../hooks/useCurrentUser';
 
 interface IMeetingsListProps {
-    userInfo: UserAuthInfo
 }
 
 function MeetingList(props: IMeetingsListProps) {
     const history = useHistory();
+
+    const currnetUser = useCurrentUser();
 
     const [selectedTab, setSelectedTab] = useState<string>(MeetingListTabs.Inbox);
     const [meetings, setMeetings] = useState<MeetingDTO[]>([]);
@@ -61,7 +60,7 @@ function MeetingList(props: IMeetingsListProps) {
                 {(() => {
                     switch (selectedTab) {
                         case MeetingListTabs.Outbox:
-                            return meetings && meetings.filter((item: MeetingDTO) => item.ownerId === props.userInfo.user.id).map((item: MeetingDTO) =>
+                            return meetings && meetings.filter((item: MeetingDTO) => item.ownerId === currnetUser.userId).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.target.avatar
@@ -104,7 +103,7 @@ function MeetingList(props: IMeetingsListProps) {
                                 </div>
                             );
                         case MeetingListTabs.Inbox:
-                            return meetings && meetings.filter((item: MeetingDTO) => item.targetId === props.userInfo.user.id).map((item: MeetingDTO) =>
+                            return meetings && meetings.filter((item: MeetingDTO) => item.targetId === currnetUser.userId).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.owner.avatar
@@ -154,4 +153,4 @@ function MeetingList(props: IMeetingsListProps) {
     );
 }
 
-export default connect(mapStateToProps("MeetingList"), mapDispatchToProps("MeetingList"))(MeetingList);
+export default MeetingList;

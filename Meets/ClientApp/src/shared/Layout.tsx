@@ -1,7 +1,7 @@
 ﻿import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import mapStateToProps from '../store/mapStateToProps';
 import mapDispatchToProps from '../store/mapDispatchToProps';
 
@@ -39,24 +39,23 @@ import Meeting from '../pages/meeting/Meeting';
 import NotificationList from '../pages/notifications/NotificationList';
 import NotificationDTO from '../contracts/notifications/NotificationDTO';
 import notificationService from '../api/NotificationService';
+import { RootState, useAppDispatch } from '../store/createStore';
+import { getIsLoggedIn } from '../store/currentUser';
 
 
-interface LayoutProps {
-    userInfo: UserAuthInfo,
-    UpdateUserInfo: any
-}
 
-function Layout(props: LayoutProps) {
+function Layout() {
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+    const isLoggedIn = useSelector(getIsLoggedIn());
+    const dispatch = useAppDispatch();
+
     const [isOpenMeeting, setIsOpenMeeting] = useState(false);
-    //const meetingPage = useRouteMatch({ path: Routes.Meeting }); //{ path: Routes.Meeting }
-    //const meetingPage = matchPath('/meeting/', { path: Routes.Meeting, exact: true });
 
     const [selectedMenuItem, setSelectedMenuItem] = useState(BottomMenuItems.UserSearch);
-    const [leftMenuIsOpen, setLeftMenuIsOpen] = useState(false);
 
-    const [notifications, setNotifications] = useState<NotificationDTO[]>([]);
-
-    useEffect(() => { updateNotifications(); }, []);
+    
+    
 
     const selectMenuItemOnClick = (item: string) => {
         //const item = e.target.dataset.item;
@@ -77,14 +76,6 @@ function Layout(props: LayoutProps) {
 
     }
 
-    const updateNotifications = () => {
-        try {
-            let res = notificationService.getList();
-            setNotifications(res);
-        } catch (err) {
-            console.error(err);
-        }
-    }
 
     return (
         <Router basename="/">
@@ -124,40 +115,34 @@ function Layout(props: LayoutProps) {
 
 
                                         <Route exact path="/" render={(routeProps) => {
-                                            return props.userInfo.isAuthenticated ? <UserSearch userInfo={props.userInfo} /> : <Login />
+                                            return isLoggedIn ? <UserSearch userInfo={currentUser.user} /> : <Login />
                                         }} />
 
 
-                                        {props.userInfo.isAuthenticated &&
+                                        {isLoggedIn &&
                                             <>
                                                 <Route path={Routes.UserCard} render={(routeProps) => (
                                                     <UserCard
-                                                        userInfo={props.userInfo}
-                                                        //updateNotifications={updateNotifications}
                                                         {...routeProps}
                                                     />
 
                                                 )}></Route>
-                                                <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings userInfo={props.userInfo} {...props} />}></Route>
+                                                <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings {...props} />}></Route>
                                                 <Route path="/user/Search">
-                                                    <UserSearch userInfo={props.userInfo} />
+                                                    <UserSearch  />
                                                 </Route>
                                                 <Route path={Routes.UserChangePassword} render={props => <UserChangePassword {...props} />} />
-                                                <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail userInfo={props.userInfo} />} />
-                                                <Route path={Routes.MeetingList} render={(props) => <MeetingList userInfo={props.userInfo} {...props} />} />
+                                                <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail />} />
+                                                <Route path={Routes.MeetingList} render={(props) => <MeetingList {...props} />} />
                                                 <Route path={Routes.Meeting} render={(routeProps) => (
                                                     <Meeting
-                                                        userInfo={props.userInfo}
+                                                        
                                                         setIsOpenMeeting={setIsOpenMeeting}
-                                                        //updateNotifications={updateNotifications}
                                                         {...routeProps}
                                                     />
                                                 )} />
                                                 <Route path={Routes.Notifications} render={() => (
-                                                    <NotificationList
-                                                        userInfo={props.userInfo}
-                                                        notifications={notifications}
-                                                    />
+                                                    <NotificationList />
                                                 )} />
                                                 <Route path={Routes.Error} render={() => <Error />} />
                                             </>
@@ -166,12 +151,10 @@ function Layout(props: LayoutProps) {
                                 </div>
                             </div>
 
-                            {(props.userInfo.isAuthenticated && !isOpenMeeting) &&
+                            {(isLoggedIn && !isOpenMeeting) &&
                                 <BottomMenu
-                                    userInfo={props.userInfo}
                                     selectedMenuItem={selectedMenuItem}
                                     selectMenuItemOnClick={selectMenuItemOnClick}
-                                //openLeftMenu={openLeftMenu}
                                 />
                             }
 
@@ -184,4 +167,4 @@ function Layout(props: LayoutProps) {
 
 }
 
-export default connect(mapStateToProps("Layout"), mapDispatchToProps("Layout"))(Layout);
+export default Layout;
