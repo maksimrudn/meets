@@ -1,25 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import { Provider } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
-
-import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-//import { history } from './store/history';
-
-import initialState from './store/initialState';
-import mySaga from './store/sagas';
-
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import App from './App';
-
-
-
-import configureStore from './store/configureStore';
-
-//import registerServiceWorker from './registerServiceWorker';
-
+import { createStore } from './store/createStore';
 
 require('dotenv').config();
 
@@ -27,31 +12,17 @@ const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href') as
 export const history = createBrowserHistory({ basename: baseUrl });
 const rootElement = document.getElementById('root');
 
-const sagaMiddleware = createSagaMiddleware();
-const store = configureStore(history, initialState, sagaMiddleware);
 
-sagaMiddleware.run(mySaga);
+const store = createStore();
 
 
-//ReactDOM.render(
-//    <Provider store={store}>
-//        <ConnectedRouter history={history}>
-//            <App />
-//        </ConnectedRouter>
-//    </Provider>,
-//    rootElement);
 
 ReactDOM.render(
     <Provider store={store}>
+        <Router history={history}>
             <App />
+        </Router>
     </Provider>,
-    rootElement);
+    rootElement
+);
 
-// Uncomment the line above that imports the registerServiceWorker function
-// and the line below to register the generated service worker.
-// By default create-react-app includes a service worker to improve the
-// performance of the application by caching static assets. This service
-// worker can interfere with the Identity UI, so it is
-// disabled by default when Identity is being used.
-//
-////registerServiceWorker();

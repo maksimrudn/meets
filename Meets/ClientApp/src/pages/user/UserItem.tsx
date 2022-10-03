@@ -16,7 +16,7 @@ import UserAuthInfo from '../../contracts/UserAuthInfo';
 import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
 
 interface UserItemProps {
-    userInfo: UserAuthInfo
+    currentUserId: number
     user: any
 }
 
@@ -71,7 +71,7 @@ export default function UserItem(props: UserItemProps) {
                         </div>
                     </div>
 
-                    {props.user.id != props.userInfo.user.id &&
+                    {props.user.id != props.currentUserId &&
                         <button className="Meet btn" type="button" onClick={meetRequestModalToggle} disabled={props.user.isInvited}>
                             <span className="Icon"><CoffeeIcon /></span>
                             <span className="Text">Пригласить</span>

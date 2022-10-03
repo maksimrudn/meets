@@ -25,7 +25,7 @@ import { AddressSuggestions } from 'react-dadata';
 
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css'
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import mapStateToProps from '../../store/mapStateToProps';
 import mapDispatchToProps from '../../store/mapDispatchToProps';
 import UserEditorModal from '../../modules/entities/user/UserEditorModal';
@@ -63,23 +63,24 @@ import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
 import CoffeeIcon from '../../icons/CoffeeIcon';
 import UserAuthInfo from '../../contracts/UserAuthInfo';
 import WaitingScreen from '../common/WaitingScreen';
-import { UpdateUserInfo } from '../../store/appActions';
+import { RootState, useAppDispatch } from '../../store/createStore';
+import { updateCurrentUser } from '../../store/currentUser';
 
-interface UserCardProps {
-    userInfo: UserAuthInfo,
-    UpdateUserInfo: any
-    //updateNotifications: () => void
-}
+
 
 interface UserCardParams {
     id?: string
 }
 
-function UserCard(props: UserCardProps): JSX.Element {
+function UserCard(): JSX.Element {
 
     let params = useParams<UserCardParams>();
 
     const history = useHistory();
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+    const dispatch = useAppDispatch();
+
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -184,7 +185,7 @@ function UserCard(props: UserCardProps): JSX.Element {
             userService.edit(userData);
             update();
 
-            props.UpdateUserInfo(userService.getAuthInfo());
+            dispatch(updateCurrentUser);
         }
         catch (err: any) {
             NotificationManager.error(err.message, 0);
@@ -254,7 +255,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                                 </span>
 
                                 <span className="col-2 d-flex justify-content-end">
-                                    {(props.userInfo.user.id === userCard.id) &&
+                                    {(currentUser.userId === userCard.id) &&
                                         <span className="text-white" role="button" onClick={() => onClickEditIcon(UserFieldNames.FullName)}>
                                             <EditIconSvg />
                                         </span>
@@ -287,7 +288,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             }
 
                             {(() => {
-                                if (props.userInfo.user.id !== userCard.id) {
+                                if (currentUser.userId !== userCard.id) {
                                     if (userCard.distance) {
                                         return (
                                             <div className="d-flex justify-content-center mb-2">
@@ -305,7 +306,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                                 }
                             })()}
 
-                            {(props.userInfo.user.id !== userCard.id)
+                            {(currentUser.user?.user?.id !== userCard.id)
                                 ? (<div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
                                         <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={userCard.isInvited}>
@@ -357,7 +358,7 @@ function UserCard(props: UserCardProps): JSX.Element {
                             <div className="Tags">
                                 <div className="d-flex justify-content-start align-items-center ms-2 my-3">
                                     <span className="fs-4 me-3">Тэги</span>
-                                    {(props.userInfo.user.id === userCard.id) &&
+                                    {(currentUser.user?.user?.id === userCard.id) &&
                                         <span className="IconEdit" role="button" onClick={() => onClickEditIcon(UserFieldNames.Tags)}><EditIcon /></span>
                                     }
                                 </div>
@@ -371,7 +372,6 @@ function UserCard(props: UserCardProps): JSX.Element {
                         </div>
 
                         <UserCardTabs
-                            userInfo={props.userInfo}
                             user={userCard}
                             tabs={UserCardTabsNames}
                             selectedTab={selectedTab}
@@ -400,7 +400,6 @@ function UserCard(props: UserCardProps): JSX.Element {
                                 toggle={toggleUserCardContextMenuModal}
                                 
                                 user={userCard}
-                                userInfo={props.userInfo}
                                 update={update}
 
                                 onSaveChanges={onSaveChanges}
@@ -417,7 +416,6 @@ function UserCard(props: UserCardProps): JSX.Element {
                                 toggle={toggleMeetRequestModal}
                                 user={userCard}
                                 updateUser={update}
-                                userInfo={props.userInfo}
                             //updateNotifications={props.updateNotifications}
                             />
                         }
@@ -433,4 +431,4 @@ function UserCard(props: UserCardProps): JSX.Element {
 
 }
 
-export default connect(mapStateToProps("UserCard"), mapDispatchToProps("UserCard"))(UserCard);
+export default UserCard;
