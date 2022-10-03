@@ -5,9 +5,10 @@ import UserCardResponse from "../contracts/user/UserCardResponse";
 import ProfileSettingsDTO from "../contracts/user/ProfileSettingsDTO";
 import EditProfileSettingsDTO from "../contracts/user/EditProfileSettingsDTO";
 import ChangePasswordRequest from "../contracts/user/ChangePasswordRequest";
+import UserAuthInfo from "../contracts/UserAuthInfo";
 
 class UserService extends BaseService {
-    getAuthInfo() {
+    getAuthInfo(): UserAuthInfo {
         var res;
 
         res = this.executeRequestXHR('/api/user/GetAuthInfo', 'post', null);

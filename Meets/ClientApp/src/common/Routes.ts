@@ -18,6 +18,8 @@
 
     Notifications: '/notifications',
 
+    TimeTable: '/timetable',
+
     Error: "/error",
 }
 

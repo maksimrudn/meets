@@ -43,7 +43,6 @@ interface ILocationState{
 }
 
 interface IMeetingProps {
-    userInfo: UserAuthInfo,
     setIsOpenMeeting: any,
     location: Location<ILocationState>
     //updateNotifications: () => void

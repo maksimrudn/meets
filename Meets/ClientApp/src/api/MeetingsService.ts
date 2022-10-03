@@ -1,5 +1,6 @@
 ﻿import ByUserIdRequest from "../contracts/ByUserIdRequest";
 import GetMeetingDTO from "../contracts/meeting/GetMeetingDTO";
+import GetTimeTableDTO from "../contracts/meeting/GetTimeTableDTO";
 import MeetingDTO from "../contracts/meeting/MeetingDTO";
 import MeetingRequest from "../contracts/meeting/MeetingRequest";
 import BaseService from "./BaseService";
@@ -12,6 +13,12 @@ class MeetingsService extends BaseService {
     getList(): MeetingDTO[] {
         let res: any = null;
         res = this.executeRequestXHR('/api/meetings/getlist', 'post');
+        return res;
+    }
+
+    getTimeTable(): GetTimeTableDTO[] {
+        let res: any = null;
+        res = this.executeRequestXHR('/api/meetings/gettimetable', 'post');
         return res;
     }
 
