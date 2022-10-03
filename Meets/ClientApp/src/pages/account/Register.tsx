@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import mapDispatchToProps from '../../store/mapDispatchToProps';
 import mapStateToProps from '../../store/mapStateToProps';
 import * as Cookies from 'js-cookie';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import accountService from '../../api/AccountService';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { useForm } from 'react-hook-form';
@@ -15,12 +15,17 @@ import MenuCloseIcon from '../../icons/MenuCloseIcon';
 
 import './Register.scss';
 import Routes from '../../common/Routes';
+import { RootState, useAppDispatch } from '../../store/createStore';
+import { updateCurrentUser } from '../../store/currentUser';
 
 
 
 function Register(props) {
     // Todo: перевести проверки на https://react-hook-form.com/
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+    const dispatch = useAppDispatch();
 
     let [fullName, setFullName] = useState('');
     let [email, setEmail] = useState('');
@@ -37,8 +42,7 @@ function Register(props) {
             var jwtResponse = accountService.register(fullName, email, password, confirmPassword);
             Cookies.set('access_token', jwtResponse.accessToken);
 
-            let userInfo = userService.getAuthInfo();
-            props.UpdateUserInfo(userInfo);
+            dispatch(updateCurrentUser);
 
             history.push('/account/confirmEmailMessage');
         }
@@ -167,4 +171,4 @@ function Register(props) {
     );
 }
 
-export default connect(mapStateToProps("Register"), mapDispatchToProps("Register"))(Register);
+export default Register;

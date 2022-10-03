@@ -5,20 +5,23 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import 'react-notifications/lib/notifications.css';
 import accountService from '../../api/AccountService';
 import * as Cookies from 'js-cookie';
-import { connect } from 'react-redux';
-import mapDispatchToProps from '../../store/mapDispatchToProps';
-import mapStateToProps from '../../store/mapStateToProps';
-import userService from '../../api/UserService';
+import { connect, useSelector } from 'react-redux';
 import MenuCloseIcon from '../../icons/MenuCloseIcon';
 import UserOutlineIcon from '../../icons/UserOutlineIcon';
 import LockOutlineIcon from '../../icons/LockOutlineIcon';
 
 
 import './Login.scss';
+import { RootState, useAppDispatch } from '../../store/createStore';
+import { getIsLoggedIn, updateCurrentUser } from '../../store/currentUser';
 
 
 
 function Login(props) {
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+    
+    const dispatch = useAppDispatch();
 
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
@@ -34,9 +37,7 @@ function Login(props) {
             var jwtResponse = accountService.login(email, password);
             Cookies.set('access_token', jwtResponse.accessToken);
 
-            let userInfo = userService.getAuthInfo();
-            props.UpdateUserInfo(userInfo);
-
+            dispatch(updateCurrentUser());
 
             history.push('/');
         }
@@ -93,4 +94,4 @@ function Login(props) {
     );
 }
 
-export default connect(mapStateToProps("Login"), mapDispatchToProps("Login"))(Login);
+export default Login;
