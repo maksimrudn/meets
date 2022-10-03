@@ -11,12 +11,9 @@ import InfoIcon from '../../icons/InfoIcon';
 import Routes from '../../common/Routes';
 import notificationService from '../../api/NotificationService';
 
-interface INotificationListProps {
-    userInfo: UserAuthInfo
-    notifications: NotificationDTO[]
-}
 
-export default function NotificationList(props: INotificationListProps) {
+
+export default function NotificationList() {
     const history = useHistory();
 
     const [notifications, setNotifications] = useState<NotificationDTO[]>([]);

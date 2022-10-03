@@ -1,0 +1,73 @@
+﻿.TimeTable {
+    background-color: #fff;
+    min-height: calc(90vh + 50px);
+    padding: 24px;
+
+    .Header {
+        height: 80px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        margin-right: 48px;
+
+        @media only screen and (max-width: 415px) {
+            margin-right: 0;
+        }
+
+        .Title {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .GoBackBtn {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            border-radius: 50%;
+            background-color: #fff;
+            cursor: pointer;
+            box-shadow: 0 2px 1px 1px #000;
+        }
+    }
+
+    .Content {
+        .DateBlock {
+            margin-bottom: 2rem;
+
+            .Title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: .5rem;
+            }
+
+            .Item {
+                .card {
+                    border: 2px solid #000;
+                    border-radius: 1rem;
+
+                    .Name {
+                        font-size: 27px;
+                        font-weight: bold;
+                        color: #000;
+                    }
+
+                    .Time {
+                        font-size: 44px;
+                        font-weight: bold;
+                        color: #000;
+                    }
+
+                    .Place {
+                        font-family: "Montserrat-Regular", sans-serif;
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+    }
+}

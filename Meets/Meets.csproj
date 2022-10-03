@@ -75,6 +75,8 @@
 
     <None Remove="ClientApp\src\contracts\meeting\GetMeetingDTO.ts" />
 
+    <None Remove="ClientApp\src\contracts\meeting\GetTimeTableDTO.ts" />
+
     <None Remove="ClientApp\src\contracts\meeting\MeetingDTO.ts" />
 
     <None Remove="ClientApp\src\contracts\meeting\MeetingRequest.ts" />
@@ -182,12 +184,14 @@
     <None Remove="ClientApp\src\modules\tabs\SwiperTabs.tsx" />
     <None Remove="ClientApp\src\pages\meeting\Meeting.tsx" />
     <None Remove="ClientApp\src\pages\meeting\MeetingList.tsx" />
+    <None Remove="ClientApp\src\pages\meeting\TimeTable.tsx" />
     <None Remove="ClientApp\src\pages\notifications\NotificationList.tsx" />
     <None Remove="ClientApp\src\shared\BottomMenu.tsx" />
 
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
     <None Remove="ClientApp\src\modules\entities\event\Date.tsx" />
+    <None Remove="ClientApp\src\store\TimeTable.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -232,6 +236,8 @@
     <TypeScriptCompile Include="ClientApp\src\contracts\learning\Learning.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\meeting\GetMeetingDTO.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\contracts\meeting\GetTimeTableDTO.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\meeting\MeetingDTO.ts" />
 
@@ -410,6 +416,8 @@
 
     <TypeScriptCompile Include="ClientApp\src\pages\meeting\MeetingList.tsx" />
 
+    <TypeScriptCompile Include="ClientApp\src\pages\meeting\TimeTable.tsx" />
+
     <TypeScriptCompile Include="ClientApp\src\pages\notifications\NotificationList.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\shared\BottomMenu.tsx" />
@@ -417,6 +425,7 @@
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\Date.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\store\TimeTable.ts" />
   </ItemGroup>
 
 	<!--<ItemGroup>

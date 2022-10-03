@@ -110,6 +110,34 @@ namespace Meets.Controllers.api
 
         [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
+        public async Task<List<GetTimeTableDTO>> GetTimeTable()
+        {
+            var meetings = await _db.Meetings
+                .Where(x => x.OwnerId == User.GetUserId() ||
+                    x.TargetId == User.GetUserId() &&
+                    x.Status != Domain.MeetingStatus.Canceled).ToListAsync();
+            
+            List<GetTimeTableDTO> list = new List<GetTimeTableDTO>();
+
+            foreach (var meet in meetings)
+            {
+                var dto = new GetTimeTableDTO();
+
+                dto.Id = meet.Id;
+                dto.MeetingDate = meet.MeetingDate;
+                dto.Place = meet.Place;
+                dto.MeetingId = meet.Id;
+                dto.CompanionId = meet.TargetId == User.GetUserId() ? meet.OwnerId : meet.TargetId;
+                dto.Companion = meet.TargetId == User.GetUserId() ? meet.Owner : meet.Target;
+
+                list.Add(dto);
+            }
+
+            return list;
+        }
+
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<GetMeetingDTO>> Get(ByMeetingIdRequest request)
         {
             var meeting = await _db.Meetings.FindAsync(request.MeetingId);

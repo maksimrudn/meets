@@ -20,6 +20,7 @@ import './MeetRequestModal.scss';
 import UserDTO from '../../../contracts/user/UserDTO';
 import MapSelectorModal from './MapSelectorModal';
 import UserAuthInfo from '../../../contracts/UserAuthInfo';
+import useStoreCurrentUser from '../../../hooks/useCurrentUser';
 
 
 
@@ -28,7 +29,6 @@ interface IMeetRequestModalProps {
     toggle: () => void
 
     user: UserDTO
-    userInfo: UserAuthInfo
 
     updateUser: () => void
 
@@ -40,6 +40,8 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
 
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
+
+    const currentUser = useStoreCurrentUser();
 
     const [meetingRequest, setMeetingRequest] = useState<MeetingRequest>(MeetingRequest.create(props.user));
 
@@ -200,7 +202,6 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                     isOpen={isOpenMapSelectModal}
                     toggle={mapSelectModalToggle}
                     setMeetingAddress={(value)=>setMeetingRequest({ ...meetingRequest, place: value  })}
-                    userInfo={props.userInfo}
                 />
             </ModalBody>
 

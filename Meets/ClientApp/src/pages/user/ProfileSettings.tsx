@@ -12,23 +12,23 @@ import ProfileSettingsDTO from '../../contracts/user/ProfileSettingsDTO';
 import EditProfileSettingsDTO from '../../contracts/user/EditProfileSettingsDTO';
 import accountService from '../../api/AccountService';
 import ConfirmationModal from '../../modules/ConfirmationModal';
-import { connect } from 'react-redux';
-import mapStateToProps from '../../store/mapStateToProps';
-import mapDispatchToProps from '../../store/mapDispatchToProps';
 import UserAuthInfo from '../../contracts/UserAuthInfo';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from '../../store/createStore';
+import { updateCurrentUser } from '../../store/currentUser';
 
-interface IProfileSettingsProps {
-    userInfo: UserAuthInfo,
-    UpdateUserInfo: any
-}
+
 
 interface IProfileSettingsParams {
     id?: string
 }
 
-function ProfileSettings(props: IProfileSettingsProps) {
+function ProfileSettings() {
     let history = useHistory();
     let params = useParams<IProfileSettingsParams>();
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+    const dispatch = useAppDispatch();
 
     const [profile, setProfile] = useState<ProfileSettingsDTO>(new ProfileSettingsDTO());
 
@@ -67,13 +67,13 @@ function ProfileSettings(props: IProfileSettingsProps) {
 
     const LogOut = () => {
         Cookies.remove('access_token');
-        let userInfo = userService.getAuthInfo();
-        props.UpdateUserInfo(userInfo);
+
+        dispatch(updateCurrentUser);
 
         history.push('/account/login');
     }
 
-    const removeAccountModalToggle = () => {
+    const toggleRemoveAccountModal = () => {
         setIsOpenRemoveAccountModal(!isOpenRemoveAccountModal);
     }
 
@@ -214,11 +214,11 @@ function ProfileSettings(props: IProfileSettingsProps) {
 
             <button type="button" className="LogOut btn mb-5" onClick={LogOut}>Выйти</button>
 
-            <button type="button" className="RemoveAccount btn mb-5" onClick={removeAccountModalToggle}>Удалить аккаунт</button>
+            <button type="button" className="RemoveAccount btn mb-5" onClick={toggleRemoveAccountModal}>Удалить аккаунт</button>
 
             <ConfirmationModal
                 isOpen={isOpenRemoveAccountModal}
-                toggle={removeAccountModalToggle}
+                toggle={toggleRemoveAccountModal}
                 message='Уверены что хотите удалить аккаунт?'
                 confirmAction={removeAccount}
             />
@@ -227,4 +227,4 @@ function ProfileSettings(props: IProfileSettingsProps) {
     );
 }
 
-export default connect(mapStateToProps('ProfileSettings'), mapDispatchToProps('ProfileSettings'))(ProfileSettings);
+export default ProfileSettings;

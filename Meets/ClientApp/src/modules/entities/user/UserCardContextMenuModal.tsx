@@ -3,6 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import userService from '../../../api/UserService';
 import { UserFieldNames } from '../../../common/UserFieldNames';
 import { getAllowedPhotoFilesByMask } from '../../../common/Utils';
+import useStoreCurrentUser from '../../../hooks/useCurrentUser';
 import ConfirmationModal from '../../ConfirmationModal';
 import ShowUserAvatarModal from './ShowUserAvatarModal';
 import './UserCardContextMenuModal.scss';
@@ -13,7 +14,6 @@ interface UserCardContextMenuModalProps {
     toggle: any
 
     user: any
-    userInfo: any
 
     onSaveChanges: any
 
@@ -21,6 +21,8 @@ interface UserCardContextMenuModalProps {
 }
 
 export default function UserCardContextMenuModal(props: UserCardContextMenuModalProps) {
+
+    const cuStore = useStoreCurrentUser();
 
     const [isOpenRemoveAvatarModal, setIsOpenRemoveAvatarModal] = useState(false);
     const [isOpenShowAvatarModal, setIsShowAvatar] = useState(false);
@@ -69,7 +71,7 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
             >
                 <div className="d-flex flex-column justify-content-center">
                     <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={props.user.avatar ? false : true}>Открыть фото</button>
-                    {props.user.id === props.userInfo.user.id &&
+                    {props.user.id === cuStore.user.user.id &&
                         <>
                             <div className="FileUpload">
                                 <label className="Action btn mb-3" htmlFor="fileupload">Изменить фото</label>
