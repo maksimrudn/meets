@@ -1,7 +1,6 @@
-﻿import IUserAuthInfo from "./IUserAuthInfo"
-import UserDTO from "./user/UserDTO"
+﻿import UserDTO from "./user/UserDTO"
 
-export default class UserAuthInfo implements IUserAuthInfo {
+export default class IUserAuthInfo {
     userName: string = ''
     user: UserDTO
     isAuthenticated: boolean = false

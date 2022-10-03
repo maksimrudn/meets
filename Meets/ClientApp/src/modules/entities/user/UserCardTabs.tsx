@@ -36,6 +36,8 @@ import ActivityEditorModal from '../activity/ActivityEditorModal';
 import { Fact } from '../../../contracts/fact/Fact';
 import factService from '../../../api/FactService';
 import FactEditorModal from '../fact/FactEditorModal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store/createStore';
 
 
 
@@ -47,7 +49,6 @@ interface UserCardTabsProps {
     setSelectedTab: any
 
     user: any
-    userInfo: any
     onClickEditIcon: any
 
 
@@ -60,6 +61,9 @@ interface UserCardTabsProps {
 }
 
 export default function UserCardTabs(props: UserCardTabsProps) {
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+
     const [isOpenLearningEditorModal, setIsLearningEditorModal] = useState(false);
     const [isOpenWorkEditorModal, setIsWorkEditorModal] = useState(false);
     const [isOpenActivityEditorModal, setIsActivityEditorModal] = useState(false);
@@ -224,7 +228,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                     selectedTab={props.selectedTab}
                     setSelectedTab={props.setSelectedTab}
                     user={props.user}
-                    userInfo={props.userInfo}
+                    userInfo={currentUser.user}
                 />
             </div>
 
@@ -236,8 +240,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 <div className="Main mb-2">
 
                         <div className="d-flex justify-content-start mb-5">
-                            <span className="fs-5 me-4">{props.user.description || 'О себе ничего не указано'}</span>
-                            {(props.userInfo.user.id === props.user.id) &&
+                                        <span className="fs-5 me-4">{props.user.description || 'О себе ничего не указано'}</span>
+                                        {(currentUser.userId === props.user.id) &&
                                 <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Description)}><EditIcon /></span>
                             }
                         </div>
@@ -247,7 +251,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                             <BirthDateIconSvg />
                                         </span>
                                         <span className="fs-5 me-4">{props.user.birthDate && (moment().diff(moment(props.user.birthDate), 'years')) + ' лет' || 'не указано'}</span>
-                                        {(props.userInfo.user.id === props.user.id) &&
+                                        {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.BirthDate)}><EditIcon /></span>
                                         }
                                     </div>
@@ -259,7 +263,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                             </svg>
                                         </span>
                                         <span className="fs-5 me-4">{props.user.city || 'не указано'}</span>
-                                        {(props.userInfo.user.id === props.user.id) &&
+                                        {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.City)}><EditIcon /></span>
                                         }
                                     </div>
@@ -269,7 +273,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                             <GrowthIconSvg />
                                         </span>
                                         <span className="fs-5 me-4">{props.user.growth ? `${props.user.growth} см` : 'не указано'}</span>
-                                        {(props.userInfo.user.id === props.user.id) &&
+                                        {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Growth)}><EditIcon /></span>
                                         }
                                     </div>
@@ -279,7 +283,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                             <WeightIconSvg />
                                         </span>
                                         <span className="fs-5 me-4">{props.user.weight ? `${props.user.weight} кг` : 'не указано'}</span>
-                                        {(props.userInfo.user.id === props.user.id) &&
+                                        {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Weight)}><EditIcon /></span>
                                         }
                                     </div>
@@ -290,7 +294,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                             </div>
                         );
                     case props.tabs.Learning:
-                        if (props.user.id !== props.userInfo.user.id && !props.learnings?.length) return null;
+                        if (props.user.id !== currentUser.userId && !props.learnings?.length) return null;
                         return (
                             <div className="TabLearning">
                                 <div className="Desc">Пройденные учебные курсы и события</div>
@@ -308,7 +312,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                     }
                                                 </div>
                                                 <div className="d-flex align-items-center">
-                                                    {(props.userInfo.user.id === props.user.id) &&
+                                                    {(currentUser.userId === props.user.id) &&
                                                         <>
                                                             <span className="Edit me-3" role="button" onClick={() => editLearningOnClick(learning.id)}><EditIcon /></span>
                                                             <span className="Remove" role="button" onClick={() => removeLearningOnClick(learning.id)}><MenuCloseIcon /></span>
@@ -323,7 +327,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === props.userInfo.user.id &&
+                                {props.user.id === currentUser.userId &&
                                     /*<div className="Actions">*/
                                         <span className="Button" onClick={() => learningEditorModalToggler()}><PlusIcon /></span>
                                     /*</div>*/
@@ -331,7 +335,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                             </div>
                         );
                     case props.tabs.Work:
-                        if (props.user.id !== props.userInfo.user.id && !props.works?.length) return null;
+                        if (props.user.id !== currentUser.userId && !props.works?.length) return null;
                         return (
                             <div className="TabWork">
                                 <div className="Desc">Места работы и другой занятости</div>
@@ -349,7 +353,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                     }
                                                 </div>
                                                 <div className="d-flex align-items-center">
-                                                    {(props.userInfo.user.id === props.user.id) &&
+                                                    {(currentUser.userId === props.user.id) &&
                                                         <>
                                                             <span className="Edit me-3" role="button" onClick={() => editWorkOnClick(work.id)}><EditIcon /></span>
                                                             <span className="Remove" role="button" onClick={() => removeWorkOnClick(work.id)}><MenuCloseIcon /></span>
@@ -370,7 +374,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === props.userInfo.user.id &&
+                                {props.user.id === currentUser.userId &&
                                     /*<div className="Actions">*/
                                     <span className="Button" onClick={() => workEditorModalToggler()}><PlusIcon /></span>
                                     /*</div>*/
@@ -378,7 +382,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                             </div>
                         );
                     case props.tabs.Activity:
-                        if (props.user.id !== props.userInfo.user.id && !props.activities?.length) return null;
+                        if (props.user.id !== currentUser.userId && !props.activities?.length) return null;
                         return (
                             <div className="TabActivity">
                                 <div className="Desc">Хобби, увлечения и другие дела, которым периодически уделяется время</div>
@@ -388,7 +392,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <div className="Header">
                                             <div className={'d-flex justify-content-end'}>
                                                 <div className="d-flex align-items-center">
-                                                    {(props.userInfo.user.id === props.user.id) &&
+                                                    {(currentUser.userId === props.user.id) &&
                                                         <>
                                                             <span className="Edit me-3" role="button" onClick={() => editActivityOnClick(activity.id)}><EditIcon /></span>
                                                             <span className="Remove" role="button" onClick={() => removeActivityOnClick(activity.id)}><MenuCloseIcon /></span>
@@ -403,7 +407,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === props.userInfo.user.id &&
+                                {props.user.id === currentUser.userId &&
                                     /* <div className="Actions">*/
                                     <span className="Button" onClick={() => activityEditorModalToggler()}><PlusIcon /></span>
                                    /* </div>*/
@@ -411,7 +415,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                             </div>
                         );
                     case props.tabs.Facts:
-                        if (props.user.id !== props.userInfo.user.id && !props.facts?.length) return null;
+                        if (props.user.id !== currentUser.userId && !props.facts?.length) return null;
                         return (
                             <div className="TabFacts">
                                 <div className="Desc">Любые факты о себе</div>
@@ -421,7 +425,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <div className="Header">
                                             <div className={'d-flex justify-content-end'}>
                                                 <div className="d-flex align-items-center">
-                                                    {(props.userInfo.user.id === props.user.id) &&
+                                                    {(currentUser.userId === props.user.id) &&
                                                         <>
                                                             <span className="Edit me-3" role="button" onClick={() => editFactOnClick(fact.id)}><EditIcon /></span>
                                                             <span className="Remove" role="button" onClick={() => removeFactOnClick(fact.id)}><MenuCloseIcon /></span>
@@ -436,7 +440,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === props.userInfo.user.id &&
+                                {props.user.id === currentUser.userId &&
                                     /*<div className="Actions">*/
                                         <span className="Button" onClick={() => factEditorModalToggler()}><PlusIcon /></span>
                                     /*</div>*/

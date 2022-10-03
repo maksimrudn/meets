@@ -9,6 +9,7 @@ import getPosition from '../../../common/GeoUtils';
 import UserAuthInfo from '../../../contracts/UserAuthInfo';
 
 import './MapSelectorModal.scss';
+import useStoreCurrentUser from '../../../hooks/useCurrentUser';
 
 type MapSelectorModalState = {
     latitude: number,
@@ -19,11 +20,13 @@ type MapSelectorModalState = {
 type IMapSelectorModalProps = {
     isOpen: boolean,
     toggle(): void,
-    setMeetingAddress(address: string):void,
-    userInfo: UserAuthInfo
+    setMeetingAddress(address: string):void
 }
 
 export default function MapSelectorModal(props: IMapSelectorModalProps) {
+
+    const currentUser = useStoreCurrentUser();
+
     const [coords, setCoords] = useState<MapSelectorModalState>({
         latitude: 0,
         longitude: 0,
@@ -104,7 +107,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
                         latitude={coords.latitude}
                         longitude={coords.longitude}
                         onChangeCoordinates={onChangeCoordinatesModal}
-                        userInfo={props.userInfo}
+                        userInfo={currentUser.user }
                     />
                 </div>
 

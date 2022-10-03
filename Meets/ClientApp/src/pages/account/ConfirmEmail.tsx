@@ -3,15 +3,20 @@ import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import accountService from '../../api/AccountService';
 import userService from '../../api/UserService';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import mapDispatchToProps from '../../store/mapDispatchToProps';
 import mapStateToProps from '../../store/mapStateToProps';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Routes  from '../../common/Routes';
+import { RootState, useAppDispatch } from '../../store/createStore';
+import { updateCurrentUser } from '../../store/currentUser';
 
-function ConfirmEmail(props) {
+function ConfirmEmail() {
     let history = useHistory();
     let { search } = useLocation();
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         try {
@@ -23,8 +28,7 @@ function ConfirmEmail(props) {
             let jwtResponse = accountService.confirmEmail(userId, code);
             Cookies.set('access_token', jwtResponse.accessToken);
 
-            let userInfo = userService.getAuthInfo();
-            props.UpdateUserInfo(userInfo);
+            dispatch(updateCurrentUser);
 
             history.push('/account/confirmEmailSuccess');
 
@@ -40,4 +44,4 @@ function ConfirmEmail(props) {
     );
 }
 
-export default connect(mapStateToProps("ConfirmEmail"), mapDispatchToProps("ConfirmEmail"))(ConfirmEmail);;
+export default ConfirmEmail;

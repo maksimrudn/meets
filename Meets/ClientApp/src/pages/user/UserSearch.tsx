@@ -16,16 +16,20 @@ import SlidersIcon from '../../icons/SlidersIcon';
 import { AddressSuggestions } from 'react-dadata';
 import AppConfig from '../../common/AppConfig';
 import UserSearchFilterModal, { IFilter } from '../../modules/entities/user/UserSearchFilterModal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/createStore';
 
 
 
 
 interface UserSearchProps {
-    userInfo: any
+    
 }
 
 export default function UserSearch(props: UserSearchProps) {
     const [isOpenFilterModal, setIsOpenFiterModal] = useState(false);
+
+    const currentUser = useSelector((state: RootState) => state.currentUser);
 
     const [users, setUsers] = useState<any>([]);
     const [filter, setFilter] = useState<IFilter>({
@@ -95,7 +99,7 @@ export default function UserSearch(props: UserSearchProps) {
                     {users?.length && users.map((user: any) =>
                         <UserItem
                             key={user.id}
-                            userInfo={props.userInfo}
+                            currentUserId={currentUser.userId}
                             user={user}
                         />
                     )}

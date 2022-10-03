@@ -8,5 +8,6 @@ export const BottomMenuItems = {
     // ...
     Profie: 'Profile',
     Meetings: 'Meetings',
-    Notifications: 'Notifications'
+    Notifications: 'Notifications',
+    TimeTable: 'TimeTable'
 }
