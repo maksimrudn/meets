@@ -12,7 +12,6 @@ import ProfileSettingsDTO from '../../contracts/user/ProfileSettingsDTO';
 import EditProfileSettingsDTO from '../../contracts/user/EditProfileSettingsDTO';
 import accountService from '../../api/AccountService';
 import ConfirmationModal from '../../modules/ConfirmationModal';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import { updateCurrentUser } from '../../store/currentUser';

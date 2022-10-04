@@ -10,17 +10,9 @@ import { updateCurrentUser } from './store/currentUser';
 
 
 const App = () => {
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
-
-
-    React.useEffect(() => {
-        
-        dispatch(updateCurrentUser());
-    },[]);
 
     return (<>
-        { currentUser.dataLoaded && <Layout />}
+        <Layout />
     </>);
 }
 

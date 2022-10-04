@@ -12,16 +12,15 @@ import CoffeeIcon from '../../icons/CoffeeIcon';
 import JobIcon from '../../icons/JobIcon';
 import CompanyIcon from '../../icons/CompanyIcon';
 import Routes from '../../common/Routes';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
-import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
+import useCurrentUserStore from '../../hooks/useCurrentUserStore';
 
 interface UserItemProps {
-    currentUserId: number
     user: any
 }
 
 export default function UserItem(props: UserItemProps) {
 
+    const currentUser = useCurrentUserStore();
 
     const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
 
@@ -71,7 +70,7 @@ export default function UserItem(props: UserItemProps) {
                         </div>
                     </div>
 
-                    {props.user.id != props.currentUserId &&
+                    {props.user.id != currentUser.id &&
                         <button className="Meet btn" type="button" onClick={meetRequestModalToggle} disabled={props.user.isInvited}>
                             <span className="Icon"><CoffeeIcon /></span>
                             <span className="Text">Пригласить</span>

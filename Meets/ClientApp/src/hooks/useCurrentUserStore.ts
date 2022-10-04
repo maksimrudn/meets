@@ -1,4 +1,4 @@
-﻿import { useSelector } from "react-redux";
+﻿import { useDispatch, useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../store/createStore";
 import { updateCurrentUser, ICurrentUserState } from "../store/currentUser";
 
@@ -7,12 +7,12 @@ interface ICurrentUserStore extends ICurrentUserState {
     update(): void
 }
 
-function useStoreCurrentUser(): ICurrentUserStore {
+function useCurrentUserStore(): ICurrentUserStore {
     const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
     return { ...currentUser, update: () => { dispatch(updateCurrentUser()); } }
 
 }
 
-export default useStoreCurrentUser;
+export default useCurrentUserStore;

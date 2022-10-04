@@ -6,10 +6,9 @@ import 'moment/locale/ru';
 import LocateMapIcon from '../../../icons/LocateMapIcon';
 import YMapsGeoSelector from '../../../modules/geo/YMapsGeoSelector';
 import getPosition from '../../../common/GeoUtils';
-import UserAuthInfo from '../../../contracts/UserAuthInfo';
 
 import './MapSelectorModal.scss';
-import useStoreCurrentUser from '../../../hooks/useCurrentUser';
+import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
 
 type MapSelectorModalState = {
     latitude: number,
@@ -25,7 +24,7 @@ type IMapSelectorModalProps = {
 
 export default function MapSelectorModal(props: IMapSelectorModalProps) {
 
-    const currentUser = useStoreCurrentUser();
+    const currentUser = useCurrentUserStore();
 
     const [coords, setCoords] = useState<MapSelectorModalState>({
         latitude: 0,
@@ -107,7 +106,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
                         latitude={coords.latitude}
                         longitude={coords.longitude}
                         onChangeCoordinates={onChangeCoordinatesModal}
-                        userInfo={currentUser.user }
+                        currentUser={currentUser.user }
                     />
                 </div>
 

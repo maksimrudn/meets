@@ -10,8 +10,9 @@ import UserSearchIconSvg from '../icons/UserSearchIconSvg';
 import ProfileIconSvg from '../icons/ProfileIconSvg';
 import MessageIconSvg from '../icons/MessageIconSvg';
 import Routes from '../common/Routes';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../store/createStore';
+import useCurrentUserStore from '../hooks/useCurrentUserStore';
 
 
 
@@ -23,9 +24,8 @@ interface BottomMenuProps {
 
 export default function BottomMenu(props: BottomMenuProps) {
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
-
+    const currentUser = useCurrentUserStore();
+    currentUser.update();
 
     return (
         <div className="BottomMenu position-relative" >
@@ -57,7 +57,7 @@ export default function BottomMenu(props: BottomMenuProps) {
                 </span>
 
                 <span className={props.selectedMenuItem === BottomMenuItems.Profie ? "MenuItem active" : "MenuItem"}>
-                    <Link to={Routes.UserCardBuild(currentUser.userId)} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Profie)}>
+                    <Link to={Routes.UserCardBuild(currentUser.id)} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Profie)}>
                         <ProfileIconSvg />
                     </Link>
                 </span>

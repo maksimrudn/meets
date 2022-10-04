@@ -3,7 +3,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import userService from '../../../api/UserService';
 import { UserFieldNames } from '../../../common/UserFieldNames';
 import { getAllowedPhotoFilesByMask } from '../../../common/Utils';
-import useStoreCurrentUser from '../../../hooks/useCurrentUser';
+import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
 import ConfirmationModal from '../../ConfirmationModal';
 import ShowUserAvatarModal from './ShowUserAvatarModal';
 import './UserCardContextMenuModal.scss';
@@ -22,7 +22,7 @@ interface UserCardContextMenuModalProps {
 
 export default function UserCardContextMenuModal(props: UserCardContextMenuModalProps) {
 
-    const cuStore = useStoreCurrentUser();
+    const cuStore = useCurrentUserStore();
 
     const [isOpenRemoveAvatarModal, setIsOpenRemoveAvatarModal] = useState(false);
     const [isOpenShowAvatarModal, setIsShowAvatar] = useState(false);

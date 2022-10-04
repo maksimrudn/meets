@@ -33,30 +33,22 @@ import Routes from '../common/Routes';
 import ProfileSettings from '../pages/user/ProfileSettings';
 import UserChangePassword from '../pages/user/UserChangePassword';
 import UserConfirmEmail from '../pages/user/UserConfirmEmail';
-import UserAuthInfo from '../contracts/UserAuthInfo';
 import MeetingList from '../pages/meeting/MeetingList';
 import Meeting from '../pages/meeting/Meeting';
 import NotificationList from '../pages/notifications/NotificationList';
-import NotificationDTO from '../contracts/notifications/NotificationDTO';
-import notificationService from '../api/NotificationService';
-import { RootState, useAppDispatch } from '../store/createStore';
-import { getIsLoggedIn } from '../store/currentUser';
 import TimeTable from '../pages/meeting/TimeTable';
+import useAuthStore from '../hooks/useAuthStore';
+import useCurrentUserStore from '../hooks/useCurrentUserStore';
 
 
 
 function Layout() {
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const isLoggedIn = useSelector(getIsLoggedIn());
-    const dispatch = useAppDispatch();
+    const auth = useAuthStore();
 
     const [isOpenMeeting, setIsOpenMeeting] = useState(false);
 
     const [selectedMenuItem, setSelectedMenuItem] = useState(BottomMenuItems.UserSearch);
-
-
-
 
     const selectMenuItemOnClick = (item: string) => {
         //const item = e.target.dataset.item;
@@ -119,23 +111,21 @@ function Layout() {
 
 
                                         <Route exact path="/" render={(routeProps) => {
-                                            return isLoggedIn ? <UserSearch userInfo={currentUser.user} /> : <Login />
+                                            return auth.isSignedIn ? <UserSearch /> : <Login />
                                         }} />
 
 
-                                        {isLoggedIn &&
+                                        {auth.isSignedIn &&
                                             <>
                                                 <Route path={Routes.UserCard} render={(routeProps) => (
-                                                    <UserCard
-                                                        {...routeProps}
-                                                    />
+                                                    <UserCard />
 
                                                 )}></Route>
-                                                <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings {...props} />}></Route>
+                                                <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings  />}></Route>
                                                 <Route path="/user/Search">
                                                     <UserSearch />
                                                 </Route>
-                                                <Route path={Routes.UserChangePassword} render={props => <UserChangePassword {...props} />} />
+                                                <Route path={Routes.UserChangePassword} render={props => <UserChangePassword />} />
                                                 <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail />} />
                                                 <Route path={Routes.MeetingList} render={(props) => <MeetingList {...props} />} />
                                                 <Route path={Routes.Meeting} render={(routeProps) => (
@@ -156,7 +146,7 @@ function Layout() {
                                 </div>
                             </div>
 
-                            {(isLoggedIn && !isOpenMeeting) &&
+                            {(auth.isSignedIn && !isOpenMeeting) &&
                                 <BottomMenu
                                     selectedMenuItem={selectedMenuItem}
                                     selectMenuItemOnClick={selectMenuItemOnClick}

@@ -12,38 +12,25 @@ import LockOutlineIcon from '../../icons/LockOutlineIcon';
 
 
 import './Login.scss';
-import { RootState, useAppDispatch } from '../../store/createStore';
-import { getIsLoggedIn, updateCurrentUser } from '../../store/currentUser';
+import useAuthStore from '../../hooks/useAuthStore';
 
 
 
-function Login(props) {
+function Login() {
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    
-    const dispatch = useAppDispatch();
+    const auth = useAuthStore();
 
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
 
-    const [errMessage, setErrMessage] = useState('');
-
     const history = useHistory();
 
-    const onLoginSubmit = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        try {
-            var jwtResponse = accountService.login(email, password);
-            Cookies.set('access_token', jwtResponse.accessToken);
+        await auth.login(email, password);
 
-            dispatch(updateCurrentUser());
-
-            history.push('/');
-        }
-        catch (err) {
-            setErrMessage(err.message);
-        }
+        history.push('/');
     }
 
     return (
@@ -59,7 +46,7 @@ function Login(props) {
                 <div className="Data d-flex flex-column justify-content-center h-100">
                     <div className="fs-3 text-center mb-2">Вход</div>
 
-                    <form className="d-block" onSubmit={onLoginSubmit}>
+                    <form className="d-block" onSubmit={handleLogin}>
 
                         <div className="input-group mb-3">
                             <span className="input-group-text" id="email"><UserOutlineIcon /></span>
@@ -71,7 +58,7 @@ function Login(props) {
                             <input id="Input.Password" className="form-control form-control-lg" type="password" placeholder="***************" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
 
-                        {errMessage && <p className='text-danger w-100 text-center mt-2'>{errMessage}</p>}
+                        {auth.error && <p className='text-danger w-100 text-center mt-2'>{auth.error}</p>}
 
                         <div className="col-12 text-center">
                             <button type="submit" className="ComeIn btn">Войти</button>

@@ -1,7 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import NotificationDTO from '../../contracts/notifications/NotificationDTO';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import GoBackIcon from '../../icons/GoBackIcon';
 import moment from 'moment';
 import 'moment-timezone';

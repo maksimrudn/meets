@@ -1,4 +1,5 @@
 ﻿import AppConfig from "./AppConfig";
+import * as Cookies from 'js-cookie';
 
 
 export const formToObject = (htmlForm) => {
@@ -151,3 +152,34 @@ export function getImagePathForEvent(evId, img) {
 }
 
 
+export function isSignedIn() {
+    let res = false;
+
+    let token = Cookies.get('access_token');
+
+    if (token) {
+        res = !isTokenExpired(token);
+    }
+
+    return res;
+}
+
+function isTokenExpired(token) {
+    let res = true;
+
+    const decodedJwt = parseJwt(token);
+
+    if (decodedJwt.exp * 1000 < Date.now()) {
+        res = false;
+    }
+
+    return res;
+}
+
+const parseJwt = (token) => {
+    try {
+        return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+        return null;
+    }
+};

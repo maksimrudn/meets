@@ -1,5 +1,6 @@
-﻿
-export default class UserDTO {
+﻿import IUserDTO from "./IUserDTO"
+
+export default class UserDTO implements IUserDTO {
     id: any
     gender: any
     birthDate: any
@@ -10,4 +11,8 @@ export default class UserDTO {
     fullName: any
     lockoutEnabled: any
     tags: any
+    latitude: number = 0
+    longitude: number = 0
+
+    hasGeolocation: boolean = false
 }
