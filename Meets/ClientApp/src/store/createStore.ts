@@ -3,8 +3,10 @@ import timeTableReducer from './TimeTable';
 
 import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
+import authReducer from './auth';
 
 const rootReducer = combineReducers({
+    auth: authReducer,
     currentUser: currentUserReducer,
     timeTable: timeTableReducer
 });

@@ -40,6 +40,8 @@ namespace Meets.Models.User
 
         public double Longitude { get; set; }
 
+        public bool HasGeolocation { get { return Latitude != 0; } }
+
         [Display(Name = "Тэги")]
         public List<string> Tags { get; set; }
 

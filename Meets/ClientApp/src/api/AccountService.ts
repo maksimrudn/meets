@@ -1,8 +1,9 @@
-﻿import BaseService from "./BaseService";
+﻿import UserDTO from "../contracts/user/UserDTO";
+import BaseService from "./BaseService";
 
 class AccountService extends BaseService {
    
-    login(email, password) {
+    login(email: string, password: string) {
         var data = {
             email,
             password
@@ -11,7 +12,15 @@ class AccountService extends BaseService {
         return this.executeRequestXHR('/api/account/login', 'post', JSON.stringify(data));
     }
 
-    register(fullName, email, password, confirmPassword) {
+    getCurrentUser(): UserDTO {
+        var res;
+
+        res = this.executeRequestXHR('/api/account/GetCurrentUser', 'post', null);
+
+        return res;
+    }
+
+    register(fullName: string, email: string, password: string, confirmPassword: string) {
         var data = {
             fullName,
             email,
@@ -30,7 +39,7 @@ class AccountService extends BaseService {
 
     }
 
-    confirmEmail(userId, code) {
+    confirmEmail(userId: string, code: string) {
         let data = {
             userId,
             code
@@ -39,13 +48,13 @@ class AccountService extends BaseService {
         return this.executeRequestXHR('/api/account/ConfirmEmail', 'post', JSON.stringify(data));
     }
 
-    forgotPassword(email) {
+    forgotPassword(email: string) {
         let data = { email };
 
         return this.executeRequestXHR('/api/account/ForgotPassword', 'post', JSON.stringify(data))
     }
 
-    resetPassword(code, email, password, confirmPassword) {
+    resetPassword(code: string, email: string, password: string, confirmPassword: string) {
         let data = {
             code,
             email,
@@ -56,7 +65,7 @@ class AccountService extends BaseService {
         return this.executeRequestXHR('/api/account/ResetPassword', 'post', JSON.stringify(data));
     }
 
-    confirmEmailChange(userId, email, code) {
+    confirmEmailChange(userId: string, email: string, code: string) {
         let data = {
             userId,
             email,

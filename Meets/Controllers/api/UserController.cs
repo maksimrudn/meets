@@ -53,40 +53,7 @@ namespace Meets.Controllers.api
             _hostEnv = webHost;
         }
 
-        /// <summary>
-        /// Метод для получения информации о пользователе и признака аутентификации. Должен быть открыт для неавторизованных пользователей
-        /// </summary>
-        /// <returns></returns>
-        //[DisableCors]
-        [HttpPost("[area]/[controller]/[action]")]
-        public async Task<ActionResult<UserAuthInfo>> GetAuthInfo()
-        {
-            UserAuthInfo res = new UserAuthInfo()
-            {
-                IsAuthenticated = false
-            };
-
-            if (User.Identity.IsAuthenticated)
-            {
-                res.IsAuthenticated = true;
-
-                ApplicationUser user = _db.Users.Find(User.GetUserId());
-                res.UserName = user.UserName;
-                res.User = user;
-                res.City = user.City;
-                res.IsAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
-
-                if (user.Latitude != 0 && user.Longitude != 0)
-                {
-                    res.HasGeolocation = true;
-                    res.Latitude = user.Latitude;
-                    res.Longitude = user.Longitude;
-                }
-            }
-
-            return res;
-            
-        }
+        
 
         // todo: Необходимо выделить специальный метод, который будет возвращать события пользователя для фронта (например getEvents(..)), либо использовать event api
         // todo: параметры должны быть не в int а в bool и все они должны передаваться одной dto

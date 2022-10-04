@@ -29,8 +29,6 @@ interface UserSearchProps {
 export default function UserSearch(props: UserSearchProps) {
     const [isOpenFilterModal, setIsOpenFiterModal] = useState(false);
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-
     const [users, setUsers] = useState<any>([]);
     const [filter, setFilter] = useState<IFilter>({
         city: '',
@@ -99,7 +97,6 @@ export default function UserSearch(props: UserSearchProps) {
                     {users?.length && users.map((user: any) =>
                         <UserItem
                             key={user.id}
-                            currentUserId={currentUser.userId}
                             user={user}
                         />
                     )}

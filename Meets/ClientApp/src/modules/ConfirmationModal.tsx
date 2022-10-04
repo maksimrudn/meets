@@ -9,7 +9,7 @@ interface ConfirmationModalProps {
     toggle: () => void
     message: string
     confirmAction: () => void
-    parrentToggle(): void
+    parrentToggle?(): void
 }
 
 export default function ConfirmationModal(props: ConfirmationModalProps) {

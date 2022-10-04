@@ -9,8 +9,7 @@ import GoBackIcon from '../../icons/GoBackIcon';
 import Routes from '../../common/Routes';
 
 import './UserConfirmEmail.scss';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
-import useStoreCurrentUser from '../../hooks/useCurrentUser';
+import useCurrentUserStore from '../../hooks/useCurrentUserStore';
 
 interface IUserConfirmEmailProps{
 }
@@ -19,7 +18,7 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const currentUser = useStoreCurrentUser();
+    const currentUser = useCurrentUserStore();
 
     const [email, setEmail] = useState<string>('');
     const [showMessage, setShowMessage] = useState(false);

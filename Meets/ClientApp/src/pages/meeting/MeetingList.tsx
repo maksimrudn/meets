@@ -4,7 +4,6 @@ import meetingsService from '../../api/MeetingsService';
 import Routes from '../../common/Routes';
 import { getAvatarPathForUser } from '../../common/Utils';
 import MeetingDTO from '../../contracts/meeting/MeetingDTO';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import EmptyAvatarIcon from '../../icons/EmptyAvatarIcon';
 import GoBackIcon from '../../icons/GoBackIcon';
 import MeetingIcon from '../../icons/MeetingIcon';
@@ -17,7 +16,7 @@ import CalendarAltIcon from '../../icons/CalendarAltIcon';
 import CommentIcon from '../../icons/CommentIcon';
 import { MeetingListTabs } from '../../common/MeetingListTabs';
 import { MeetingStatus, MeetingStatusItems } from '../../common/MeetingStatus';
-import useStoreCurrentUser from '../../hooks/useCurrentUser';
+import useCurrentUserStore from '../../hooks/useCurrentUserStore';
 
 interface IMeetingsListProps {
 }
@@ -25,7 +24,7 @@ interface IMeetingsListProps {
 function MeetingList(props: IMeetingsListProps) {
     const history = useHistory();
 
-    const currnetUser = useStoreCurrentUser();
+    const currnetUser = useCurrentUserStore();
 
     const [selectedTab, setSelectedTab] = useState<string>(MeetingListTabs.Inbox);
     const [meetings, setMeetings] = useState<MeetingDTO[]>([]);

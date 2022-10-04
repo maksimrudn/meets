@@ -5,7 +5,6 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import meetingsService from '../../api/MeetingsService';
 import Routes from '../../common/Routes';
 import MeetingDTO from '../../contracts/meeting/MeetingDTO';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import ArrowIcon from '../../icons/GoBackIcon';
 import MeetingIcon from '../../icons/MeetingIcon';
 import moment from 'moment';

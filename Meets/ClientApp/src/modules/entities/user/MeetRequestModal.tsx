@@ -19,8 +19,8 @@ import { useForm } from 'react-hook-form';
 import './MeetRequestModal.scss';
 import UserDTO from '../../../contracts/user/UserDTO';
 import MapSelectorModal from './MapSelectorModal';
-import UserAuthInfo from '../../../contracts/UserAuthInfo';
-import useStoreCurrentUser from '../../../hooks/useCurrentUser';
+import UserCardResponse from '../../../contracts/user/UserCardResponse';
+import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
 
 
 
@@ -28,7 +28,7 @@ interface IMeetRequestModalProps {
     isOpen: boolean
     toggle: () => void
 
-    user: UserDTO
+    user: UserCardResponse
 
     updateUser: () => void
 
@@ -41,7 +41,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const currentUser = useStoreCurrentUser();
+    const currentUser = useCurrentUserStore();
 
     const [meetingRequest, setMeetingRequest] = useState<MeetingRequest>(MeetingRequest.create(props.user));
 

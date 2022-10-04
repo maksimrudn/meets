@@ -17,6 +17,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Meets.Extensions;
+using Meets.Models.User;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Meets.Controllers.api
 {
@@ -29,11 +32,13 @@ namespace Meets.Controllers.api
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private IWebHostEnvironment _env;
+        private IMapper _mapper;
 
         public AccountController(TokenManager tokenManager,
                                 ApplicationDbContext db,
                                 UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInManager,
+                                IMapper mapper,
                                 IWebHostEnvironment env)
         {
             _tokenManager = tokenManager;
@@ -41,6 +46,7 @@ namespace Meets.Controllers.api
             _userManager = userManager;
             _signInManager = signInManager;
             _env = env;
+            _mapper = mapper;
         }
 
 
@@ -60,6 +66,25 @@ namespace Meets.Controllers.api
 
             return new LoginResponse() { AccessToken = jwt };
             
+        }
+
+
+        /// <summary>
+        /// Получение данных о текущем пользователе
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<ActionResult<UserDTO>> GetCurrentUser()
+        {
+            ApplicationUser user = _db.Users.Find(User.GetUserId());
+
+            if (user == null)
+            {
+                throw new Exception($"Пользователь с указаным id не найден: {User.GetUserId()}");
+            }
+
+            return _mapper.Map<UserDTO>(user);
         }
 
         [HttpPost("[area]/[controller]/[action]")]

@@ -1,15 +1,13 @@
 import { AppThunk, RootState } from './createStore';
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import UserAuthInfo from '../contracts/UserAuthInfo';
-import userService from '../api/UserService';
-import IUserAuthInfo from '../contracts/IUserAuthInfo';
+import UserDTO from '../contracts/user/UserDTO';
+import IUserDTO from '../contracts/user/IUserDTO';
+import accountService from '../api/AccountService';
 
 
 
 
-export interface ICurrentUserState  {
-    userId: number
-    user: UserAuthInfo | null
+export interface ICurrentUserState extends IUserDTO  {
     isLoading: boolean,
     error: string | null,
     dataLoaded: boolean
@@ -17,8 +15,6 @@ export interface ICurrentUserState  {
 
 
 const initialState: ICurrentUserState = {
-    userId: 0,
-    user: null,
     isLoading: false,
     error: null,
     dataLoaded: false
@@ -28,16 +24,16 @@ const currentUserSlice = createSlice({
   name: 'currentUser',
   initialState: initialState,
   reducers: {
-    requested: state => {
+    currentUserRequested: state => {
       state.isLoading = true;
     },
-    received: (state, action) => {
-        state.userId = action.payload.user.id;
-        state.user = action.payload;
+    currentUserReceived: (state, action) => {
+        state = { ...action.payload };
         state.isLoading = false;
         state.dataLoaded = true;
+        state.error = "asdf";
       },
-    failed: (state, action) => {
+    currentUserFailed: (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
         state.dataLoaded = true;
@@ -47,22 +43,40 @@ const currentUserSlice = createSlice({
 
 const { actions, reducer: currentUserReducer } = currentUserSlice;
 
-const { requested, received, failed } = actions;
+
+const { currentUserRequested, currentUserReceived, currentUserFailed } = actions;
+
+
+//export const updateCurrentUserOrThrow = (): AppThunk => async dispatch => {
+//    dispatch(requested());
+
+//    try {
+//        const currentUser = accountService.getCurrentUser();
+//        dispatch(received(currentUser));
+//    } catch (error: any) {
+//        dispatch(failed(error.message));
+//        throw error;
+//    }
+//};
+
+//export const updateCurrentUser = (): AppThunk => async dispatch => {
+//    try {
+//        dispatch(updateCurrentUserOrThrow());
+//    } catch (error: any) {
+        
+//    }
+//};
 
 export const updateCurrentUser = (): AppThunk => async dispatch => {
-    dispatch(requested());
+    dispatch(currentUserRequested());
 
     try {
-        const userAuthInfo = userService.getAuthInfo();
-        dispatch(received(userAuthInfo));
+        const userAuthInfo = accountService.getCurrentUser();
+        dispatch(currentUserReceived(userAuthInfo));
     } catch (error: any) {
-        dispatch(failed(error.message));
+        dispatch(currentUserFailed(error.message));
     }
 };
-
-
-export const getCurrentUser = () => (state: RootState) => state.currentUser.userId;
-export const getIsLoggedIn = () => (state: RootState) => state.currentUser.userId != 0;
 
 
 export default currentUserReducer;
