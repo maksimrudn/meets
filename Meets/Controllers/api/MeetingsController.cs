@@ -22,11 +22,13 @@ namespace Meets.Controllers.api
     {
         private ApplicationDbContext _db;
         private NotificationService _notification;
+        private TGService _tgService;
 
-        public MeetingsController(ApplicationDbContext db, NotificationService notification)
+        public MeetingsController(ApplicationDbContext db, NotificationService notification, TGService tgService)
         {
             _db = db;
             _notification = notification;
+            _tgService = tgService;
         }
 
 
@@ -76,6 +78,18 @@ namespace Meets.Controllers.api
             await _db.SaveChangesAsync();
 
             await _notification.Invite(meeting);
+
+            if (!string.IsNullOrEmpty(meeting.Owner.Telegram))
+            {
+                try
+                {
+                    await _tgService.SendNotification(
+                        meeting.Owner.Telegram,
+                        $"Встреча {meeting.MeetingDate.ToString("dd.MM.yyyy HH:mm")} ({meeting.Owner.FullName}) - вам отправлено приглашение"
+                    );
+                }
+                catch { }
+            }
 
             return Ok();
         }
@@ -139,6 +153,18 @@ namespace Meets.Controllers.api
 
             await _notification.Edit(mt);
 
+            if (!string.IsNullOrEmpty(mt.Owner.Telegram))
+            {
+                try
+                {
+                    await _tgService.SendNotification(
+                        mt.Owner.Telegram,
+                        $"Встреча {mt.MeetingDate.ToString("dd.MM.yyyy HH:mm")} ({mt.Owner.FullName}) - начато обсуждение"
+                    );
+                }
+                catch { }
+            }
+
             return Ok();
         }
 
@@ -154,6 +180,18 @@ namespace Meets.Controllers.api
             await _db.SaveChangesAsync();
 
             await _notification.Discuss(meeting);
+
+            if (!string.IsNullOrEmpty(meeting.Target.Telegram))
+            {
+                try
+                {
+                    await _tgService.SendNotification(
+                        meeting.Target.Telegram,
+                        $"Встреча {meeting.MeetingDate.ToString("dd.MM.yyyy HH:mm")} ({meeting.Target.FullName}) - начато обсуждение"
+                    );
+                }
+                catch { }
+            }
 
             return Ok();
         }
@@ -171,6 +209,22 @@ namespace Meets.Controllers.api
 
             await _notification.Cancel(meeting, User.GetUserId());
 
+            string senderTg = User.GetUserId() == meeting.OwnerId ? meeting.Owner.Telegram : meeting.Target.Telegram;
+
+            if (!string.IsNullOrEmpty(senderTg))
+            {
+                string senderName = User.GetUserId() == meeting.OwnerId ? meeting.Owner.FullName : meeting.Target.FullName;
+
+                try
+                {
+                    await _tgService.SendNotification(
+                        senderTg,
+                        $"Встреча {meeting.MeetingDate.ToString("dd.MM.yyyy HH:mm")} ({senderName}) - завершена"
+                    );
+                }
+                catch { }
+            }
+
             return Ok();
         }
 
@@ -186,6 +240,18 @@ namespace Meets.Controllers.api
             await _db.SaveChangesAsync();
 
             await _notification.Confirm(meeting);
+
+            if (!string.IsNullOrEmpty(meeting.Target.Telegram))
+            {
+                try
+                {
+                    await _tgService.SendNotification(
+                        meeting.Target.Telegram,
+                        $"Встреча {meeting.MeetingDate.ToString("dd.MM.yyyy HH:mm")} ({meeting.Target.FullName}) - подтверждена"
+                    );
+                }
+                catch { }
+            }
 
             return Ok();
         }

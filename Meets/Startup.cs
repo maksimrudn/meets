@@ -96,6 +96,8 @@ namespace Meets
 
             services.AddScoped<NotificationService>();
 
+            services.AddSingleton<TGService>();
+
             //services.AddIdentityServer()
             //    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
