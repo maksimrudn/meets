@@ -61,9 +61,12 @@ export default function UserEditorModal(props: UserEditorModalProps) {
         setEditedFieldValue(tags);
     }
 
-    const onSaveChanges = () => {
-        props.toggle();
-        dispatch(editUser(props.fieldName, editedFieldValue));
+    const handleSaveChanges = async () => {
+        try {
+            await dispatch(editUser(props.fieldName, editedFieldValue));
+            props.toggle();
+        }
+        catch { }
     }
 
     return (
@@ -166,7 +169,7 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                         }
                     })()}
 
-                    <button type="button" className="SaveBtn btn mt-3" onClick={onSaveChanges}><span className="fs-6 text-white">Сохранить</span></button>
+                    <button type="button" className="SaveBtn btn mt-3" onClick={handleSaveChanges}><span className="fs-6 text-white">Сохранить</span></button>
 
                 </ModalBody>
 

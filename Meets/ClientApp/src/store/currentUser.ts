@@ -25,9 +25,10 @@ const initialState: ICurrentUserState = {
     fullName: '',
     lockoutEnabled: false,
     tags: [],
-    latitude: 0, 
+    latitude: 0,
     longitude: 0,
     hasGeolocation: false,
+
     isLoading: false,
     error: null,
     dataLoaded: false
@@ -40,8 +41,7 @@ const currentUserSlice = createSlice({
     requested: state => {
       state.isLoading = true;
     },
-    received: (state, action) => {
-        //state = { ...action.payload };
+    received: (state, action) => {        
         state.id = action.payload.id;
         state.gender = action.payload.gender;
         state.birthDate = action.payload.birthDate;
@@ -93,16 +93,7 @@ export const updateCurrentUser = (): AppThunk => async dispatch => {
     }
 };
 
-//export const updateCurrentUser = (): AppThunk => async dispatch => {
-//    dispatch(currentUserRequested());
 
-//    try {
-//        const userAuthInfo = accountService.getCurrentUser();
-//        dispatch(currentUserReceived(userAuthInfo));
-//    } catch (error: any) {
-//        dispatch(currentUserFailed(error.message));
-//    }
-//};
 
 
 export default currentUserReducer;

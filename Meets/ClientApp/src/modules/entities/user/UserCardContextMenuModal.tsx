@@ -35,9 +35,9 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
         setIsShowAvatar(!isOpenShowAvatarModal);
     }
 
-    const removeAvatarAction = () => {
+    const handleRemoveAvatar = async () => {
         try {
-            dispatch(removeAvatar());
+            await dispatch(removeAvatar());
             toggleRemoveAvatarModal();
         }
         catch (err: any) {
@@ -46,12 +46,16 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
     }
 
 
-    const onFileUploadChange = async (e: Event | any) => {
+    const handleFileUploadChange = async (e: Event | any) => {
         let target = e.target as HTMLInputElement;
         let files = getAllowedPhotoFilesByMask(target.files);
 
         props.toggle();
-        dispatch(editUser(UserFieldNames.Photo, files[0]))
+
+        try {
+            await dispatch(editUser(UserFieldNames.Photo, files[0]))
+        }
+        catch { }
     }
 
     return (
@@ -72,7 +76,7 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                         <>
                             <div className="FileUpload">
                                 <label className="Action btn mb-3" htmlFor="fileupload">Изменить фото</label>
-                                <input type="file" id="fileupload" name="photo" onChange={onFileUploadChange} />
+                                <input type="file" id="fileupload" name="photo" onChange={handleFileUploadChange} />
                             </div>
                             <button type="button" className="Action btn mb-3" onClick={toggleRemoveAvatarModal}>Удалить фото</button>
                         </>
@@ -94,7 +98,7 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                         isOpen={isOpenRemoveAvatarModal}
                         toggle={toggleRemoveAvatarModal}
                         message="Удалить ваше фото?"
-                        confirmAction={removeAvatarAction}
+                        confirmAction={handleRemoveAvatar}
                         parrentToggle={props.toggle}
                     />
                 }
