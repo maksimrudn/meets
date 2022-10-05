@@ -1,4 +1,8 @@
-﻿
+﻿import { Activity } from "../activity/Activity"
+import { Fact } from "../fact/Fact"
+import { Learning } from "../learning/Learning"
+import { Work } from "../work/Work"
+
 export default class UserCardResponse {
     id: any
     gender: any
@@ -18,10 +22,10 @@ export default class UserCardResponse {
     weight: any
     subscribers: any
     subscriptions: any
-    learnings: any
-    works: any
-    activities: any
-    facts: any
+    learnings: Learning[] = []
+    works: Work[] = []
+    activities: Activity[] = []
+    facts: Fact[] = []
     distance: any
     isSubscribed: boolean = false
     friendRequestIsRejected: any

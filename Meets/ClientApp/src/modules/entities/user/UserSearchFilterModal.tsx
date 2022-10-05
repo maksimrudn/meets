@@ -7,34 +7,20 @@ import { AddressSuggestions } from 'react-dadata';
 import AppConfig from '../../../common/AppConfig';
 
 import './UserSearchFilterModal.scss';
-
-
-export interface IFilter {
-    city: string
-    tags: string[]
-    growthFrom: number
-    growthTo: number
-    weightFrom: number
-    weightTo: number
-    ageFrom: number
-    ageTo: number
-    company: string
-    learning: string
-    activity: string
-}
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/createStore';
+import { IFilter, updateFilter, updateUsers } from '../../../store/users';
 
 interface IUserSearchFilterModalProps {
     isOpen: boolean
     toggle: () => void
-
-    filter: IFilter
-    setFilter: React.Dispatch<SetStateAction<IFilter>>
-
-    onFilterSubmit: (filter?: IFilter) => void
 }
 
 export default function UserSearchFilterModal(props: IUserSearchFilterModalProps) {
-    const [filter, setFilter] = useState<IFilter>(() => props.filter);
+    const state = useSelector((state: RootState) => state.users);
+    const dispatch = useDispatch();
+
+    const [filter, setFilter] = useState<IFilter>(state.filter);
 
     /**
      * onChange обработчик DaData вызывается только когда выбирается город в меню подсказок, когда значение удаляется обработчик не вызывается (и выбранный город сохраняется),
@@ -46,8 +32,12 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
     }
 
     const findOnClick = () => {
-        props.setFilter(filter);
-        props.onFilterSubmit(props.filter);
+        dispatch(updateFilter(filter));
+        try {
+            dispatch(updateUsers());
+        } catch (err) {
+
+        }
         props.toggle();
     }
 
@@ -67,7 +57,7 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
              если значение для state родительского компонента UserSearch не сохранилось при отправке, выведутся сохраненные значения state модалки,
              поэтому в обработчике onClosed повторно устанавливется значение для state модалки из родительского компонента UserSearch
              */
-            onClosed={() => setFilter(props.filter)}
+            //onClosed={() => setFilter(props.filter)}
         >
             <ModalHeader
                 toggle={props.toggle}
@@ -189,7 +179,7 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                         className="form-control"
                         type="text"
                         defaultValue={filter.activity}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => props.setFilter({ ...filter, activity: e.target.value })}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, activity: e.target.value })}
                     />
                 </div>
 

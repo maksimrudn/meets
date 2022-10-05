@@ -20,7 +20,7 @@ namespace Meets.Controllers.api.dto.User
 
         public int? AgeTo { get; set; }
 
-        public string Work { get; set; }
+        public string Company { get; set; }
 
         public string Learning { get; set; }
 

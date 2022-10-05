@@ -1,4 +1,4 @@
-﻿import React, { Component, useState } from 'react';
+﻿import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect, NavLink } from "react-router-dom";
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -23,9 +23,11 @@ interface BottomMenuProps {
 }
 
 export default function BottomMenu(props: BottomMenuProps) {
-
     const currentUser = useCurrentUserStore();
-    currentUser.update();
+
+    //useEffect(() => {
+    //    currentUser.update();
+    //}, []);
 
     return (
         <div className="BottomMenu position-relative" >
