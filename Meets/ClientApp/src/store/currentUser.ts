@@ -15,6 +15,19 @@ export interface ICurrentUserState extends IUserDTO  {
 
 
 const initialState: ICurrentUserState = {
+    id: 0,
+    gender: '',
+    birthDate: '',
+    avatar: '',
+    city: '',
+    company: '',
+    job: '',
+    fullName: '',
+    lockoutEnabled: false,
+    tags: [],
+    latitude: 0, 
+    longitude: 0,
+    hasGeolocation: false,
     isLoading: false,
     error: null,
     dataLoaded: false
@@ -24,16 +37,29 @@ const currentUserSlice = createSlice({
   name: 'currentUser',
   initialState: initialState,
   reducers: {
-    currentUserRequested: state => {
+    requested: state => {
       state.isLoading = true;
     },
-    currentUserReceived: (state, action) => {
-        state = { ...action.payload };
+    received: (state, action) => {
+        //state = { ...action.payload };
+        state.id = action.payload.id;
+        state.gender = action.payload.gender;
+        state.birthDate = action.payload.birthDate;
+        state.avatar = action.payload.avatar;
+        state.city = action.payload.city;
+        state.company = action.payload.company;
+        state.job = action.payload.job;
+        state.fullName = action.payload.fullName;
+        state.lockoutEnabled = action.payload.lockoutEnabled;
+        state.tags = action.payload.tags;
+        state.latitude = action.payload.latitude;
+        state.longitude = action.payload.longitude;
+        state.hasGeolocation = action.payload.hasGeolocation;
         state.isLoading = false;
         state.dataLoaded = true;
-        state.error = "asdf";
+        state.error = null;
       },
-    currentUserFailed: (state, action) => {
+    failed: (state, action) => {
         state.error = action.payload;
         state.isLoading = false;
         state.dataLoaded = true;
@@ -44,39 +70,39 @@ const currentUserSlice = createSlice({
 const { actions, reducer: currentUserReducer } = currentUserSlice;
 
 
-const { currentUserRequested, currentUserReceived, currentUserFailed } = actions;
+const { requested, received, failed } = actions;
 
 
-//export const updateCurrentUserOrThrow = (): AppThunk => async dispatch => {
-//    dispatch(requested());
-
-//    try {
-//        const currentUser = accountService.getCurrentUser();
-//        dispatch(received(currentUser));
-//    } catch (error: any) {
-//        dispatch(failed(error.message));
-//        throw error;
-//    }
-//};
-
-//export const updateCurrentUser = (): AppThunk => async dispatch => {
-//    try {
-//        dispatch(updateCurrentUserOrThrow());
-//    } catch (error: any) {
-        
-//    }
-//};
-
-export const updateCurrentUser = (): AppThunk => async dispatch => {
-    dispatch(currentUserRequested());
+export const updateCurrentUserOrThrow = (): AppThunk => async dispatch => {
+    dispatch(requested());
 
     try {
-        const userAuthInfo = accountService.getCurrentUser();
-        dispatch(currentUserReceived(userAuthInfo));
+        const currentUser = accountService.getCurrentUser();
+        dispatch(received(currentUser));
     } catch (error: any) {
-        dispatch(currentUserFailed(error.message));
+        dispatch(failed(error.message));
+        throw error;
     }
 };
+
+export const updateCurrentUser = (): AppThunk => async dispatch => {
+    try {
+        dispatch(updateCurrentUserOrThrow());
+    } catch (error: any) {
+        
+    }
+};
+
+//export const updateCurrentUser = (): AppThunk => async dispatch => {
+//    dispatch(currentUserRequested());
+
+//    try {
+//        const userAuthInfo = accountService.getCurrentUser();
+//        dispatch(currentUserReceived(userAuthInfo));
+//    } catch (error: any) {
+//        dispatch(currentUserFailed(error.message));
+//    }
+//};
 
 
 export default currentUserReducer;

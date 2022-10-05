@@ -59,7 +59,7 @@ function MeetingList(props: IMeetingsListProps) {
                 {(() => {
                     switch (selectedTab) {
                         case MeetingListTabs.Outbox:
-                            return meetings && meetings.filter((item: MeetingDTO) => item.ownerId === currnetUser.userId).map((item: MeetingDTO) =>
+                            return meetings && meetings.filter((item: MeetingDTO) => item.ownerId === currnetUser.id).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.target.avatar
@@ -102,7 +102,7 @@ function MeetingList(props: IMeetingsListProps) {
                                 </div>
                             );
                         case MeetingListTabs.Inbox:
-                            return meetings && meetings.filter((item: MeetingDTO) => item.targetId === currnetUser.userId).map((item: MeetingDTO) =>
+                            return meetings && meetings.filter((item: MeetingDTO) => item.targetId === currnetUser.id).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.owner.avatar

@@ -25,7 +25,7 @@ import { AddressSuggestions } from 'react-dadata';
 
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css'
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import mapStateToProps from '../../store/mapStateToProps';
 import mapDispatchToProps from '../../store/mapDispatchToProps';
 import UserEditorModal from '../../modules/entities/user/UserEditorModal';
@@ -64,6 +64,7 @@ import CoffeeIcon from '../../icons/CoffeeIcon';
 import WaitingScreen from '../common/WaitingScreen';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import { updateCurrentUser } from '../../store/currentUser';
+import { updateUser } from '../../store/user';
 
 
 
@@ -78,12 +79,9 @@ function UserCard(): JSX.Element {
     const history = useHistory();
 
     const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    const state = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
 
-
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const [userCard, setUserCard] = useState<UserCardResponse>(new UserCardResponse());
 
     const [isOpenUserEditModal, setIsOpenUserEditModal] = useState(false);
     const [fieldName, setFieldName] = useState<any>('');
@@ -99,23 +97,12 @@ function UserCard(): JSX.Element {
     let topElement: any = useRef();
 
     useEffect(() => {
-
-        update();
-    }, [params.id]);
-
-    const update = () => {
         try {
-            setIsLoading(true);
-
-            const userCard = userService.getCard(params.id);
-            setUserCard(userCard);
-
-            setIsLoading(false);
+            dispatch(updateUser(params.id));
         } catch (err) {
-            history.push(Routes.Error, err);
-        }
-    }
 
+        }
+    }, [params.id]);
 
     const toggleUserCardContextMenuModal = () => {
         setIsOpenOpenUserCardContextMenuModal(!isOpenUserCardContextMenuModal);
@@ -139,64 +126,32 @@ function UserCard(): JSX.Element {
 
     
 
-    const onSubscribe = () => {
-        try {
-            subscribtionService.subscribe(userCard.id);
-            update();
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }
+    //const onSubscribe = () => {
+    //    try {
+    //        subscribtionService.subscribe(userCard.id);
+    //        update();
+    //    }
+    //    catch (err: any) {
+    //        NotificationManager.error(err.message, err.name);
+    //    }
+    //}
 
-    const onUnSubscribe = () => {
-        try {
-            subscribtionService.unSubscribe(userCard.id);
-            update();
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }
-
-    const onSaveChanges = (fieldName: string, value: any) => {
-        let newData = {
-            ...userCard,
-            [fieldName]: value
-        };
-
-        let userData = objectToFormData(newData);
-
-        if (userCard.latitude && userCard.longitude) {
-            userData.set('latitude', `${userCard.latitude.toLocaleString('ru-Ru')}`);
-            userData.set('longitude', `${userCard.longitude.toLocaleString('ru-Ru')}`);
-        }
-
-        userData.delete('tags');
-
-        if (fieldName === UserFieldNames.Tags) {
-            value.map((tag: any) => userData.append('Tags', tag));
-        } else {
-            userCard.tags?.map((tag: any) => userData.append('Tags', tag));
-        }
-
-        try {
-            userService.edit(userData);
-            update();
-
-            dispatch(updateCurrentUser);
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, 0);
-        }
-    }
+    //const onUnSubscribe = () => {
+    //    try {
+    //        subscribtionService.unSubscribe(userCard.id);
+    //        update();
+    //    }
+    //    catch (err: any) {
+    //        NotificationManager.error(err.message, err.name);
+    //    }
+    //}
 
     const getSEO = () => {
         var title = '';
         var keywords = '';
         var description = '';
 
-        var userTitle = userCard.fullName ?? "Название не указано";
+        var userTitle = state.user?.fullName ?? "Название не указано";
         title = "Пользователь: " + userTitle + " - посмотреть все события на EventSurfing";
         keywords = "пользователь " + userTitle + ", " + "расписание " + userTitle;
         description = "Описание пользователя " + userTitle;
@@ -209,7 +164,7 @@ function UserCard(): JSX.Element {
     return (
 
         <>
-            {isLoading ?
+            {state.isLoading ?
                 <WaitingScreen />
                 :
                 <>
@@ -230,14 +185,14 @@ function UserCard(): JSX.Element {
                             <span className="Button ms-3" onClick={() => { history.goBack(); }}><GoBackIcon /></span>
                             <span className="Button me-3" onClick={toggleUserCardContextMenuModal}><SettingsIcon /></span>
                         </div>
-                        {userCard.avatar
+                        {state.user?.avatar
                             ? (
                                 <div className="MainAvatarContainer col-12">
                                     <div className="AvatarContainerBlur">
-                                        <img className="AvatarBlur" src={getAvatarPathForUser(userCard)} alt="" />
+                                        <img className="AvatarBlur" src={getAvatarPathForUser(state.user)} alt="" />
                                     </div>
                                     <div className="AvatarContainer">
-                                        <img className="Avatar" src={getAvatarPathForUser(userCard)} alt="" />
+                                        <img className="Avatar" src={getAvatarPathForUser(state.user)} alt="" />
                                     </div>
                                 </div>
                             )
@@ -250,11 +205,11 @@ function UserCard(): JSX.Element {
 
                             <div className="d-flex justify-content-end">
                                 <span className="col-8 d-flex justify-content-center">
-                                    <h2>{userCard.fullName || 'не указано'}</h2>
+                                    <h2>{state.user?.fullName || 'не указано'}</h2>
                                 </span>
 
                                 <span className="col-2 d-flex justify-content-end">
-                                    {(currentUser.id === userCard.id) &&
+                                    {(currentUser.id === state.user?.id) &&
                                         <span className="text-white" role="button" onClick={() => onClickEditIcon(UserFieldNames.FullName)}>
                                             <EditIconSvg />
                                         </span>
@@ -262,33 +217,33 @@ function UserCard(): JSX.Element {
                                 </span>
                             </div>
 
-                            {userCard.specialization && // сфера деятельности
+                            {state.user?.specialization && // сфера деятельности
                                 <div className="col-12 d-flex align-items-center justify-content-center">
-                                    <span>{userCard.specialization}</span>
+                                    <span>{state.user?.specialization}</span>
                                 </div>
                             }
 
-                            {userCard.company &&
+                            {state.user?.company &&
                                 <div className="col-12 d-flex align-items-center justify-content-center">
                                     <span className="text-white me-3">
                                         <CompanyIconSvg />
                                     </span>
-                                    <span>{userCard.company}</span>
+                                    <span>{state.user?.company}</span>
                                 </div>
                             }
 
-                            {userCard.job &&
+                            {state.user?.job &&
                                 <div className="col-12 d-flex align-items-center justify-content-center mb-2">
                                     <span className="text-white me-3">
                                         <JobIconSvg />
                                     </span>
-                                    <span>{userCard.job}</span>
+                                    <span>{state.user?.job}</span>
                                 </div>
                             }
 
                             {(() => {
-                                if (currentUser.id !== userCard.id) {
-                                    if (userCard.distance) {
+                                if (currentUser.id !== state.user?.id) {
+                                    if (state.user?.distance) {
                                         return (
                                             <div className="d-flex justify-content-center mb-2">
                                                 <span>
@@ -296,7 +251,7 @@ function UserCard(): JSX.Element {
                                                     <span className="text-white me-1">
                                                         <LocationIconSvg />
                                                     </span>
-                                                    <span>{userCard.distance} км от вас</span>
+                                                    <span>{state.user.distance} км от вас</span>
 
 
                                                 </span>
@@ -305,27 +260,27 @@ function UserCard(): JSX.Element {
                                 }
                             })()}
 
-                            {(currentUser.id !== userCard.id)
+                            {(currentUser.id !== state.user?.id)
                                 ? (<div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
-                                        <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={userCard.isInvited}>
+                                        <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={state.user?.isInvited}>
                                             <span className="me-4"><CoffeeIcon /></span>
                                             <span className="fs-5 text-black">Пригласить</span>
                                         </button>
                                     </div>
 
                                     <div className="col-3 d-flex justify-content-center">
-                                        <SubscribeButton
+                                        {/*<SubscribeButton
                                             subscribed={userCard.isSubscribed}
                                             onSubscribe={onSubscribe}
                                             onUnsubscribe={onUnSubscribe}
-                                        />
+                                        />*/}
                                     </div>
 
                                 </div>)
                                 : (
                                     <div className="col-12">
-                                        <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettingsBuild(userCard.id)}>
+                                        <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettingsBuild(state.user?.id)}>
                                             <span className="me-4"><ProfileSettingsIcon /></span>
                                             <span className="fs-5 text-black">Настройки</span>
                                         </Link>
@@ -339,17 +294,17 @@ function UserCard(): JSX.Element {
 
                             <div className="ActivityInfo d-flex justify-content-evenly">
                                 <div className="d-flex flex-column justify-content-center">
-                                    <span className="fs-4 text-center">{userCard.subscribers}</span>
+                                    <span className="fs-4 text-center">{state.user?.subscribers}</span>
                                     <small>подписчиков</small>
                                 </div>
 
                                 <div className="d-flex flex-column justify-content-center">
-                                    <span className="fs-4 text-center">{userCard.subscriptions}</span>
+                                    <span className="fs-4 text-center">{state.user?.subscriptions}</span>
                                     <small>подписок</small>
                                 </div>
 
                                 <div className=" d-flex flex-column justify-content-center">
-                                    <span className="fs-4 text-center">{userCard.meetings}</span>
+                                    <span className="fs-4 text-center">{state.user?.meetings}</span>
                                     <small>встречь</small>
                                 </div>
                             </div>
@@ -357,12 +312,12 @@ function UserCard(): JSX.Element {
                             <div className="Tags">
                                 <div className="d-flex justify-content-start align-items-center ms-2 my-3">
                                     <span className="fs-4 me-3">Тэги</span>
-                                    {(currentUser.id === userCard.id) &&
+                                    {(currentUser.id === state.user?.id) &&
                                         <span className="IconEdit" role="button" onClick={() => onClickEditIcon(UserFieldNames.Tags)}><EditIcon /></span>
                                     }
                                 </div>
                                 <div className="ms-2">
-                                    {!userCard.tags?.length ? 'не указано' : userCard.tags.map((tag: any) =>
+                                    {!state.user?.tags?.length ? 'не указано' : state.user.tags.map((tag: any) =>
                                         <span key={tag} className="Tag badge bg-secondary rounded-pill text-black py-2 px-3 me-2">{tag}</span>
                                     )}
                                 </div>
@@ -370,38 +325,28 @@ function UserCard(): JSX.Element {
 
                         </div>
 
-                        <UserCardTabs
-                            user={userCard}
-                            tabs={UserCardTabsNames}
-                            selectedTab={selectedTab}
-                            setSelectedTab={setSelectedTab}
-                            onClickEditIcon={onClickEditIcon}
-                            updateUser={update}
-                            learnings={userCard?.learnings}
-                            works={userCard?.works}
-                            activities={userCard?.activities}
-                            facts={userCard?.facts}
-                        />
+                        {state.dataLoaded &&
+                            <UserCardTabs
+                                tabs={UserCardTabsNames}
+                                selectedTab={selectedTab}
+                                setSelectedTab={setSelectedTab}
+                                onClickEditIcon={onClickEditIcon}
+                            />
+                        }
+                        
 
-                        {isOpenUserEditModal &&
+                        {(state.dataLoaded && isOpenUserEditModal) &&
                             <UserEditorModal
-                                user={userCard}
                                 isOpen={isOpenUserEditModal}
                                 toggle={toggleUserEditorModal}
                                 fieldName={fieldName}
-                                onSaveChanges={onSaveChanges}
                             />
                         }
 
-                        {isOpenUserCardContextMenuModal &&
+                        {(state.dataLoaded && isOpenUserCardContextMenuModal) &&
                             <UserCardContextMenuModal
                                 isOpen={isOpenUserCardContextMenuModal}
                                 toggle={toggleUserCardContextMenuModal}
-                                
-                                user={userCard}
-                                update={update}
-
-                                onSaveChanges={onSaveChanges}
                             />
                         }
 
@@ -409,7 +354,7 @@ function UserCard(): JSX.Element {
 
                         
 
-                        {isOpenMeetModal &&
+                        {/*{isOpenMeetModal &&
                             <MeetRequestModal
                                 isOpen={isOpenMeetModal}
                                 toggle={toggleMeetRequestModal}
@@ -417,7 +362,7 @@ function UserCard(): JSX.Element {
                                 updateUser={update}
                             //updateNotifications={props.updateNotifications}
                             />
-                        }
+                        }*/}
                         
 
                         

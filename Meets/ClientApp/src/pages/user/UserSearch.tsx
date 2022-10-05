@@ -16,8 +16,9 @@ import SlidersIcon from '../../icons/SlidersIcon';
 import { AddressSuggestions } from 'react-dadata';
 import AppConfig from '../../common/AppConfig';
 import UserSearchFilterModal, { IFilter } from '../../modules/entities/user/UserSearchFilterModal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/createStore';
+import { updateUsers } from '../../store/users';
 
 
 
@@ -27,40 +28,23 @@ interface UserSearchProps {
 }
 
 export default function UserSearch(props: UserSearchProps) {
-    const [isOpenFilterModal, setIsOpenFiterModal] = useState(false);
+    const state = useSelector((state: RootState) => state.users);
+    const dispatch = useDispatch();
 
-    const [users, setUsers] = useState<any>([]);
-    const [filter, setFilter] = useState<IFilter>({
-        city: '',
-        tags: [],
-        growthFrom: 0,
-        growthTo: 0,
-        weightFrom: 0,
-        weightTo: 0,
-        ageFrom: 0,
-        ageTo: 0,
-        company: '',
-        learning: '',
-        activity: ''
-    });
+    const [isOpenFilterModal, setIsOpenFiterModal] = useState(false);
 
     const history = useHistory();
 
     useEffect(() => {
-        onFilterSubmit(filter);
+        try {
+            dispatch(updateUsers());
+        } catch (err) {
+
+        }
     }, []);
 
     const filterModalToggle = () => {
         setIsOpenFiterModal(!isOpenFilterModal);
-    }
-
-    const onFilterSubmit = (filter: IFilter) => {
-        try {
-            const users = userService.getList(filter);
-            setUsers(users);
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
     }
 
     const getSEO = () => {
@@ -94,7 +78,7 @@ export default function UserSearch(props: UserSearchProps) {
                 </div>
 
                 <div className="row g-3">
-                    {users?.length && users.map((user: any) =>
+                    {state.users?.length && state.users.map((user: any) =>
                         <UserItem
                             key={user.id}
                             user={user}
@@ -102,13 +86,15 @@ export default function UserSearch(props: UserSearchProps) {
                     )}
                 </div>
 
-                <UserSearchFilterModal
-                    isOpen={isOpenFilterModal}
-                    toggle={filterModalToggle}
-                    filter={filter}
-                    setFilter={setFilter}
-                    onFilterSubmit={onFilterSubmit}
-                />
+                {isOpenFilterModal &&
+                    <UserSearchFilterModal
+                        isOpen={isOpenFilterModal}
+                        toggle={filterModalToggle}
+                        //filter={filter}
+                        //setFilter={setFilter}
+                        //onFilterSubmit={onFilterSubmit}
+                    />
+                }
             </div>
         </>
     );

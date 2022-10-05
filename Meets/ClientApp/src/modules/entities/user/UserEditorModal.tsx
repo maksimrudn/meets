@@ -13,19 +13,23 @@ import 'react-date-time-new/css/react-datetime.css'
 import SelectCreatable from 'react-select/creatable';
 import { getUserEditorModalTitle, UserFieldNames } from '../../../common/UserFieldNames';
 import './UserEditorModal.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/createStore';
+import { editUser } from '../../../store/user';
 
 
 
 
 interface UserEditorModalProps {
-    user: any
     isOpen: boolean
     toggle: () => void
     fieldName: string
-    onSaveChanges: (fieldName: string, value: any) => void
 }
 
 export default function UserEditorModal(props: UserEditorModalProps) {
+    const state = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
+
     const [editedFieldValue, setEditedFieldValue] = useState<any | any[]>('');
 
     const fullNameOnChange = (e: any) => {
@@ -59,7 +63,7 @@ export default function UserEditorModal(props: UserEditorModalProps) {
 
     const onSaveChanges = () => {
         props.toggle();
-        props.onSaveChanges(props.fieldName, editedFieldValue);
+        dispatch(editUser(props.fieldName, editedFieldValue));
     }
 
     return (
@@ -103,7 +107,7 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                             case UserFieldNames.FullName:
                                 return (
                                     <div className="col-12 mb-2">
-                                        <input className="form-control" type="text" defaultValue={props.user.fullName} onChange={fullNameOnChange} />
+                                        <input className="form-control" type="text" defaultValue={state.user.fullName} onChange={fullNameOnChange} />
                                     </div>
                                 );
                             case UserFieldNames.BirthDate:
@@ -111,7 +115,7 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                                     <div className="col-12 mb-2">
                                         <DateTime
                                             onChange={birthDateOnChange}
-                                            initialValue={props.user.birthDate && moment(props.user.birthDate).format('DD.MM.YYYY')}
+                                            initialValue={state.user.birthDate && moment(state.user.birthDate).format('DD.MM.YYYY')}
                                             inputProps={{ placeholder: 'dd.mm.yyyy' }}
                                             dateFormat="DD.MM.YYYY"
                                             timeFormat={false}
@@ -124,7 +128,7 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                                     <div className="col-12 mb-2">
                                         <AddressSuggestions
                                             token={AppConfig.TokenDadata}
-                                            value={{ value: props.user.city }}
+                                            value={{ value: state.user.city }}
                                             onChange={cityOnChange}
                                             minChars={3}
                                         />
@@ -133,19 +137,19 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                             case UserFieldNames.Description:
                                 return (
                                     <div className="col-12 mb-2">
-                                        <textarea className="form-control" defaultValue={props.user.description} onChange={descriptionOnChange} cols={5} rows={6} style={{ resize: 'none' }} />
+                                        <textarea className="form-control" defaultValue={state.user.description} onChange={descriptionOnChange} cols={5} rows={6} style={{ resize: 'none' }} />
                                     </div>
                                 );
                             case UserFieldNames.Growth:
                                 return (
                                     <div className="col-12 mb-2">
-                                        <input className="form-control" type="number" max={250} defaultValue={props.user.growth} onChange={growthOnChange} />
+                                        <input className="form-control" type="number" max={250} defaultValue={state.user.growth} onChange={growthOnChange} />
                                     </div>
                                 );
                             case UserFieldNames.Weight:
                                 return (
                                     <div className="col-12 mb-2">
-                                        <input className="form-control" type="number" max={250} defaultValue={props.user.weight} onChange={weightOnChange} />
+                                        <input className="form-control" type="number" max={250} defaultValue={state.user.weight} onChange={weightOnChange} />
                                     </div>
                                 );
                             case UserFieldNames.Tags:
@@ -155,7 +159,7 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                                             isMulti
                                             onChange={tagsOnChange}
                                             placeholder=""
-                                            defaultValue={props.user.tags && props.user.tags.map((x: any) => { return { label: x, value: x } })}
+                                            defaultValue={state.user.tags && state.user.tags.map((x: any) => { return { label: x, value: x } })}
                                         />
                                     </div>
                                 );

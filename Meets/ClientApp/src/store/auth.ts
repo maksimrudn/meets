@@ -3,6 +3,7 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 import accountService from '../api/AccountService';
 import * as Cookies from 'js-cookie';
 import { isSignedIn } from '../common/Utils';
+import { updateCurrentUserOrThrow } from './currentUser';
 
 
 
@@ -55,13 +56,13 @@ export const login = (email: string, password: string): AppThunk => async dispat
         return;
     }
 
-    //try {
-    //    dispatch(updateCurrentUserOrThrow());
-    //}
-    //catch (error: any) {
-    //    dispatch(failed(error.message));
-    //    return;
-    //}
+    try {
+        dispatch(updateCurrentUserOrThrow());
+    }
+    catch (error: any) {
+        dispatch(failed(error.message));
+        return;
+    }
 
     await dispatch(received(true));
 };
@@ -70,6 +71,14 @@ export const logout = (): AppThunk => async dispatch => {
     dispatch(requested());
 
     Cookies.remove('access_token');
+
+    try {
+        dispatch(updateCurrentUserOrThrow());
+    }
+    catch (error: any) {
+        dispatch(failed(error.message));
+        return;
+    }
 
     dispatch(received(false));
 };

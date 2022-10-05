@@ -267,10 +267,11 @@ namespace Meets.Controllers.api
                 res = res.Where(x => DateTime.Now.Year - x.BirthDate.Value.Year <= request.AgeTo);
             }
 
-            if (!string.IsNullOrEmpty(request.Work))
+            if (!string.IsNullOrEmpty(request.Company))
             {
-                string workTrimed = request.Work.Trim().ToLower();
-                res = res.Where(x => x.Works.Any(w => w.Title.ToLower().Contains(workTrimed)));
+                string companyTrimed = request.Company.Trim().ToLower();
+                res = res.Where(x => x.Company.ToLower().Contains(companyTrimed));
+                //res = res.Where(x => x.Works.Any(w => w.Title.ToLower().Contains(workTrimed)));
             }
 
             if (!string.IsNullOrEmpty(request.Learning))
