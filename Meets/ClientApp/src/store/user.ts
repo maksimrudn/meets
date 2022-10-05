@@ -101,11 +101,16 @@ export const removeAvatar = (): AppThunk => async (dispatch, getState) => {
         userService.removeAvatar();
 
         const userCard = userService.getCard(state.user?.id);
-        dispatch(userReceived(userCard));
+        await dispatch(userReceived(userCard));
+    }
+    catch (e) {
 
-        dispatch(updateCurrentUserOrThrow());
+    }
+
+    try {
+        await dispatch(updateCurrentUserOrThrow());
     } catch (err: any) {
-        //dispatch(userFailed(err.message));
+        dispatch(userFailed(err.message));
     }
 }
 
