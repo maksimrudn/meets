@@ -16,6 +16,8 @@ import CalendarAltIcon from '../../../icons/CalendarAltIcon';
 import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 
 import './LearningEditorModal.scss'
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
 
 
 
@@ -24,10 +26,12 @@ interface LearningEditorModalProps {
     toggle: () => void
 
     LearningId: any
-    updateUser: () => void
 }
 
 export default function LearningEditorModal(props: LearningEditorModalProps) {
+    const { currentUser } = useAccountStore();
+    const { updateUser } = useUserStore();
+
     const [learning, setLearning] = useState<Learning>(new Learning());
 
     useEffect(() => {
@@ -59,7 +63,7 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
                 formData.append('title', learning.title);
 
                 learningService.edit(formData);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);
@@ -67,7 +71,7 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
         } else {
             try {
                 learningService.create(learning);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);

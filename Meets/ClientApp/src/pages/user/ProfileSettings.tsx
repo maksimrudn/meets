@@ -19,16 +19,9 @@ import useAccountStore from '../../hooks/useAccountStore';
 
 
 
-//interface IProfileSettingsParams {
-//    id?: string
-//}
-
 function ProfileSettings() {
     let history = useHistory();
-    //let params = useParams<IProfileSettingsParams>();
 
-    //const currentUser = useSelector((state: RootState) => state.currentUser);
-    //const dispatch = useAppDispatch();
     const account = useAccountStore();
 
     const [profile, setProfile] = useState<ProfileSettingsDTO>(new ProfileSettingsDTO());
@@ -37,7 +30,7 @@ function ProfileSettings() {
 
     useEffect(() => {
         update();
-    }, []); //params.id
+    }, []);
 
     const update = () => {
         try {

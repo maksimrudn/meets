@@ -14,18 +14,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../store/createStore';
 import useCurrentUserStore from '../hooks/useCurrentUserStore';
 import useAccountStore from '../hooks/useAccountStore';
+import useMenuStore from '../hooks/useMenuStore';
 
 
 
-interface BottomMenuProps {
-    selectedMenuItem: any
 
-    selectMenuItemOnClick: (item: string) => void
-}
-
-export default function BottomMenu(props: BottomMenuProps) {
+export default function BottomMenu() {
     //const currentUser = useCurrentUserStore();
     const { currentUser } = useAccountStore();
+    const { selectedMenuItem, setSelectedItem } = useMenuStore();
 
     //useEffect(() => {
     //    currentUser.update();
@@ -35,33 +32,33 @@ export default function BottomMenu(props: BottomMenuProps) {
         <div className="BottomMenu position-relative" >
             <div className="Menu col-12 position-fixed bottom-0 start-50 translate-middle-x">
 
-                <span className={props.selectedMenuItem === BottomMenuItems.TimeTable ? "MenuItem active" : "MenuItem"}>
-                    <Link to={Routes.TimeTable} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.TimeTable)}>
+                <span className={selectedMenuItem === BottomMenuItems.TimeTable ? "MenuItem active" : "MenuItem"}>
+                    <Link to={Routes.TimeTable} onClick={() => setSelectedItem(BottomMenuItems.TimeTable)}> {/*props.selectMenuItemOnClick(BottomMenuItems.TimeTable)*/}
                         <TimeIconSvg />
                     </Link>
                 </span>
 
-                <span className={props.selectedMenuItem === BottomMenuItems.Notifications ? "MenuItem active" : "MenuItem"}>
+                <span className={selectedMenuItem === BottomMenuItems.Notifications ? "MenuItem active" : "MenuItem"}>
                     <span className="Notify"></span>
-                    <Link to={Routes.Notifications} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Notifications)}>
+                    <Link to={Routes.Notifications} onClick={() => setSelectedItem(BottomMenuItems.Notifications)}>
                         <NotificationIconSvg />
                     </Link>
                 </span>
 
-                <span className={props.selectedMenuItem === BottomMenuItems.UserSearch ? "MenuItem active" : "MenuItem"}>
-                    <Link to={Routes.UserSearch} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.UserSearch)}>
+                <span className={selectedMenuItem === BottomMenuItems.UserSearch ? "MenuItem active" : "MenuItem"}>
+                    <Link to={Routes.UserSearch} onClick={() => setSelectedItem(BottomMenuItems.UserSearch)}>
                         <UserSearchIconSvg />
                     </Link>
                 </span>
 
-                <span className={props.selectedMenuItem === BottomMenuItems.Meetings ? "MenuItem active" : "MenuItem"}>
-                    <Link to={Routes.MeetingList} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Meetings)}>
+                <span className={selectedMenuItem === BottomMenuItems.Meetings ? "MenuItem active" : "MenuItem"}>
+                    <Link to={Routes.MeetingList} onClick={() => setSelectedItem(BottomMenuItems.Meetings)}>
                         <MessageIconSvg width='46' hieght='37' />
                     </Link>
                 </span>
 
-                <span className={props.selectedMenuItem === BottomMenuItems.Profie ? "MenuItem active" : "MenuItem"}>
-                    <Link to={Routes.UserCardBuild(currentUser.id)} onClick={() => props.selectMenuItemOnClick(BottomMenuItems.Profie)}>
+                <span className={selectedMenuItem === BottomMenuItems.Profie ? "MenuItem active" : "MenuItem"}>
+                    <Link to={Routes.UserCardBuild(currentUser.id)} onClick={() => setSelectedItem(BottomMenuItems.Profie)}>
                         <ProfileIconSvg />
                     </Link>
                 </span>

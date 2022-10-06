@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Routes from '../../common/Routes';
 import { RootState, useAppDispatch } from '../../store/createStore';
-import { updateTimeTable } from '../../store/TimeTable';
+import { updateTimeTable } from '../../store/timetable';
 import WaitingScreen from '../common/WaitingScreen';
 import _ from 'lodash';
 import GoBackIcon from '../../icons/GoBackIcon';
@@ -12,18 +12,18 @@ import 'moment-timezone';
 import 'moment/locale/ru';
 
 import './TimeTable.scss';
+import useTimeTableStore from '../../hooks/useTimeTableStore';
 
 export default function TimeTable() {
     moment.locale('ru');
 
     const history = useHistory();
 
-    const state = useSelector((state: RootState) => state.timeTable);
-    const dispatch = useAppDispatch();
+    const state = useTimeTableStore();
 
     useEffect(() => {
         try {
-            dispatch(updateTimeTable());
+            state.update();
         } catch (err) {
             history.push(Routes.Error, err);
         }

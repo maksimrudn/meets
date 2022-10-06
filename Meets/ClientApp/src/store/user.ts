@@ -171,7 +171,7 @@ export const updateUser = (userId: any): AppThunk => async (dispatch, getState) 
 
     try {
         const userCard = userService.getCard(userId);
-        dispatch(userReceived(userCard));
+        await dispatch(userReceived(userCard));
     } catch (err: any) {
         dispatch(userFailed(err.message));
         throw err;
@@ -205,9 +205,9 @@ export const editUser = (fieldName: string, value: any): AppThunk => async (disp
         userService.edit(userData);
         //updateUser(state.user?.id);
         const userCard = userService.getCard(state.user?.id);
-        dispatch(userReceived(userCard));
+        await dispatch(userReceived(userCard));
 
-        dispatch(updateCurrentUserOrThrow());
+        await dispatch(updateCurrentUserOrThrow());
     }
     catch (err: any) {
         dispatch(userFailed(err.message));

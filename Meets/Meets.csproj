@@ -95,6 +95,10 @@
 
     <None Remove="ClientApp\src\contracts\work\Work.tsx" />
 
+    <None Remove="ClientApp\src\hooks\useMenuStore.ts" />
+
+    <None Remove="ClientApp\src\hooks\useTimeTableStore.ts" />
+
     <None Remove="ClientApp\src\hooks\useUsersStore.ts" />
 
     <None Remove="ClientApp\src\hooks\useUserStore.ts" />
@@ -199,7 +203,8 @@
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
     <None Remove="ClientApp\src\modules\entities\event\Date.tsx" />
-    <None Remove="ClientApp\src\store\TimeTable.ts" />
+    <None Remove="ClientApp\src\store\menu.ts" />
+    <None Remove="ClientApp\src\store\timetable.ts" />
     <None Remove="ClientApp\src\store\user.ts" />
     <None Remove="ClientApp\src\store\users.ts" />
   </ItemGroup>
@@ -264,6 +269,10 @@
     <TypeScriptCompile Include="ClientApp\src\contracts\user\IUserCardResponse.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\contracts\user\UserListItemDTO.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\hooks\useMenuStore.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\hooks\useTimeTableStore.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\hooks\useUsersStore.ts" />
 
@@ -443,6 +452,7 @@
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\Date.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\store\menu.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\timetable.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\user.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\users.ts" />

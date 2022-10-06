@@ -16,6 +16,8 @@ import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 import './WorkEditorModal.scss'
 import { Work } from '../../../contracts/work/Work';
 import workService from '../../../api/WorkService';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
 
 
 
@@ -24,10 +26,13 @@ interface WorkEditorModalProps {
     toggle: () => void
 
     WorkId: any
-    updateUser: () => void
 }
 
 export default function WorkEditorModal(props: WorkEditorModalProps) {
+    const { currentUser } = useAccountStore();
+    const { updateUser } = useUserStore();
+
+
     const [work, setWork] = useState<Work>(new Work());
 
     useEffect(() => {
@@ -60,7 +65,7 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
                 formData.append('post', work.post);
 
                 workService.edit(formData);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);
@@ -68,7 +73,7 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
         } else {
             try {
                 workService.create(work);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);
