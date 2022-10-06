@@ -6,11 +6,11 @@
 
     ProfileSettings: '/user/settings/:id',
     ProfileSettingsBuild: (userId) => `/user/settings/${userId}`,
-    UserChangePassword: '/user/cnangepassword/:id',
-    UserChangePasswordBuild: (userId) => `/user/cnangepassword/${userId}`,
+    UserChangePassword: '/user/cnangepassword',
+    //UserChangePasswordBuild: (userId) => `/user/cnangepassword/${userId}`,
 
-    UserConfirmEmail: '/user/confirmemail/:id',
-    UserConfirmEmailBuild: (userId) => `/user/confirmemail/${userId}`,
+    UserConfirmEmail: '/user/confirmemail',
+    //UserConfirmEmailBuild: (userId) => `/user/confirmemail/${userId}`,
 
     MeetingList: '/meetings',
     Meeting: '/meeting/:id',

@@ -52,6 +52,7 @@ const usersSlice = createSlice({
     reducers: {
         usersRequested: state => {
             state.isLoading = true;
+            state.dataLoaded = false;
         },
         usersReceived: (state, action) => {
             state.users = action.payload;
@@ -74,26 +75,31 @@ const usersSlice = createSlice({
 const { actions, reducer: usersReducer } = usersSlice;
 const { usersRequested, usersReceived, usersFailed, filterUpdated } = actions;
 
-export const updateUsers = (): AppThunk => async (dispatch, getState) => {
+//const _updateUsers = (): AppThunk => async (dispatch, getState) => {
+//    dispatch(usersRequested());
+
+//    try {
+//        const state = getState();
+
+//        const users = userService.getList(state.users.filter);
+//        await dispatch(usersReceived(users));
+//    } catch (err: any) {
+//        dispatch(usersFailed(err.message));
+//        throw err;
+//    }
+//}
+
+export const updateFilter = (filter: IFilter): AppThunk => async (dispatch, getState) => {
     dispatch(usersRequested());
 
     try {
-        const state = getState();
+        await dispatch(filterUpdated(filter));
 
-        const users = userService.getList(state.users.filter);
-        dispatch(usersReceived(users));
+        const users = userService.getList(filter);
+        await dispatch(usersReceived(users));
     } catch (err: any) {
         dispatch(usersFailed(err.message));
-    }
-}
-
-export const updateFilter = (/*filterField: string, value: any*/ filter: IFilter): AppThunk => async (dispatch, getState) => {
-    dispatch(usersRequested());
-
-    try {
-        dispatch(filterUpdated(filter));
-    } catch (err: any) {
-        //dispatch(usersFailed(err.message));
+        throw err;
     }
 }
 

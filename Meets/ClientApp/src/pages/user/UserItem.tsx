@@ -13,6 +13,7 @@ import JobIcon from '../../icons/JobIcon';
 import CompanyIcon from '../../icons/CompanyIcon';
 import Routes from '../../common/Routes';
 import useCurrentUserStore from '../../hooks/useCurrentUserStore';
+import useAccountStore from '../../hooks/useAccountStore';
 
 interface UserItemProps {
     user: any
@@ -20,7 +21,8 @@ interface UserItemProps {
 
 export default function UserItem(props: UserItemProps) {
 
-    const currentUser = useCurrentUserStore();
+    //const currentUser = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
 
     const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
 

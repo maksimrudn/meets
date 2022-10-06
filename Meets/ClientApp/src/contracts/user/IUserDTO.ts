@@ -11,7 +11,8 @@ export default interface IUserDTO {
     lockoutEnabled: any
     tags: any
     latitude: number 
-    longitude: number 
+    longitude: number
+    email: string
 
     hasGeolocation: boolean 
 }

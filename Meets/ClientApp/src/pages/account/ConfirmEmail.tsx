@@ -10,13 +10,15 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import Routes  from '../../common/Routes';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import { updateCurrentUser } from '../../store/currentUser';
+import useAccountStore from '../../hooks/useAccountStore';
 
 function ConfirmEmail() {
     let history = useHistory();
     let { search } = useLocation();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    //const currentUser = useSelector((state: RootState) => state.currentUser);
+    //const dispatch = useAppDispatch();
+    const account = useAccountStore();
 
     useEffect(() => {
         try {
@@ -28,7 +30,12 @@ function ConfirmEmail() {
             let jwtResponse = accountService.confirmEmail(userId, code);
             Cookies.set('access_token', jwtResponse.accessToken);
 
-            dispatch(updateCurrentUser);
+            //dispatch(updateCurrentUser);
+            try {
+                account.update();
+            } catch (err) {
+
+            }
 
             history.push('/account/confirmEmailSuccess');
 

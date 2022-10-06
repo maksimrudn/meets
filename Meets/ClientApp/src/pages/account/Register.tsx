@@ -16,7 +16,8 @@ import MenuCloseIcon from '../../icons/MenuCloseIcon';
 import './Register.scss';
 import Routes from '../../common/Routes';
 import { RootState, useAppDispatch } from '../../store/createStore';
-import { updateCurrentUser } from '../../store/currentUser';
+import useAccountStore from '../../hooks/useAccountStore';
+//import { updateCurrentUser } from '../../store/currentUser';
 
 
 
@@ -24,8 +25,9 @@ function Register(props) {
     // Todo: перевести проверки на https://react-hook-form.com/
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    //const currentUser = useSelector((state: RootState) => state.currentUser);
+    //const dispatch = useAppDispatch();
+    const account = useAccountStore();
 
     let [fullName, setFullName] = useState('');
     let [email, setEmail] = useState('');
@@ -42,7 +44,12 @@ function Register(props) {
             var jwtResponse = accountService.register(fullName, email, password, confirmPassword);
             Cookies.set('access_token', jwtResponse.accessToken);
 
-            dispatch(updateCurrentUser);
+            //dispatch(updateCurrentUser);
+            try {
+                account.update();
+            } catch (err) {
+
+            }
 
             history.push('/account/confirmEmailMessage');
         }

@@ -38,7 +38,9 @@ import factService from '../../../api/FactService';
 import FactEditorModal from '../fact/FactEditorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/createStore';
-import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
+import { UserCardTabsNames } from '../../../common/UserCardTabsNames';
 
 
 
@@ -54,9 +56,11 @@ interface UserCardTabsProps {
 
 export default function UserCardTabs(props: UserCardTabsProps) {
 
-    const currentUser = useCurrentUserStore();
-    const state = useSelector((state: RootState) => state.user);
-    const dispatch = useDispatch();
+    //const currentUser = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
+    const state = useUserStore();
+    //const state = useSelector((state: RootState) => state.user);
+    //const dispatch = useDispatch();
 
     const [isOpenLearningEditorModal, setIsLearningEditorModal] = useState(false);
     const [isOpenWorkEditorModal, setIsWorkEditorModal] = useState(false);
@@ -197,7 +201,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
         <div className="UserCardTabs">
             <div className="TabBtnsContainer">
                 <SwiperTabs
-                    tabs={[
+                    tabs={state.tabHeader/*[
                         {
                             title: props.tabs.Info,
                             count: 1
@@ -218,7 +222,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                             title: props.tabs.Facts,
                             count: state.user.facts?.length
                         }
-                    ]}
+                    ]*/}
                     selectedTab={props.selectedTab}
                     setSelectedTab={props.setSelectedTab}
                     user={state.user}
@@ -227,7 +231,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
 
             {(() => {
                 switch (props.selectedTab) {
-                    case props.tabs.Info:
+                    case UserCardTabsNames.Info:
                         return (
                             <div className="TabInfo">
                                 <div className="Main mb-2">
@@ -286,7 +290,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
 
                             </div>
                         );
-                    case props.tabs.Learning:
+                    case UserCardTabsNames.Learning:
                         if (state.user.id !== currentUser.id && !state.user.learnings?.length) return null;
                         return (
                             <div className="TabLearning">
@@ -327,7 +331,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 }
                             </div>
                         );
-                    case props.tabs.Work:
+                    case UserCardTabsNames.Work:
                         if (state.user.id !== currentUser.id && !state.user.works?.length) return null;
                         return (
                             <div className="TabWork">
@@ -374,7 +378,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 }
                             </div>
                         );
-                    case props.tabs.Activity:
+                    case UserCardTabsNames.Activity:
                         if (state.user.id !== currentUser.id && !state.user.activities?.length) return null;
                         return (
                             <div className="TabActivity">
@@ -407,7 +411,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 }
                             </div>
                         );
-                    case props.tabs.Facts:
+                    case UserCardTabsNames.Facts:
                         if (state.user.id !== currentUser.id && !state.user.facts?.length) return null;
                         return (
                             <div className="TabFacts">

@@ -12,13 +12,13 @@ import LockOutlineIcon from '../../icons/LockOutlineIcon';
 
 
 import './Login.scss';
-import useAuthStore from '../../hooks/useAuthStore';
+import useAccountStore from '../../hooks/useAccountStore';
 
 
 
 function Login() {
 
-    const auth = useAuthStore();
+    const account = useAccountStore();
 
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
@@ -28,7 +28,11 @@ function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        await auth.login(email, password);
+        try {
+            await account.login(email, password);
+        } catch (err) {
+           
+        }
 
         history.push('/');
     }
@@ -58,7 +62,7 @@ function Login() {
                             <input id="Input.Password" className="form-control form-control-lg" type="password" placeholder="***************" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
 
-                        {auth.error && <p className='text-danger w-100 text-center mt-2'>{auth.error}</p>}
+                        {account.error && <p className='text-danger w-100 text-center mt-2'>{account.error}</p>}
 
                         <div className="col-12 text-center">
                             <button type="submit" className="ComeIn btn">Войти</button>

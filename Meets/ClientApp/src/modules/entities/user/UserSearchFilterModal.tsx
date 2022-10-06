@@ -10,6 +10,7 @@ import './UserSearchFilterModal.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/createStore';
 import { IFilter, updateFilter, updateUsers } from '../../../store/users';
+import useUsersStore from '../../../hooks/useUsersStore';
 
 interface IUserSearchFilterModalProps {
     isOpen: boolean
@@ -17,8 +18,9 @@ interface IUserSearchFilterModalProps {
 }
 
 export default function UserSearchFilterModal(props: IUserSearchFilterModalProps) {
-    const state = useSelector((state: RootState) => state.users);
-    const dispatch = useDispatch();
+    //const state = useSelector((state: RootState) => state.users);
+    //const dispatch = useDispatch();
+    const state = useUsersStore();
 
     const [filter, setFilter] = useState<IFilter>(state.filter);
 
@@ -32,12 +34,14 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
     }
 
     const findOnClick = () => {
-        dispatch(updateFilter(filter));
+        //dispatch(updateFilter(filter));
         try {
-            dispatch(updateUsers());
+            //dispatch(updateUsers());
+            state.updateFilter(filter);
         } catch (err) {
 
         }
+
         props.toggle();
     }
 

@@ -10,6 +10,7 @@ import Routes from '../../common/Routes';
 
 import './UserConfirmEmail.scss';
 import useCurrentUserStore from '../../hooks/useCurrentUserStore';
+import useAccountStore from '../../hooks/useAccountStore';
 
 interface IUserConfirmEmailProps{
 }
@@ -18,7 +19,8 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const currentUser = useCurrentUserStore();
+    //const currentUser = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
 
     const [email, setEmail] = useState<string>('');
     const [showMessage, setShowMessage] = useState(false);
@@ -54,7 +56,7 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
                             )}
                             className="form-control"
                             placeholder="ivanov@mail.ru"
-                            value={currentUser.user.email}
+                            value={currentUser?.email}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setEmail(e.target.value) }}
                             readOnly
                         />

@@ -17,6 +17,7 @@ import CommentIcon from '../../icons/CommentIcon';
 import { MeetingListTabs } from '../../common/MeetingListTabs';
 import { MeetingStatus, MeetingStatusItems } from '../../common/MeetingStatus';
 import useCurrentUserStore from '../../hooks/useCurrentUserStore';
+import useAccountStore from '../../hooks/useAccountStore';
 
 interface IMeetingsListProps {
 }
@@ -24,7 +25,8 @@ interface IMeetingsListProps {
 function MeetingList(props: IMeetingsListProps) {
     const history = useHistory();
 
-    const currnetUser = useCurrentUserStore();
+    //const currnetUser = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
 
     const [selectedTab, setSelectedTab] = useState<string>(MeetingListTabs.Inbox);
     const [meetings, setMeetings] = useState<MeetingDTO[]>([]);
@@ -59,7 +61,7 @@ function MeetingList(props: IMeetingsListProps) {
                 {(() => {
                     switch (selectedTab) {
                         case MeetingListTabs.Outbox:
-                            return meetings && meetings.filter((item: MeetingDTO) => item.ownerId === currnetUser.id).map((item: MeetingDTO) =>
+                            return meetings && meetings.filter((item: MeetingDTO) => item.ownerId === currentUser.id).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.target.avatar
@@ -102,7 +104,7 @@ function MeetingList(props: IMeetingsListProps) {
                                 </div>
                             );
                         case MeetingListTabs.Inbox:
-                            return meetings && meetings.filter((item: MeetingDTO) => item.targetId === currnetUser.id).map((item: MeetingDTO) =>
+                            return meetings && meetings.filter((item: MeetingDTO) => item.targetId === currentUser.id).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.owner.avatar
