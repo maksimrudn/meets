@@ -16,6 +16,8 @@ import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 import './ActivityEditorModal.scss'
 import { Activity } from '../../../contracts/activity/Activity';
 import activityService from '../../../api/ActivityService';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
 
 
 
@@ -24,10 +26,12 @@ interface ActivityEditorModalProps {
     toggle: () => void
 
     ActivityId: any
-    updateUser: () => void
 }
 
 export default function ActivityEditorModal(props: ActivityEditorModalProps) {
+    const { currentUser } = useAccountStore();
+    const { updateUser } = useUserStore();
+
     const [activity, setActivity] = useState<Activity>(new Activity());
 
     useEffect(() => {
@@ -51,7 +55,7 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
                 formData.append('title', activity.title);
 
                 activityService.edit(formData);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);
@@ -59,7 +63,7 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
         } else {
             try {
                 activityService.create(activity);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);

@@ -4,8 +4,8 @@
 
     UserSearch: '/user/search',
 
-    ProfileSettings: '/user/settings/:id',
-    ProfileSettingsBuild: (userId) => `/user/settings/${userId}`,
+    ProfileSettings: '/user/settings',
+    //ProfileSettingsBuild: (userId) => `/user/settings/${userId}`,
     UserChangePassword: '/user/cnangepassword',
     //UserChangePasswordBuild: (userId) => `/user/cnangepassword/${userId}`,
 

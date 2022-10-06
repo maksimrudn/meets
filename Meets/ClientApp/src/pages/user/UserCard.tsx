@@ -131,25 +131,27 @@ function UserCard(): JSX.Element {
 
     
 
-    //const onSubscribe = () => {
-    //    try {
-    //        subscribtionService.subscribe(userCard.id);
-    //        update();
-    //    }
-    //    catch (err: any) {
-    //        NotificationManager.error(err.message, err.name);
-    //    }
-    //}
+    const onSubscribe = () => {
+        try {
+            subscribtionService.subscribe(state.user?.id);
+            state.updateUser(state.user?.id);
+            //update();
+        }
+        catch (err: any) {
+            NotificationManager.error(err.message, err.name);
+        }
+    }
 
-    //const onUnSubscribe = () => {
-    //    try {
-    //        subscribtionService.unSubscribe(userCard.id);
-    //        update();
-    //    }
-    //    catch (err: any) {
-    //        NotificationManager.error(err.message, err.name);
-    //    }
-    //}
+    const onUnSubscribe = () => {
+        try {
+            subscribtionService.unSubscribe(state.user?.id);
+            state.updateUser(state.user?.id);
+            //update();
+        }
+        catch (err: any) {
+            NotificationManager.error(err.message, err.name);
+        }
+    }
 
     const getSEO = () => {
         var title = '';
@@ -275,17 +277,17 @@ function UserCard(): JSX.Element {
                                     </div>
 
                                     <div className="col-3 d-flex justify-content-center">
-                                        {/*<SubscribeButton
-                                            subscribed={userCard.isSubscribed}
+                                        <SubscribeButton
+                                            subscribed={state.user?.isSubscribed as boolean}
                                             onSubscribe={onSubscribe}
                                             onUnsubscribe={onUnSubscribe}
-                                        />*/}
+                                        />
                                     </div>
 
                                 </div>)
                                 : (
                                     <div className="col-12">
-                                        <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettingsBuild(state.user?.id)}>
+                                        <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettings}>
                                             <span className="me-4"><ProfileSettingsIcon /></span>
                                             <span className="fs-5 text-black">Настройки</span>
                                         </Link>

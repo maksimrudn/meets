@@ -16,6 +16,8 @@ import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 import './FactEditorModal.scss'
 import { Fact } from '../../../contracts/fact/Fact';
 import factService from '../../../api/FactService';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
 
 
 
@@ -24,10 +26,12 @@ interface FactEditorModalProps {
     toggle: () => void
 
     FactId: any
-    updateUser: () => void
 }
 
 export default function FactEditorModal(props: FactEditorModalProps) {
+    const { currentUser } = useAccountStore();
+    const { updateUser } = useUserStore();
+
     const [fact, setFact] = useState<Fact>(new Fact());
 
     useEffect(() => {
@@ -51,7 +55,7 @@ export default function FactEditorModal(props: FactEditorModalProps) {
                 formData.append('title', fact.title);
 
                 factService.edit(formData);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);
@@ -59,7 +63,7 @@ export default function FactEditorModal(props: FactEditorModalProps) {
         } else {
             try {
                 factService.create(fact);
-                props.updateUser();
+                updateUser(currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);

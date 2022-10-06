@@ -155,6 +155,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             formData.append('id', learningId);
             learningService.remove(formData);
 
+            state.updateUser(currentUser?.id);
             //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
@@ -167,6 +168,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             formData.append('id', workId);
             workService.remove(formData);
 
+            state.updateUser(currentUser?.id);
             //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
@@ -179,6 +181,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             formData.append('id', activityId);
             activityService.remove(formData);
 
+            state.updateUser(currentUser?.id);
             //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
@@ -191,6 +194,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             formData.append('id', factId);
             factService.remove(formData);
 
+            state.updateUser(currentUser?.id);
             //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
@@ -201,28 +205,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
         <div className="UserCardTabs">
             <div className="TabBtnsContainer">
                 <SwiperTabs
-                    tabs={state.tabHeader/*[
-                        {
-                            title: props.tabs.Info,
-                            count: 1
-                        },
-                        {
-                            title: props.tabs.Learning,
-                            count: state.user.learnings?.length
-                        },
-                        {
-                            title: props.tabs.Work,
-                            count: state.user.works?.length
-                        },
-                        {
-                            title: props.tabs.Activity,
-                            count: state.user.activities?.length
-                        },
-                        {
-                            title: props.tabs.Facts,
-                            count: state.user.facts?.length
-                        }
-                    ]*/}
+                    tabs={state.tabHeader}
                     selectedTab={props.selectedTab}
                     setSelectedTab={props.setSelectedTab}
                     user={state.user}
@@ -447,33 +430,29 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                 }
             })()}
 
-            {/*<LearningEditorModal
+            <LearningEditorModal
                 isOpen={isOpenLearningEditorModal}
                 toggle={learningEditorModalToggler}
                 LearningId={learningId}
-                updateUser={props.updateUser}
             />
 
             <WorkEditorModal
                 isOpen={isOpenWorkEditorModal}
                 toggle={workEditorModalToggler}
                 WorkId={workId}
-                updateUser={props.updateUser}
             />
 
             <ActivityEditorModal
                 isOpen={isOpenActivityEditorModal}
                 toggle={activityEditorModalToggler}
                 ActivityId={activityId}
-                updateUser={props.updateUser}
             />
 
             <FactEditorModal
                 isOpen={isOpenFactEditorModal}
                 toggle={factEditorModalToggler}
                 FactId={factId}
-                updateUser={props.updateUser}
-            />*/}
+            />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveLearningConfirmModal}

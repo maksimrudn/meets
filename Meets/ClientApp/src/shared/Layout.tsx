@@ -48,31 +48,6 @@ function Layout() {
 
     const [isOpenMeeting, setIsOpenMeeting] = useState(false);
 
-    const [selectedMenuItem, setSelectedMenuItem] = useState(BottomMenuItems.UserSearch);
-
-    const selectMenuItemOnClick = (item: string) => {
-        //const item = e.target.dataset.item;
-        switch (item) {
-            case BottomMenuItems.UserSearch:
-                setSelectedMenuItem(BottomMenuItems.UserSearch);
-                break;
-            case BottomMenuItems.Profie:
-                setSelectedMenuItem(BottomMenuItems.Profie);
-                break;
-            case BottomMenuItems.Meetings:
-                setSelectedMenuItem(BottomMenuItems.Meetings);
-                break;
-            case BottomMenuItems.Notifications:
-                setSelectedMenuItem(BottomMenuItems.Notifications);
-                break;
-            case BottomMenuItems.TimeTable:
-                setSelectedMenuItem(BottomMenuItems.TimeTable);
-                break;
-        }
-
-    }
-
-
     return (
         <Router basename="/">
             <div id="mytask-layout" className="Layout theme-indigo">
@@ -147,10 +122,7 @@ function Layout() {
                             </div>
 
                             {(account.isSignedIn && !isOpenMeeting) &&
-                                <BottomMenu
-                                    selectedMenuItem={selectedMenuItem}
-                                    selectMenuItemOnClick={selectMenuItemOnClick}
-                                />
+                                <BottomMenu />
                             }
 
                         </div>

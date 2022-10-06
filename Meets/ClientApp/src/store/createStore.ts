@@ -4,13 +4,15 @@ import accountReducer from './account';
 import usersReducer from './users';
 import userReducer from './user';
 import timeTableReducer from './timetable';
+import menuReducer from './menu';
 
 const rootReducer = combineReducers({
     account: accountReducer,
     //currentUser: currentUserReducer,
     users: usersReducer,
     user: userReducer,
-    timeTable: timeTableReducer
+    timeTable: timeTableReducer,
+    menu: menuReducer
 });
 
 export function createStore() {
