@@ -4,6 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import userService from '../../../api/UserService';
 import { UserFieldNames } from '../../../common/UserFieldNames';
 import { getAllowedPhotoFilesByMask } from '../../../common/Utils';
+import useAccountStore from '../../../hooks/useAccountStore';
 import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
 import { RootState } from '../../../store/createStore';
 import { editUser, removeAvatar, updateUser } from '../../../store/user';
@@ -19,7 +20,8 @@ interface UserCardContextMenuModalProps {
 
 export default function UserCardContextMenuModal(props: UserCardContextMenuModalProps) {
 
-    const cuStore = useCurrentUserStore();
+    //const cuStore = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
     const state = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
 
@@ -71,8 +73,8 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                 className="Body"
             >
                 <div className="d-flex flex-column justify-content-center">
-                    <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={cuStore.avatar ? false : true}>Открыть фото</button>
-                    {state.user.id === cuStore.id &&
+                    <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={currentUser.avatar ? false : true}>Открыть фото</button>
+                    {state.user.id === currentUser.id &&
                         <>
                             <div className="FileUpload">
                                 <label className="Action btn mb-3" htmlFor="fileupload">Изменить фото</label>

@@ -37,14 +37,14 @@ import MeetingList from '../pages/meeting/MeetingList';
 import Meeting from '../pages/meeting/Meeting';
 import NotificationList from '../pages/notifications/NotificationList';
 import TimeTable from '../pages/meeting/TimeTable';
-import useAuthStore from '../hooks/useAuthStore';
+import useAccountStore from '../hooks/useAccountStore';
 import useCurrentUserStore from '../hooks/useCurrentUserStore';
 
 
 
 function Layout() {
 
-    const auth = useAuthStore();
+    const account = useAccountStore();
 
     const [isOpenMeeting, setIsOpenMeeting] = useState(false);
 
@@ -111,11 +111,11 @@ function Layout() {
 
 
                                         <Route exact path="/" render={(routeProps) => {
-                                            return auth.isSignedIn ? <UserSearch /> : <Login />
+                                            return account.isSignedIn ? <UserSearch /> : <Login />
                                         }} />
 
 
-                                        {auth.isSignedIn &&
+                                        {account.isSignedIn &&
                                             <>
                                                 <Route path={Routes.UserCard} render={(routeProps) => (
                                                     <UserCard />
@@ -146,7 +146,7 @@ function Layout() {
                                 </div>
                             </div>
 
-                            {(auth.isSignedIn && !isOpenMeeting) &&
+                            {(account.isSignedIn && !isOpenMeeting) &&
                                 <BottomMenu
                                     selectedMenuItem={selectedMenuItem}
                                     selectMenuItemOnClick={selectMenuItemOnClick}

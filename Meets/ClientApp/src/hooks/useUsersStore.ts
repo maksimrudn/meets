@@ -4,7 +4,6 @@ import { IFilter, IUsersState, updateFilter, updateUsers } from "../store/users"
 
 
 interface IUsersStore extends IUsersState {
-    updateUsers: () => void
     updateFilter: (filter: IFilter) => void
 }
 
@@ -14,7 +13,6 @@ function useUsersStore(): IUsersStore {
 
     return {
         ...users,
-        updateUsers: () => { dispatch(updateUsers()) },
         updateFilter: (filter) => { dispatch(updateFilter(filter)) }
     }
 }

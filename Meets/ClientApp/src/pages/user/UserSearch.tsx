@@ -19,6 +19,7 @@ import UserSearchFilterModal, { IFilter } from '../../modules/entities/user/User
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/createStore';
 import { updateUsers } from '../../store/users';
+import useUsersStore from '../../hooks/useUsersStore';
 
 
 
@@ -28,20 +29,21 @@ interface UserSearchProps {
 }
 
 export default function UserSearch(props: UserSearchProps) {
-    const state = useSelector((state: RootState) => state.users);
-    const dispatch = useDispatch();
+    //const state = useSelector((state: RootState) => state.users);
+    //const dispatch = useDispatch();
+    const state = useUsersStore();
 
     const [isOpenFilterModal, setIsOpenFiterModal] = useState(false);
 
     const history = useHistory();
 
-    useEffect(() => {
-        try {
-            dispatch(updateUsers());
-        } catch (err) {
+    //useEffect(() => {
+    //    try {
+    //        dispatch(updateUsers());
+    //    } catch (err) {
 
-        }
-    }, []);
+    //    }
+    //}, []);
 
     const filterModalToggle = () => {
         setIsOpenFiterModal(!isOpenFilterModal);

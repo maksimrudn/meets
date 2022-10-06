@@ -15,19 +15,21 @@ import ConfirmationModal from '../../modules/ConfirmationModal';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import { updateCurrentUser } from '../../store/currentUser';
+import useAccountStore from '../../hooks/useAccountStore';
 
 
 
-interface IProfileSettingsParams {
-    id?: string
-}
+//interface IProfileSettingsParams {
+//    id?: string
+//}
 
 function ProfileSettings() {
     let history = useHistory();
-    let params = useParams<IProfileSettingsParams>();
+    //let params = useParams<IProfileSettingsParams>();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    //const currentUser = useSelector((state: RootState) => state.currentUser);
+    //const dispatch = useAppDispatch();
+    const account = useAccountStore();
 
     const [profile, setProfile] = useState<ProfileSettingsDTO>(new ProfileSettingsDTO());
 
@@ -35,11 +37,11 @@ function ProfileSettings() {
 
     useEffect(() => {
         update();
-    }, [params.id]);
+    }, []); //params.id
 
     const update = () => {
         try {
-            const profile = userService.getProfileSettings(params.id);
+            const profile = userService.getProfileSettings(account.currentUser.id);
             setProfile(profile);
         } catch (err: any) {
             history.push(Routes.Error, err);
@@ -48,7 +50,7 @@ function ProfileSettings() {
 
     const onSaveChanges = () => {
         let data = new EditProfileSettingsDTO();
-        data = { ...profile, userId: params.id };
+        data = { ...profile, userId: account.currentUser.id };
 
         try {
             userService.editProfileSettings(data);
@@ -65,9 +67,13 @@ function ProfileSettings() {
     }
 
     const LogOut = () => {
-        Cookies.remove('access_token');
+        //Cookies.remove('access_token');
+        //dispatch(updateCurrentUser);
+        try {
+            account.logout();
+        } catch (err) {
 
-        dispatch(updateCurrentUser);
+        }
 
         history.push('/account/login');
     }
@@ -87,7 +93,7 @@ function ProfileSettings() {
 
             <div className="card">
                 <div className="ConfirmEmail">
-                    <Link className="Link" to={Routes.UserConfirmEmailBuild(params.id)}>
+                    <Link className="Link" to={Routes.UserConfirmEmail}>
                         <div className="Row">
                             <div className="Wrap">
                                 <span className="Text">{profile.email}</span>
@@ -103,7 +109,7 @@ function ProfileSettings() {
                 </div>
 
                 <div className="ChangePassword">
-                    <Link className="Link" to={Routes.UserChangePasswordBuild(params.id)}>
+                    <Link className="Link" to={Routes.UserChangePassword}>
                         <div className="Row">
                             <div className="Wrap">
                                 <div className="Text">Пароль</div>

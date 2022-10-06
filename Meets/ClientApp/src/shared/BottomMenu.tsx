@@ -13,6 +13,7 @@ import Routes from '../common/Routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../store/createStore';
 import useCurrentUserStore from '../hooks/useCurrentUserStore';
+import useAccountStore from '../hooks/useAccountStore';
 
 
 
@@ -23,7 +24,8 @@ interface BottomMenuProps {
 }
 
 export default function BottomMenu(props: BottomMenuProps) {
-    const currentUser = useCurrentUserStore();
+    //const currentUser = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
 
     //useEffect(() => {
     //    currentUser.update();

@@ -1,15 +1,13 @@
-import currentUserReducer from './currentUser';
-import timeTableReducer from './TimeTable';
-
 import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import authReducer from './auth';
+import accountReducer from './account';
 import usersReducer from './users';
 import userReducer from './user';
+import timeTableReducer from './timetable';
 
 const rootReducer = combineReducers({
-    auth: authReducer,
-    currentUser: currentUserReducer,
+    account: accountReducer,
+    //currentUser: currentUserReducer,
     users: usersReducer,
     user: userReducer,
     timeTable: timeTableReducer

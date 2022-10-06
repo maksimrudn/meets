@@ -3,7 +3,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
 import 'swiper/swiper.min.css';
 import { UserCardTabsNames } from '../../common/UserCardTabsNames';
-import useCurrentUserStore from '../../hooks/useCurrentUserStore';
+import useAccountStore from '../../hooks/useAccountStore';
 import './SwiperTabs.scss';
 
 
@@ -21,7 +21,7 @@ interface SwiperTabsProps {
 }
 
 export default function SwiperTabs(props: SwiperTabsProps) {
-    const currentUser = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
 
 
     return (

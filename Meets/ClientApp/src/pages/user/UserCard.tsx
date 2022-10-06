@@ -65,6 +65,8 @@ import WaitingScreen from '../common/WaitingScreen';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import { updateCurrentUser } from '../../store/currentUser';
 import { updateUser } from '../../store/user';
+import useAccountStore from '../../hooks/useAccountStore';
+import useUserStore from '../../hooks/useUserStore';
 
 
 
@@ -78,9 +80,11 @@ function UserCard(): JSX.Element {
 
     const history = useHistory();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const state = useSelector((state: RootState) => state.user);
-    const dispatch = useDispatch();
+    //const currentUser = useSelector((state: RootState) => state.currentUser);
+    const { currentUser } = useAccountStore();
+    //const state = useSelector((state: RootState) => state.user);
+    //const dispatch = useDispatch();
+    const state = useUserStore();
 
 
     const [isOpenUserEditModal, setIsOpenUserEditModal] = useState(false);
@@ -98,7 +102,8 @@ function UserCard(): JSX.Element {
 
     useEffect(() => {
         try {
-            dispatch(updateUser(params.id));
+            //dispatch(updateUser(params.id));
+            state.updateUser(params.id);
         } catch (err) {
 
         }
