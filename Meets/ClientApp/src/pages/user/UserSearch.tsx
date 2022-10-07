@@ -37,13 +37,13 @@ export default function UserSearch(props: UserSearchProps) {
 
     const history = useHistory();
 
-    //useEffect(() => {
-    //    try {
-    //        dispatch(updateUsers());
-    //    } catch (err) {
+    useEffect(() => {
+        try {
+            state.updateFilter(state.filter);
+        } catch (err) {
 
-    //    }
-    //}, []);
+        }
+    }, []);
 
     const filterModalToggle = () => {
         setIsOpenFiterModal(!isOpenFilterModal);
