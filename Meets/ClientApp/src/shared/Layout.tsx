@@ -39,6 +39,7 @@ import NotificationList from '../pages/notifications/NotificationList';
 import TimeTable from '../pages/meeting/TimeTable';
 import useAccountStore from '../hooks/useAccountStore';
 import useCurrentUserStore from '../hooks/useCurrentUserStore';
+import ProtectedRoute from './PretectedRoute';
 
 
 
@@ -90,33 +91,32 @@ function Layout() {
                                         }} />
 
 
-                                        {account.isSignedIn &&
                                             <>
-                                                <Route path={Routes.UserCard} render={(routeProps) => (
+                                            <ProtectedRoute path={Routes.UserCard} render={(routeProps) => (
                                                     <UserCard />
 
-                                                )}></Route>
-                                                <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings  />}></Route>
-                                                <Route path="/user/Search">
+                                            )}></ProtectedRoute>
+                                            <ProtectedRoute path={Routes.ProfileSettings} render={(props) => <ProfileSettings />}></ProtectedRoute>
+                                            <ProtectedRoute path="/user/Search">
                                                     <UserSearch />
-                                                </Route>
-                                                <Route path={Routes.UserChangePassword} render={props => <UserChangePassword />} />
-                                                <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail />} />
-                                                <Route path={Routes.MeetingList} render={(props) => <MeetingList {...props} />} />
-                                                <Route path={Routes.Meeting} render={(routeProps) => (
+                                            </ProtectedRoute>
+                                            <ProtectedRoute path={Routes.UserChangePassword} render={props => <UserChangePassword />} />
+                                            <ProtectedRoute path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail />} />
+                                            <ProtectedRoute path={Routes.MeetingList} render={(props) => <MeetingList {...props} />} />
+                                            <ProtectedRoute path={Routes.Meeting} render={(routeProps) => (
                                                     <Meeting
 
                                                         setIsOpenMeeting={setIsOpenMeeting}
                                                         {...routeProps}
                                                     />
                                                 )} />
-                                                <Route path={Routes.Notifications} render={() => (
+                                            <ProtectedRoute path={Routes.Notifications} render={() => (
                                                     <NotificationList />
                                                 )} />
-                                                <Route path={Routes.TimeTable} render={() => <TimeTable />} />
+                                            <ProtectedRoute path={Routes.TimeTable} render={() => <TimeTable />} />
                                                 <Route path={Routes.Error} render={() => <Error />} />
                                             </>
-                                        }
+                                        
                                     </Switch>
                                 </div>
                             </div>

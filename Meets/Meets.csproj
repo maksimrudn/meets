@@ -203,6 +203,7 @@
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
     <None Remove="ClientApp\src\modules\entities\event\Date.tsx" />
+    <None Remove="ClientApp\src\shared\PretectedRoute.tsx" />
     <None Remove="ClientApp\src\store\menu.ts" />
     <None Remove="ClientApp\src\store\timetable.ts" />
     <None Remove="ClientApp\src\store\user.ts" />
@@ -446,6 +447,8 @@
     <TypeScriptCompile Include="ClientApp\src\pages\meeting\TimeTable.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\pages\notifications\NotificationList.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\shared\PretectedRoute.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\shared\BottomMenu.tsx" />
 
