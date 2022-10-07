@@ -7,6 +7,8 @@ import timeTableReducer from './timetable';
 import menuReducer from './menu';
 import settingsReducer from './settings';
 import meetRequestReducer from './meetrequest';
+import meetingsReducer from './meetings';
+import meetingReducer from './meeting';
 
 const rootReducer = combineReducers({
     account: accountReducer,
@@ -15,7 +17,9 @@ const rootReducer = combineReducers({
     settings: settingsReducer,
     timeTable: timeTableReducer,
     menu: menuReducer,
-    meetRequest: meetRequestReducer
+    meetRequest: meetRequestReducer,
+    meetings: meetingsReducer,
+    meeting: meetingReducer
 });
 
 export function createStore() {
