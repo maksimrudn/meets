@@ -95,7 +95,11 @@
 
     <None Remove="ClientApp\src\contracts\work\Work.tsx" />
 
+    <None Remove="ClientApp\src\hooks\useMeetRequestStore.ts" />
+
     <None Remove="ClientApp\src\hooks\useMenuStore.ts" />
+
+    <None Remove="ClientApp\src\hooks\useSettingsStore.ts" />
 
     <None Remove="ClientApp\src\hooks\useTimeTableStore.ts" />
 
@@ -204,7 +208,9 @@
     <None Remove="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
     <None Remove="ClientApp\src\modules\entities\event\Date.tsx" />
     <None Remove="ClientApp\src\shared\PretectedRoute.tsx" />
+    <None Remove="ClientApp\src\store\meetrequest.ts" />
     <None Remove="ClientApp\src\store\menu.ts" />
+    <None Remove="ClientApp\src\store\settings.ts" />
     <None Remove="ClientApp\src\store\timetable.ts" />
     <None Remove="ClientApp\src\store\user.ts" />
     <None Remove="ClientApp\src\store\users.ts" />
@@ -271,7 +277,11 @@
 
     <TypeScriptCompile Include="ClientApp\src\contracts\user\UserListItemDTO.ts" />
 
+    <TypeScriptCompile Include="ClientApp\src\hooks\useMeetRequestStore.ts" />
+
     <TypeScriptCompile Include="ClientApp\src\hooks\useMenuStore.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\hooks\useSettingsStore.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\hooks\useTimeTableStore.ts" />
 
@@ -455,7 +465,9 @@
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\event\Date.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\store\meetrequest.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\menu.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\settings.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\timetable.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\user.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\users.ts" />

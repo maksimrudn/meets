@@ -109,7 +109,7 @@ export const editUser = (fieldName: string, value: any): AppThunk => async (disp
     const state = getState().user;
 
     let newData = {
-        ...state,
+        ...state.user,
         [fieldName]: value
     };
 

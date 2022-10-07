@@ -28,23 +28,18 @@ export const setSelectedMenuItem = (item: string): AppThunk => async dispatch =>
     switch (item) {
         case BottomMenuItems.UserSearch:
             dispatch(updated(BottomMenuItems.UserSearch));
-            //setSelectedMenuItem(BottomMenuItems.UserSearch);
             break;
         case BottomMenuItems.Profie:
             dispatch(updated(BottomMenuItems.Profie));
-            //setSelectedMenuItem(BottomMenuItems.Profie);
             break;
         case BottomMenuItems.Meetings:
             dispatch(updated(BottomMenuItems.Meetings));
-            //setSelectedMenuItem(BottomMenuItems.Meetings);
             break;
         case BottomMenuItems.Notifications:
             dispatch(updated(BottomMenuItems.Notifications));
-            //setSelectedMenuItem(BottomMenuItems.Notifications);
             break;
         case BottomMenuItems.TimeTable:
             dispatch(updated(BottomMenuItems.TimeTable));
-            //setSelectedMenuItem(BottomMenuItems.TimeTable);
             break;
     }
 }

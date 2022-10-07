@@ -12,7 +12,6 @@ import MessageIconSvg from '../icons/MessageIconSvg';
 import Routes from '../common/Routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../store/createStore';
-import useCurrentUserStore from '../hooks/useCurrentUserStore';
 import useAccountStore from '../hooks/useAccountStore';
 import useMenuStore from '../hooks/useMenuStore';
 
@@ -20,20 +19,15 @@ import useMenuStore from '../hooks/useMenuStore';
 
 
 export default function BottomMenu() {
-    //const currentUser = useCurrentUserStore();
     const { currentUser } = useAccountStore();
     const { selectedMenuItem, setSelectedItem } = useMenuStore();
-
-    //useEffect(() => {
-    //    currentUser.update();
-    //}, []);
 
     return (
         <div className="BottomMenu position-relative" >
             <div className="Menu col-12 position-fixed bottom-0 start-50 translate-middle-x">
 
                 <span className={selectedMenuItem === BottomMenuItems.TimeTable ? "MenuItem active" : "MenuItem"}>
-                    <Link to={Routes.TimeTable} onClick={() => setSelectedItem(BottomMenuItems.TimeTable)}> {/*props.selectMenuItemOnClick(BottomMenuItems.TimeTable)*/}
+                    <Link to={Routes.TimeTable} onClick={() => setSelectedItem(BottomMenuItems.TimeTable)}>
                         <TimeIconSvg />
                     </Link>
                 </span>

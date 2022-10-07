@@ -16,8 +16,6 @@ function ConfirmEmail() {
     let history = useHistory();
     let { search } = useLocation();
 
-    //const currentUser = useSelector((state: RootState) => state.currentUser);
-    //const dispatch = useAppDispatch();
     const account = useAccountStore();
 
     useEffect(() => {
@@ -27,15 +25,7 @@ function ConfirmEmail() {
             let userId = query.get('userId');
             let code = query.get('code');
 
-            let jwtResponse = accountService.confirmEmail(userId, code);
-            Cookies.set('access_token', jwtResponse.accessToken);
-
-            //dispatch(updateCurrentUser);
-            try {
-                account.update();
-            } catch (err) {
-
-            }
+            account.confirmEmail(userId, code);
 
             history.push('/account/confirmEmailSuccess');
 

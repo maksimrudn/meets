@@ -55,12 +55,8 @@ interface UserCardTabsProps {
 }
 
 export default function UserCardTabs(props: UserCardTabsProps) {
-
-    //const currentUser = useCurrentUserStore();
     const { currentUser } = useAccountStore();
     const state = useUserStore();
-    //const state = useSelector((state: RootState) => state.user);
-    //const dispatch = useDispatch();
 
     const [isOpenLearningEditorModal, setIsLearningEditorModal] = useState(false);
     const [isOpenWorkEditorModal, setIsWorkEditorModal] = useState(false);
@@ -156,7 +152,6 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             learningService.remove(formData);
 
             state.updateUser(currentUser?.id);
-            //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
         }
@@ -169,7 +164,6 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             workService.remove(formData);
 
             state.updateUser(currentUser?.id);
-            //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
         }
@@ -182,7 +176,6 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             activityService.remove(formData);
 
             state.updateUser(currentUser?.id);
-            //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
         }
@@ -195,7 +188,6 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             factService.remove(formData);
 
             state.updateUser(currentUser?.id);
-            //props.updateUser();
         } catch (err: any) {
             NotificationManager.error(err.message, err.name);
         }
@@ -308,9 +300,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 )}
 
                                 {state.user.id === currentUser.id &&
-                                    /*<div className="Actions">*/
                                     <span className="Button" onClick={() => learningEditorModalToggler()}><PlusIcon /></span>
-                                    /*</div>*/
                                 }
                             </div>
                         );
@@ -355,9 +345,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 )}
 
                                 {state.user.id === currentUser.id &&
-                                    /*<div className="Actions">*/
                                     <span className="Button" onClick={() => workEditorModalToggler()}><PlusIcon /></span>
-                                    /*</div>*/
                                 }
                             </div>
                         );
@@ -388,9 +376,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 )}
 
                                 {state.user.id === currentUser.id &&
-                                    /* <div className="Actions">*/
                                     <span className="Button" onClick={() => activityEditorModalToggler()}><PlusIcon /></span>
-                                    /* </div>*/
                                 }
                             </div>
                         );
@@ -421,9 +407,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 )}
 
                                 {state.user.id === currentUser.id &&
-                                    /*<div className="Actions">*/
                                     <span className="Button" onClick={() => factEditorModalToggler()}><PlusIcon /></span>
-                                    /*</div>*/
                                 }
                             </div>
                         );

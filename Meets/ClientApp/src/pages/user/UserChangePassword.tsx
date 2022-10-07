@@ -9,22 +9,24 @@ import GoBackIcon from '../../icons/GoBackIcon';
 import Routes from '../../common/Routes';
 
 import './UserChangePassword.scss';
+import useSettingsStore from '../../hooks/useSettingsStore';
 
 export default function UserChangePassword() {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
+    const settings = useSettingsStore();
+
     const [oldPassword, setOldPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-    const onSubmit = () => {
+    const handleChangePassword = () => {
         try {
-            userService.changePassword(oldPassword, newPassword, confirmPassword);
+            settings.changePassword(oldPassword, newPassword, confirmPassword);
             history.goBack();
-            //NotificationManager.success('Пароль успешно изменён!', 'Уведомление');
         } catch (err) {
-            history.push(Routes.Error, err);
+            
         }
     }
 
@@ -39,7 +41,7 @@ export default function UserChangePassword() {
 
             <div className="Data d-flex flex-column justify-content-center h-100">
 
-                <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                <form onSubmit={handleSubmit(handleChangePassword)} autoComplete="off">
 
                     <div className="col-12">
                         <div className="mb-4">
