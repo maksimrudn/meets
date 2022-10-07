@@ -16,6 +16,7 @@ import './UserEditorModal.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/createStore';
 import { editUser } from '../../../store/user';
+import useUserStore from '../../../hooks/useUserStore';
 
 
 
@@ -27,8 +28,7 @@ interface UserEditorModalProps {
 }
 
 export default function UserEditorModal(props: UserEditorModalProps) {
-    const state = useSelector((state: RootState) => state.user);
-    const dispatch = useDispatch();
+    const state = useUserStore();
 
     const [editedFieldValue, setEditedFieldValue] = useState<any | any[]>('');
 
@@ -61,9 +61,9 @@ export default function UserEditorModal(props: UserEditorModalProps) {
         setEditedFieldValue(tags);
     }
 
-    const handleSaveChanges = async () => {
+    const handleSaveChanges = () => {
         try {
-            await dispatch(editUser(props.fieldName, editedFieldValue));
+            state.editUser(props.fieldName, editedFieldValue);
             props.toggle();
         }
         catch { }
@@ -90,17 +90,6 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                     className="Header"
                 >
                     {getUserEditorModalTitle(props.fieldName)}
-                    {/*(() => {
-                        switch (props.fieldName) {
-                            case UserFieldNames.FullName: return 'Имя';
-                            case UserFieldNames.BirthDate: return 'Дата рождения';
-                            case UserFieldNames.City: return 'Город';
-                            case UserFieldNames.Description: return 'О себе';
-                            case UserFieldNames.Growth: return 'Рост';
-                            case UserFieldNames.Weight: return 'Вес';
-                            case UserFieldNames.Tags: return 'Тэги';
-                        }
-                    })()*/}
                 </ModalHeader>
                 <ModalBody
                     className="Body"

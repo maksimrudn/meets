@@ -24,13 +24,7 @@ import useUsersStore from '../../hooks/useUsersStore';
 
 
 
-interface UserSearchProps {
-    
-}
-
-export default function UserSearch(props: UserSearchProps) {
-    //const state = useSelector((state: RootState) => state.users);
-    //const dispatch = useDispatch();
+export default function UserSearch() {
     const state = useUsersStore();
 
     const [isOpenFilterModal, setIsOpenFiterModal] = useState(false);
@@ -92,9 +86,6 @@ export default function UserSearch(props: UserSearchProps) {
                     <UserSearchFilterModal
                         isOpen={isOpenFilterModal}
                         toggle={filterModalToggle}
-                        //filter={filter}
-                        //setFilter={setFilter}
-                        //onFilterSubmit={onFilterSubmit}
                     />
                 }
             </div>

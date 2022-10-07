@@ -18,8 +18,6 @@ interface IUserSearchFilterModalProps {
 }
 
 export default function UserSearchFilterModal(props: IUserSearchFilterModalProps) {
-    //const state = useSelector((state: RootState) => state.users);
-    //const dispatch = useDispatch();
     const state = useUsersStore();
 
     const [filter, setFilter] = useState<IFilter>(state.filter);
@@ -34,9 +32,7 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
     }
 
     const findOnClick = () => {
-        //dispatch(updateFilter(filter));
         try {
-            //dispatch(updateUsers());
             state.updateFilter(filter);
         } catch (err) {
 

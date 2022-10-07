@@ -5,9 +5,8 @@ import userService from '../../../api/UserService';
 import { UserFieldNames } from '../../../common/UserFieldNames';
 import { getAllowedPhotoFilesByMask } from '../../../common/Utils';
 import useAccountStore from '../../../hooks/useAccountStore';
-import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
+import useUserStore from '../../../hooks/useUserStore';
 import { RootState } from '../../../store/createStore';
-import { editUser, removeAvatar, updateUser } from '../../../store/user';
 import ConfirmationModal from '../../ConfirmationModal';
 import ShowUserAvatarModal from './ShowUserAvatarModal';
 import './UserCardContextMenuModal.scss';
@@ -19,11 +18,8 @@ interface UserCardContextMenuModalProps {
 }
 
 export default function UserCardContextMenuModal(props: UserCardContextMenuModalProps) {
-
-    //const cuStore = useCurrentUserStore();
     const { currentUser } = useAccountStore();
-    const state = useSelector((state: RootState) => state.user);
-    const dispatch = useDispatch();
+    const state = useUserStore();
 
     const [isOpenRemoveAvatarModal, setIsOpenRemoveAvatarModal] = useState(false);
     const [isOpenShowAvatarModal, setIsShowAvatar] = useState(false);
@@ -37,9 +33,9 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
         setIsShowAvatar(!isOpenShowAvatarModal);
     }
 
-    const handleRemoveAvatar = async () => {
+    const handleRemoveAvatar = () => {
         try {
-            await dispatch(removeAvatar());
+            state.removeAvatar();
             toggleRemoveAvatarModal();
         }
         catch (err: any) {
@@ -55,7 +51,7 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
         props.toggle();
 
         try {
-            await dispatch(editUser(UserFieldNames.Photo, files[0]))
+            state.editUser(UserFieldNames.Photo, files[0]);
         }
         catch { }
     }

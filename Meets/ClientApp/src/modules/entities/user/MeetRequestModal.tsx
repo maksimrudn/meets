@@ -20,7 +20,10 @@ import './MeetRequestModal.scss';
 import UserDTO from '../../../contracts/user/UserDTO';
 import MapSelectorModal from './MapSelectorModal';
 import UserCardResponse from '../../../contracts/user/UserCardResponse';
-import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
+import useMeetRequestStore from '../../../hooks/useMeetRequestStore';
+import UserListItemDTO from '../../../contracts/user/UserListItemDTO';
 
 
 
@@ -28,11 +31,7 @@ interface IMeetRequestModalProps {
     isOpen: boolean
     toggle: () => void
 
-    user: UserCardResponse
-
-    updateUser: () => void
-
-    //updateNotifications: () => void
+    user?: UserListItemDTO
 }
 
 export default function MeetRequestModal(props: IMeetRequestModalProps) {
@@ -41,10 +40,9 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const currentUser = useCurrentUserStore();
-
-    const [meetingRequest, setMeetingRequest] = useState<MeetingRequest>(MeetingRequest.create(props.user));
-
+    const { currentUser } = useAccountStore();
+    const userStore = useUserStore();
+    const meeting = useMeetRequestStore();
 
     const [isOpenMapSelectModal, setIsOpenMapSelectModal] = useState(false);
 
@@ -52,21 +50,30 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
         setIsOpenMapSelectModal(!isOpenMapSelectModal);
     }
 
-
-
     useEffect(() => {
-        setMeetingRequest({ ...meetingRequest, message: `Привет ${props.user.fullName}! Приглашаю тебя попить кофе` })
+        meeting.setMeetRequest(
+            MeetingRequest.create(
+                props.user || userStore.user,
+                `Привет ${(props.user?.fullName || userStore.user.fullName)}! Приглашаю тебя попить кофе`
+            )
+        );
     }, []);
 
 
-    const inviteOnSubmit = () => {
+    const handleInvite = () => {
         try {
-            meetingsService.invite(meetingRequest);
-            props.updateUser();
+            meeting.invite();
+
+            if (!props.user) {
+                userStore.updateUser(meeting.meetRequest.targetId);
+            }
+
+        } catch (err) {
+            
+        }
+
+        if (!meeting.isLoading && meeting.error != null) {
             props.toggle();
-        } catch (err: any) {
-            history.push(Routes.Error, err);
-            //NotificationManager.error(err.message, err.name);
         }
     }
 
@@ -94,19 +101,20 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
             <ModalBody
                 className="Body"
             >
-                <form onSubmit={handleSubmit(inviteOnSubmit)}>
+                <form onSubmit={handleSubmit(handleInvite)}>
                     <div className="col-12 mb-2">
                         <label className="form-label">Дата / Время</label>
                         <DateTime
-                            onChange={(res: any) => setMeetingRequest({ ...meetingRequest, meetingDate: moment(res, 'DD.MM.YYYY HH:mm').toISOString() })}
-                            initialValue={meetingRequest.meetingDate && moment(meetingRequest.meetingDate).format('DD.MM.YYYY HH:mm')  }
+                            onChange={(res: any) => meeting.setMeetRequest({ ...meeting.meetRequest, meetingDate: moment(res, 'DD.MM.YYYY HH:mm').format() })}
+                            initialValue={meeting.meetRequest.meetingDate && moment(meeting.meetRequest.meetingDate).format('DD.MM.YYYY HH:mm')  }
                             inputProps={{
                                 placeholder: 'dd.mm.yyyy hh:mm',
                                 ...register('Date',
                                     {
                                         required: true
                                     }
-                                )
+                                ),
+                                disabled: (meeting.isLoading && !meeting.dataLoaded)
                             }}
                             dateFormat="DD.MM.YYYY"
                             timeFormat="HH:mm"
@@ -121,8 +129,8 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                         <label className="form-label">Сообщение</label>
                         <textarea
                             className="form-control"
-                            defaultValue={meetingRequest.message}
-                            onChange={(e: any) => setMeetingRequest({ ...meetingRequest, message: e.target.value })}
+                            defaultValue={meeting.meetRequest.message}
+                            //onChange={(e: any) => meeting.setMeetRequest({ ...meeting.meetRequest, message: e.target.value })}
                             rows={4}
                             readOnly
                         />
@@ -134,15 +142,16 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                             <input
                                 type="checkbox"
                                 id="isOnline"
-                                checked={meetingRequest.isOnline}
-                                onChange={(e: any) => setMeetingRequest({ ...meetingRequest, place: '', isOnline: e.target.checked })}
+                                checked={meeting.meetRequest.isOnline}
+                                onChange={(e: any) => meeting.setMeetRequest({ ...meeting.meetRequest, place: '', isOnline: e.target.checked })}
+                                disabled={(meeting.isLoading && !meeting.dataLoaded)}
                             />
                             <label htmlFor="isOnline"></label>
                         </div>
                     </div>
 
                     {(() => {
-                        if (!meetingRequest.isOnline) {
+                        if (!meeting.meetRequest.isOnline) {
                             return (
                                 <>
                                     <div className="col-12 mb-2">
@@ -154,10 +163,11 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                                 }
                                             )}
                                             className="form-control"
-                                            value={meetingRequest.place}
+                                            value={meeting.meetRequest.place}
                                             placeholder="Тверская ул., 22, Москва, 127006"
-                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeetingRequest({ ...meetingRequest, place: e.target.value })}
+                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => meeting.setMeetRequest({ ...meeting.meetRequest, place: e.target.value })}
                                             rows={4}
+                                            disabled={(meeting.isLoading && !meeting.dataLoaded)}
                                         />
                                         {errors.Place && <p className='w-100 text-center text-danger mt-2'>Обязательно к заполнению</p>}
                                     </div>
@@ -181,10 +191,11 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                             )}
                                             className="form-control"
                                             placeholder="zoomid ….."
-                                            value={meetingRequest.place}
+                                            value={meeting.meetRequest.place}
                                             
-                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setMeetingRequest({ ...meetingRequest, place: e.target.value })}
+                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => meeting.setMeetRequest({ ...meeting.meetRequest, place: e.target.value })}
                                             rows={4}
+                                            disabled={(meeting.isLoading && !meeting.dataLoaded)}
                                         />
                                         {errors.Place && <p className='w-100 text-center text-danger mt-2'>Обязательно к заполнению</p>}
                                     </div>
@@ -195,14 +206,18 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                         }
                     })()}
 
+                    {meeting.error && <p className='text-danger w-100 text-center mt-2'>{meeting.error}</p>}
+
                     <button type="submit" className="SaveBtn btn mt-3">Отправить</button>
                 </form>
 
-                <MapSelectorModal
-                    isOpen={isOpenMapSelectModal}
-                    toggle={mapSelectModalToggle}
-                    setMeetingAddress={(value)=>setMeetingRequest({ ...meetingRequest, place: value  })}
-                />
+                {isOpenMapSelectModal &&
+                    <MapSelectorModal
+                        isOpen={isOpenMapSelectModal}
+                        toggle={mapSelectModalToggle}
+                    />
+                }
+                
             </ModalBody>
 
         </Modal>

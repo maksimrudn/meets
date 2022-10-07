@@ -111,12 +111,68 @@ export const logout = (): AppThunk => async dispatch => {
     await dispatch(authReceived(false));
 };
 
+export const register = (fullName: string, email: string, password: string, confirmPassword: string): AppThunk => async dispatch => {
+    dispatch(authRequested());
+
+    try {
+        let jwtResponse = accountService.register(fullName, email, password, confirmPassword);
+        Cookies.set('access_token', jwtResponse.accessToken);
+
+        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(authReceived(true));
+    } catch (error: any) {
+        dispatch(authFailed(error.message));
+        throw error;
+    }
+};
+
+export const confirmEmail = (userId: any, code: any): AppThunk => async dispatch => {
+    dispatch(authRequested());
+
+    try {
+        let jwtResponse = accountService.confirmEmail(userId, code);
+        Cookies.set('access_token', jwtResponse.accessToken);
+
+        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(authReceived(true));
+    } catch (error: any) {
+        dispatch(authFailed(error.message));
+        throw error;
+    }
+}
+
+export const forgotPassword = (email: string): AppThunk => async dispatch => {
+    //dispatch(authRequested());
+
+    try {
+        accountService.forgotPassword(email);
+
+        //await dispatch(updateCurrentUserOrThrow());
+    } catch (error: any) {
+        throw error;
+    }
+}
+
+export const resetPassword = (code: string, email: string, password: string, confirmPassword: string): AppThunk => async dispatch => {
+    dispatch(authRequested());
+
+    try {
+        accountService.resetPassword(code, email, password, confirmPassword);
+
+        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(authReceived(true));
+    } catch (error: any) {
+        dispatch(authFailed(error.message));
+        throw error;
+    }
+}
+
 export const updateCurrentUserOrThrow = (): AppThunk => async dispatch => {
     dispatch(currentUserRequested());
 
     try {
         const currentUser = accountService.getCurrentUser();
-        dispatch(currentUserReceived(currentUser));
+        await dispatch(currentUserReceived(currentUser));
     } catch (error: any) {
         dispatch(currentUserFailed(error.message));
         throw error;

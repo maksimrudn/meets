@@ -9,8 +9,8 @@ import GoBackIcon from '../../icons/GoBackIcon';
 import Routes from '../../common/Routes';
 
 import './UserConfirmEmail.scss';
-import useCurrentUserStore from '../../hooks/useCurrentUserStore';
 import useAccountStore from '../../hooks/useAccountStore';
+import useSettingsStore from '../../hooks/useSettingsStore';
 
 interface IUserConfirmEmailProps{
 }
@@ -19,18 +19,18 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    //const currentUser = useCurrentUserStore();
     const { currentUser } = useAccountStore();
+    const settings = useSettingsStore();
 
-    const [email, setEmail] = useState<string>('');
+    const [email, setEmail] = useState<string>(currentUser?.email as string);
     const [showMessage, setShowMessage] = useState(false);
 
-    const onSubmit = () => {
+    const handleConfirmEmail = () => {
         try {
-            userService.confirmEmail({ email });
+            settings.confirmEmail(email);
             setShowMessage(true);
         } catch (err) {
-            history.push(Routes.Error, err);
+            
         }
     }
 
@@ -43,7 +43,7 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
                 <span className='Title'>Адрес эл. почты</span>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleConfirmEmail)}>
                 <div className="col-12">
                     <div className="mb-3">
                         <label className="form-label ms-2">Адрес эл. почты</label>
@@ -56,7 +56,7 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
                             )}
                             className="form-control"
                             placeholder="ivanov@mail.ru"
-                            value={currentUser?.email}
+                            value={email}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setEmail(e.target.value) }}
                             readOnly
                         />

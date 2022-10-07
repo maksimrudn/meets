@@ -5,14 +5,17 @@ import usersReducer from './users';
 import userReducer from './user';
 import timeTableReducer from './timetable';
 import menuReducer from './menu';
+import settingsReducer from './settings';
+import meetRequestReducer from './meetrequest';
 
 const rootReducer = combineReducers({
     account: accountReducer,
-    //currentUser: currentUserReducer,
     users: usersReducer,
     user: userReducer,
+    settings: settingsReducer,
     timeTable: timeTableReducer,
-    menu: menuReducer
+    menu: menuReducer,
+    meetRequest: meetRequestReducer
 });
 
 export function createStore() {

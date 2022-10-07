@@ -2,12 +2,15 @@
 import { useHistory } from 'react-router-dom';
 import accountService from '../../api/AccountService';
 import Routes from '../../common/Routes';
+import useAccountStore from '../../hooks/useAccountStore';
 import EmailOutlineIcon from '../../icons/EmailOutlineIcon';
 import MenuCloseIcon from '../../icons/MenuCloseIcon';
 
 import './ForgotPasswordStep1.scss';
 
 export default function ForgotPasswordStep1() {
+    const account = useAccountStore();
+
     let history = useHistory();
     const [email, setEmail] = useState('');
 
@@ -15,7 +18,7 @@ export default function ForgotPasswordStep1() {
         e.preventDefault();
 
         try {
-            accountService.forgotPassword(email);
+            account.forgotPassword(email);
 
             history.push('/account/forgotPasswordStep2');
         } catch (err) {

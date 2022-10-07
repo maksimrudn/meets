@@ -8,7 +8,8 @@ import YMapsGeoSelector from '../../../modules/geo/YMapsGeoSelector';
 import getPosition from '../../../common/GeoUtils';
 
 import './MapSelectorModal.scss';
-import useCurrentUserStore from '../../../hooks/useCurrentUserStore';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useMeetRequestStore from '../../../hooks/useMeetRequestStore';
 
 type MapSelectorModalState = {
     latitude: number,
@@ -19,12 +20,12 @@ type MapSelectorModalState = {
 type IMapSelectorModalProps = {
     isOpen: boolean,
     toggle(): void,
-    setMeetingAddress(address: string):void
 }
 
 export default function MapSelectorModal(props: IMapSelectorModalProps) {
 
-    const currentUser = useCurrentUserStore();
+    const { currentUser } = useAccountStore();
+    const meeting = useMeetRequestStore();
 
     const [coords, setCoords] = useState<MapSelectorModalState>({
         latitude: 0,
@@ -65,7 +66,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
     }
 
     const onSave = () => {
-        props.setMeetingAddress(coords.address as string);
+        meeting.setMeetRequest({ ...meeting.meetRequest, place: coords.address });
         props.toggle();
     }
 
@@ -106,7 +107,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
                         latitude={coords.latitude}
                         longitude={coords.longitude}
                         onChangeCoordinates={onChangeCoordinatesModal}
-                        currentUser={currentUser.user }
+                        currentUser={currentUser}
                     />
                 </div>
 

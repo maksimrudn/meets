@@ -66,7 +66,6 @@ const usersSlice = createSlice({
             state.dataLoaded = true;
         },
         filterUpdated: (state, action) => {
-            //const { key, value } = action.payload;
             state.filter = action.payload;
         }
     }
@@ -74,20 +73,6 @@ const usersSlice = createSlice({
 
 const { actions, reducer: usersReducer } = usersSlice;
 const { usersRequested, usersReceived, usersFailed, filterUpdated } = actions;
-
-//const _updateUsers = (): AppThunk => async (dispatch, getState) => {
-//    dispatch(usersRequested());
-
-//    try {
-//        const state = getState();
-
-//        const users = userService.getList(state.users.filter);
-//        await dispatch(usersReceived(users));
-//    } catch (err: any) {
-//        dispatch(usersFailed(err.message));
-//        throw err;
-//    }
-//}
 
 export const updateFilter = (filter: IFilter): AppThunk => async (dispatch, getState) => {
     dispatch(usersRequested());

@@ -80,10 +80,7 @@ function UserCard(): JSX.Element {
 
     const history = useHistory();
 
-    //const currentUser = useSelector((state: RootState) => state.currentUser);
     const { currentUser } = useAccountStore();
-    //const state = useSelector((state: RootState) => state.user);
-    //const dispatch = useDispatch();
     const state = useUserStore();
 
 
@@ -102,7 +99,6 @@ function UserCard(): JSX.Element {
 
     useEffect(() => {
         try {
-            //dispatch(updateUser(params.id));
             state.updateUser(params.id);
         } catch (err) {
 
@@ -125,7 +121,7 @@ function UserCard(): JSX.Element {
     
 
     const onClickEditIcon = (fieldName: any) => {
-        setFieldName(fieldName); //e.target.dataset.fieldName
+        setFieldName(fieldName);
         toggleUserEditorModal();
     }
 
@@ -135,7 +131,6 @@ function UserCard(): JSX.Element {
         try {
             subscribtionService.subscribe(state.user?.id);
             state.updateUser(state.user?.id);
-            //update();
         }
         catch (err: any) {
             NotificationManager.error(err.message, err.name);
@@ -146,7 +141,6 @@ function UserCard(): JSX.Element {
         try {
             subscribtionService.unSubscribe(state.user?.id);
             state.updateUser(state.user?.id);
-            //update();
         }
         catch (err: any) {
             NotificationManager.error(err.message, err.name);
@@ -357,23 +351,13 @@ function UserCard(): JSX.Element {
                             />
                         }
 
-                        
-
-                        
-
-                        {/*{isOpenMeetModal &&
+                        {(state.dataLoaded && isOpenMeetModal) &&
                             <MeetRequestModal
                                 isOpen={isOpenMeetModal}
                                 toggle={toggleMeetRequestModal}
-                                user={userCard}
-                                updateUser={update}
-                            //updateNotifications={props.updateNotifications}
                             />
-                        }*/}
+                        }
                         
-
-                        
-
                     </div>
                 </>
             }

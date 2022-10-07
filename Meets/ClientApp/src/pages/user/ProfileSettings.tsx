@@ -14,8 +14,8 @@ import accountService from '../../api/AccountService';
 import ConfirmationModal from '../../modules/ConfirmationModal';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store/createStore';
-import { updateCurrentUser } from '../../store/currentUser';
 import useAccountStore from '../../hooks/useAccountStore';
+import useSettingsStore from '../../hooks/useSettingsStore';
 
 
 
@@ -23,52 +23,37 @@ function ProfileSettings() {
     let history = useHistory();
 
     const account = useAccountStore();
-
-    const [profile, setProfile] = useState<ProfileSettingsDTO>(new ProfileSettingsDTO());
+    const settings = useSettingsStore();
 
     const [isOpenRemoveAccountModal, setIsOpenRemoveAccountModal] = useState(false);
 
     useEffect(() => {
-        update();
+        try {
+            settings.update();
+        } catch (err) { }
     }, []);
 
-    const update = () => {
+    const handleEdit = () => {
         try {
-            const profile = userService.getProfileSettings(account.currentUser.id);
-            setProfile(profile);
-        } catch (err: any) {
-            history.push(Routes.Error, err);
-        }
-    }
-
-    const onSaveChanges = () => {
-        let data = new EditProfileSettingsDTO();
-        data = { ...profile, userId: account.currentUser.id };
-
-        try {
-            userService.editProfileSettings(data);
+            settings.edit();
             history.goBack();
-            //update();
-        } catch (err: any) {
-            history.push(Routes.Error, err);
-        }
+        } catch (err) { }
     }
 
-    const removeAccount = () => {
-        accountService.removeAccount();
-        history.push('/account/login');
+    const handleRemoveAccount = () => {
+        try {
+            settings.removeAccount();
+            history.push('/account/login');
+        } catch (err) { }
     }
 
-    const LogOut = () => {
-        //Cookies.remove('access_token');
-        //dispatch(updateCurrentUser);
+    const handleLogOut = () => {
         try {
             account.logout();
+            history.push('/account/login');
         } catch (err) {
 
         }
-
-        history.push('/account/login');
     }
 
     const toggleRemoveAccountModal = () => {
@@ -81,7 +66,7 @@ function ProfileSettings() {
             <div className="Header mt-3">
                 <span className="GoBackBtn" onClick={() => { history.goBack(); }}><ArrowIcon /></span>
                 <span className="Title">Настройки</span>
-                <span className="SaveChangesBtn" onClick={onSaveChanges}><CheckMarkIconSvg /></span>
+                <span className="SaveChangesBtn" onClick={handleEdit}><CheckMarkIconSvg /></span>
             </div>
 
             <div className="card">
@@ -89,13 +74,13 @@ function ProfileSettings() {
                     <Link className="Link" to={Routes.UserConfirmEmail}>
                         <div className="Row">
                             <div className="Wrap">
-                                <span className="Text">{profile.email}</span>
+                                <span className="Text">{settings.profile.email}</span>
                             </div>
                             <div className="Icon"><ArrowIcon /></div>
                         </div>
 
 
-                        {!profile.emailConfirmed &&
+                        {!settings.profile.emailConfirmed &&
                             <div className="Message">Подтвердите адрес эл.почты чтобы защитить аккаунт</div>
                         }
                     </Link>
@@ -120,8 +105,8 @@ function ProfileSettings() {
                     <input
                         className="form-control"
                         type="text"
-                        defaultValue={profile.telegram?.replace('@', '')}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, telegram: e.target.value })}
+                        defaultValue={settings.profile.telegram?.replace('@', '')}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, telegram: e.target.value })}
                     />
                 </div>
             </div>
@@ -133,8 +118,8 @@ function ProfileSettings() {
                             type="checkbox"
                             className="checkbox"
                             id="invite"
-                            defaultChecked={profile.isInvitable}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, isInvitable: e.target.checked })}
+                            defaultChecked={settings.profile.isInvitable}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, isInvitable: e.target.checked })}
                         />
                         <label htmlFor="invite"></label>
                     </div>
@@ -153,8 +138,8 @@ function ProfileSettings() {
                             type="checkbox"
                             className="checkbox"
                             id="search"
-                            defaultChecked={profile.isSearchable}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, isSearchable: e.target.checked })}
+                            defaultChecked={settings.profile.isSearchable}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, isSearchable: e.target.checked })}
                         />
                         <label htmlFor="search"></label>
                     </div>
@@ -169,8 +154,8 @@ function ProfileSettings() {
                         <input
                             type="checkbox"
                             id="switch"
-                            defaultChecked={profile.isGeoTracking}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, isGeoTracking: e.target.checked })}
+                            defaultChecked={settings.profile.isGeoTracking}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, isGeoTracking: e.target.checked })}
                         />
                         <label htmlFor="switch"></label>
                     </div>
@@ -185,8 +170,8 @@ function ProfileSettings() {
                 <input
                     className="form-control"
                     type="text"
-                    defaultValue={profile.specialization}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, specialization: e.target.value })}
+                    defaultValue={settings.profile.specialization}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, specialization: e.target.value })}
                 />
             </div>
 
@@ -195,8 +180,8 @@ function ProfileSettings() {
                 <input
                     className="form-control"
                     type="text"
-                    defaultValue={profile.company}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, company: e.target.value })}
+                    defaultValue={settings.profile.company}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, company: e.target.value })}
                 />
             </div>
 
@@ -205,12 +190,12 @@ function ProfileSettings() {
                 <input
                     className="form-control"
                     type="text"
-                    defaultValue={profile.job}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, job: e.target.value })}
+                    defaultValue={settings.profile.job}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, job: e.target.value })}
                 />
             </div>
 
-            <button type="button" className="LogOut btn mb-5" onClick={LogOut}>Выйти</button>
+            <button type="button" className="LogOut btn mb-5" onClick={handleLogOut}>Выйти</button>
 
             <button type="button" className="RemoveAccount btn mb-5" onClick={toggleRemoveAccountModal}>Удалить аккаунт</button>
 
@@ -218,7 +203,7 @@ function ProfileSettings() {
                 isOpen={isOpenRemoveAccountModal}
                 toggle={toggleRemoveAccountModal}
                 message='Уверены что хотите удалить аккаунт?'
-                confirmAction={removeAccount}
+                confirmAction={handleRemoveAccount}
             />
 
         </div>
