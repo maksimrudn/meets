@@ -13,28 +13,31 @@ import MeetingFieldNames from '../../../common/MeetingFieldNames';
 import GetMeetingDTO from '../../../contracts/meeting/GetMeetingDTO';
 
 import './MeetingEditModal.scss'
+import useMeetingStore from '../../../hooks/useMeetingStore';
 
 interface IMeetingEditModal {
     isOpen: boolean
     toggle: () => void
     fieldName: string
-    meeting: GetMeetingDTO
     onSaveChanges: (value: string, fieldName: string) => void
 }
 
 export default function MeetingEditModal(props: IMeetingEditModal) {
     moment.locale('ru');
 
+    const state = useMeetingStore();
+
     const [value, setValue] = useState<string>('');
 
     const dateOnChange = (res: any) => {
         console.log();
-        setValue(moment(res).format()); //'DD-MM-YYYYTHH:mm:ss' moment(res).toISOString() , 'DD MMMM YYYY HH:mm'
+        setValue(moment(res).format());
         console.log();
     }
 
     const onSaveChanges = () => {
         props.onSaveChanges(value, props.fieldName);
+        props.toggle();
     }
 
     return (
@@ -68,7 +71,7 @@ export default function MeetingEditModal(props: IMeetingEditModal) {
                                 <div className="col-12 mb-2">
                                     <AddressSuggestions
                                         token={AppConfig.TokenDadata}
-                                        value={{ value: props.meeting.place }}
+                                        value={{ value: state.meeting.place }}
                                         onChange={(city: any) => setValue(city?.value)}
                                         minChars={3}
                                         inputProps={{ className: 'form-control' }}
@@ -80,7 +83,7 @@ export default function MeetingEditModal(props: IMeetingEditModal) {
                                 <div className="col-12 mb-2">
                                     <DateTime
                                         onChange={(res: any) => setValue(moment(res).format())}
-                                        initialValue={moment(props.meeting.meetingDate).format('DD MMMM YYYY HH:mm')}
+                                        initialValue={moment(state.meeting.meetingDate).format('DD MMMM YYYY HH:mm')}
                                         inputProps={{ placeholder: 'dd.mm.yyyy hh:mm', className: 'form-control' }}
                                         dateFormat='DD MMMM YYYY'
                                         timeFormat='HH:mm'
