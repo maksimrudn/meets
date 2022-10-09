@@ -3,9 +3,9 @@ import { RootState, useAppDispatch } from "../store/createStore";
 import { editUser, IUserState, removeAvatar, updateUser } from "../store/user";
 
 interface IUserStore extends IUserState {
-    updateUser: (userId: any) => void
-    editUser: (fieldName: string, value: any) => void
-    removeAvatar: () => void
+    updateUser: (userId: any) => Promise<void>
+    editUser: (fieldName: string, value: any) => Promise<void>
+    removeAvatar: () => Promise<void>
 }
 
 function useUserStore(): IUserStore {
@@ -14,9 +14,9 @@ function useUserStore(): IUserStore {
 
     return {
         ...user,
-        updateUser: (userId) => { dispatch(updateUser(userId)); },
-        editUser: (fieldName, value) => { dispatch(editUser(fieldName, value)); },
-        removeAvatar: () => { dispatch(removeAvatar()); }
+        updateUser: async (userId) => { await dispatch(updateUser(userId)); },
+        editUser: async (fieldName, value) => { await dispatch(editUser(fieldName, value)); },
+        removeAvatar: async () => { await dispatch(removeAvatar()); }
     };
 } 
 

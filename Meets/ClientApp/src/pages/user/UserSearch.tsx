@@ -13,30 +13,28 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import './UserSearch.scss';
 import GoBackIcon from '../../icons/GoBackIcon';
 import SlidersIcon from '../../icons/SlidersIcon';
-import { AddressSuggestions } from 'react-dadata';
-import AppConfig from '../../common/AppConfig';
 import UserSearchFilterModal, { IFilter } from '../../modules/entities/user/UserSearchFilterModal';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/createStore';
-import { updateUsers } from '../../store/users';
+
 import useUsersStore from '../../hooks/useUsersStore';
 
 
 
 
 export default function UserSearch() {
-    const state = useUsersStore();
+    const usersStore = useUsersStore();
 
     const [isOpenFilterModal, setIsOpenFiterModal] = useState(false);
 
     const history = useHistory();
 
     useEffect(() => {
-        try {
-            state.updateFilter(state.filter);
-        } catch (err) {
-
+        const update = async () => {
+            try {
+                await usersStore.updateFilter(usersStore.filter);
+            } catch (err) { }
         }
+
+        update();
     }, []);
 
     const filterModalToggle = () => {
@@ -74,7 +72,7 @@ export default function UserSearch() {
                 </div>
 
                 <div className="row g-3">
-                    {state.users?.length && state.users.map((user: any) =>
+                    {usersStore.users?.length && usersStore.users.map((user: any) =>
                         <UserItem
                             key={user.id}
                             user={user}

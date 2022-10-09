@@ -21,9 +21,9 @@ export default function UserChangePassword() {
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-    const handleChangePassword = () => {
+    const handleChangePassword = async () => {
         try {
-            settings.changePassword(oldPassword, newPassword, confirmPassword);
+            await settings.changePassword(oldPassword, newPassword, confirmPassword);
             history.goBack();
         } catch (err) {
             

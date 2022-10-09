@@ -30,7 +30,7 @@ const authSlice = createSlice({
     initialState: initialState,
     reducers: {
         authRequested: state => {
-            //state.error = null;
+            state.error = null;
             state.isLoading = true;
         },
         authReceived: (state, action) => {
@@ -43,19 +43,22 @@ const authSlice = createSlice({
             state.isLoading = false;
         },
         currentUserRequested: (state) => {
-            //state.isLoading = true;
+            state.isLoading = true;
             state.error = null;
             state.dataLoaded = false;
         },
         currentUserReceived: (state, action) => {
             state.currentUser = action.payload;
             state.dataLoaded = true;
-            //state.isLoading = false;
+            state.isLoading = false;
         },
         currentUserFailed: (state, action) => {
             state.error = action.payload;
             state.dataLoaded = true;
-            //state.isLoading = false;
+            state.isLoading = false;
+        },
+        clean: (state) => {
+            state = initialState;
         },
     },
 });
@@ -68,7 +71,8 @@ const {
     authFailed,
     currentUserRequested,
     currentUserReceived,
-    currentUserFailed
+    currentUserFailed,
+    clean
 } = actions;
 
 export const login = (email: string, password: string): AppThunk => async dispatch => {
@@ -79,36 +83,31 @@ export const login = (email: string, password: string): AppThunk => async dispat
         Cookies.set('access_token', jwtResponse.accessToken);
 
 
+        try {
+            dispatch(updateCurrentUser());
+        }
+        catch (error: any) {
+            dispatch(authFailed(error.message));
+            throw error;
+        }
+
+        await dispatch(authReceived(true));
+
+
     } catch (error: any) {
         dispatch(authFailed(error.message));
         throw error;
     }
 
-    try {
-        dispatch(updateCurrentUserOrThrow());
-    }
-    catch (error: any) {
-        dispatch(authFailed(error.message));
-        throw error;
-    }
-
-    await dispatch(authReceived(true));
+    
 };
 
 export const logout = (): AppThunk => async dispatch => {
-    dispatch(authRequested());
 
     Cookies.remove('access_token');
 
-    try {
-        dispatch(updateCurrentUserOrThrow());
-    }
-    catch (error: any) {
-        dispatch(authFailed(error.message));
-        throw error;
-    }
+    await clean();
 
-    await dispatch(authReceived(false));
 };
 
 export const register = (fullName: string, email: string, password: string, confirmPassword: string): AppThunk => async dispatch => {
@@ -118,7 +117,7 @@ export const register = (fullName: string, email: string, password: string, conf
         let jwtResponse = accountService.register(fullName, email, password, confirmPassword);
         Cookies.set('access_token', jwtResponse.accessToken);
 
-        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(updateCurrentUser());
         await dispatch(authReceived(true));
     } catch (error: any) {
         dispatch(authFailed(error.message));
@@ -133,7 +132,7 @@ export const confirmEmail = (userId: any, code: any): AppThunk => async dispatch
         let jwtResponse = accountService.confirmEmail(userId, code);
         Cookies.set('access_token', jwtResponse.accessToken);
 
-        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(updateCurrentUser());
         await dispatch(authReceived(true));
     } catch (error: any) {
         dispatch(authFailed(error.message));
@@ -142,12 +141,9 @@ export const confirmEmail = (userId: any, code: any): AppThunk => async dispatch
 }
 
 export const forgotPassword = (email: string): AppThunk => async dispatch => {
-    //dispatch(authRequested());
 
     try {
         accountService.forgotPassword(email);
-
-        //await dispatch(updateCurrentUserOrThrow());
     } catch (error: any) {
         throw error;
     }
@@ -159,7 +155,7 @@ export const resetPassword = (code: string, email: string, password: string, con
     try {
         accountService.resetPassword(code, email, password, confirmPassword);
 
-        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(updateCurrentUser());
         await dispatch(authReceived(true));
     } catch (error: any) {
         dispatch(authFailed(error.message));
@@ -167,7 +163,7 @@ export const resetPassword = (code: string, email: string, password: string, con
     }
 }
 
-export const updateCurrentUserOrThrow = (): AppThunk => async dispatch => {
+export const updateCurrentUser = (): AppThunk => async dispatch => {
     dispatch(currentUserRequested());
 
     try {
@@ -179,13 +175,5 @@ export const updateCurrentUserOrThrow = (): AppThunk => async dispatch => {
     }
 };
 
-export const updateCurrentUser = (): AppThunk => async dispatch => {
-    try {
-        await dispatch(updateCurrentUserOrThrow());
-    } catch (error: any) {
-        dispatch(currentUserFailed(error.message));
-        throw error;
-    }
-};
 
 export default accountReducer;

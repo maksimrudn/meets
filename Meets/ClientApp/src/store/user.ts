@@ -4,7 +4,7 @@ import UserCardResponse from '../contracts/user/UserCardResponse';
 import userService from '../api/UserService';
 import { objectToFormData } from '../common/Utils';
 import { UserFieldNames } from '../common/UserFieldNames';
-import { updateCurrentUserOrThrow } from './account';
+import { updateCurrentUser } from './account';
 import { UserCardTabsNames } from '../common/UserCardTabsNames';
 import { Learning } from '../contracts/learning/Learning';
 import { Work } from '../contracts/work/Work';
@@ -27,6 +27,8 @@ interface ITabHeaderItem {
 
 export interface IUserState { 
     user: UserCardResponse | null
+
+    isOwnUserCard: boolean
     
     tabHeader: ITabHeaderItem[]
 
@@ -37,7 +39,7 @@ export interface IUserState {
 
 const initialState: IUserState = {
     user: null,
- 
+    isOwnUserCard: false,
     tabHeader: [],
 
     isLoading: false,
@@ -53,7 +55,8 @@ const userSlice = createSlice({
             state.isLoading = true;
         },
         userReceived: (state, action) => {
-            state.user = action.payload;
+            state.user = action.payload.userCard;
+            state.isOwnUserCard = action.payload.isOwnUserCard;
             
             state.tabHeader = [
                 {
@@ -98,7 +101,12 @@ export const updateUser = (userId: any): AppThunk => async (dispatch, getState) 
 
     try {
         const userCard = userService.getCard(userId);
-        await dispatch(userReceived(userCard));
+        const payload = {
+            userCard,
+            isOwnUserCard: getState().account.currentUser?.id === userCard.id
+        }
+
+        await dispatch(userReceived(payload));
     } catch (err: any) {
         dispatch(userFailed(err.message));
         throw err;
@@ -134,7 +142,7 @@ export const editUser = (fieldName: string, value: any): AppThunk => async (disp
         const userCard = userService.getCard(state.user?.id);
         await dispatch(userReceived(userCard));
 
-        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(updateCurrentUser());
     }
     catch (err: any) {
         dispatch(userFailed(err.message));
@@ -157,7 +165,7 @@ export const removeAvatar = (): AppThunk => async (dispatch, getState) => {
     }
 
     try {
-        await dispatch(updateCurrentUserOrThrow());
+        await dispatch(updateCurrentUser());
     } catch (err: any) {
         dispatch(userFailed(err.message));
         throw err;

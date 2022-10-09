@@ -45,9 +45,9 @@ function ForgotPasswordStep3() {
 
     }, []);
 
-    const handleResetPassword = () => {
+    const handleResetPassword = async () => {
         try {
-            account.resetPassword(code, email, password, confirmPassword);
+            await account.resetPassword(code, email, password, confirmPassword);
 
             history.push('/account/forgotPasswordStep4');
         } catch (err) {

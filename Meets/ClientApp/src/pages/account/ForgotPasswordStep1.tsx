@@ -14,11 +14,11 @@ export default function ForgotPasswordStep1() {
     let history = useHistory();
     const [email, setEmail] = useState('');
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            account.forgotPassword(email);
+            await account.forgotPassword(email);
 
             history.push('/account/forgotPasswordStep2');
         } catch (err) {

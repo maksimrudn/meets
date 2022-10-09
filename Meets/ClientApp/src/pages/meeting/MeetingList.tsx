@@ -26,16 +26,20 @@ function MeetingList(props: IMeetingsListProps) {
     const history = useHistory();
 
     const { currentUser } = useAccountStore();
-    const state = useMeetingsStore();
+    const meetingsStore = useMeetingsStore();
 
     const [selectedTab, setSelectedTab] = useState<string>(MeetingListTabs.Inbox);
 
     useEffect(() => {
-        try {
-            state.update();
-        } catch (err) {
-            
+        const update = async () => {
+            try {
+                await meetingsStore.update();
+            } catch (err) {
+
+            }
         }
+
+        update();
     }, []);
 
     return (
@@ -59,7 +63,7 @@ function MeetingList(props: IMeetingsListProps) {
                 {(() => {
                     switch (selectedTab) {
                         case MeetingListTabs.Outbox:
-                            return state.meetings && state.meetings.filter((item: MeetingDTO) => item.ownerId === currentUser.id).map((item: MeetingDTO) =>
+                            return meetingsStore.meetings && meetingsStore.meetings.filter((item: MeetingDTO) => item.ownerId === currentUser.id).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.target.avatar
@@ -102,7 +106,7 @@ function MeetingList(props: IMeetingsListProps) {
                                 </div>
                             );
                         case MeetingListTabs.Inbox:
-                            return state.meetings && state.meetings.filter((item: MeetingDTO) => item.targetId === currentUser.id).map((item: MeetingDTO) =>
+                            return meetingsStore.meetings && meetingsStore.meetings.filter((item: MeetingDTO) => item.targetId === currentUser.id).map((item: MeetingDTO) =>
                                 <div className="Item d-inline-flex justify-content-sm-between justify-content-lg-evenly align-items-center">
                                     <div className="Avatar">
                                         {item.owner.avatar

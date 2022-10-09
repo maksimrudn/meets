@@ -1,11 +1,8 @@
-﻿import { setegid } from 'process';
+﻿
 import React, { Component, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
-import accountService from '../../api/AccountService';
-import * as Cookies from 'js-cookie';
-import { connect, useSelector } from 'react-redux';
+
 import MenuCloseIcon from '../../icons/MenuCloseIcon';
 import UserOutlineIcon from '../../icons/UserOutlineIcon';
 import LockOutlineIcon from '../../icons/LockOutlineIcon';
@@ -30,16 +27,16 @@ function Login() {
 
         try {
             await account.login(email, password);
+            history.push('/');
         } catch (err) {
-           
+            
         }
 
-        history.push('/');
+        
     }
 
     return (
         <>
-            <NotificationContainer />
 
             <div className="Login">
 

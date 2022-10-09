@@ -3,7 +3,7 @@ import { RootState } from "../store/createStore";
 import { IMeetingsState, updateMeetings } from "../store/meetings";
 
 interface IMeetingsStore extends IMeetingsState {
-    update: () => void
+    update: () => Promise<void>
 }
 
 function useMeetingsStore(): IMeetingsStore {
@@ -12,7 +12,7 @@ function useMeetingsStore(): IMeetingsStore {
 
     return {
         ...meetings,
-        update: () => { dispatch(updateMeetings()); }
+        update: async () => { await dispatch(updateMeetings()); }
     };
 }
 

@@ -5,7 +5,7 @@ import { IMeetRequestState, invite, setMeetRequest } from "../store/meetrequest"
 
 interface IMeetRequestStore extends IMeetRequestState {
     setMeetRequest: (meetRequest: MeetingRequest) => void
-    invite: () => void
+    invite: () => Promise<void>
 }
 
 function useMeetRequestStore(): IMeetRequestStore {
@@ -14,8 +14,8 @@ function useMeetRequestStore(): IMeetRequestStore {
 
     return {
         ...meet,
-        setMeetRequest: (meetRequest) => { dispatch(setMeetRequest(meetRequest)); },
-        invite: () => { dispatch(invite()); }
+        setMeetRequest: async (meetRequest) => { await dispatch(setMeetRequest(meetRequest)); },
+        invite: async () => { await dispatch(invite()); }
     };
 }
 

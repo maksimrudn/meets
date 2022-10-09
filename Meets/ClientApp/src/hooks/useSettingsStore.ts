@@ -12,12 +12,12 @@ import {
 } from "../store/settings";
 
 interface ISettingsStore extends ISettingsState {
-    update: () => void
-    edit: () => void
-    setProfile: (profile: ProfileSettingsDTO) => void
-    removeAccount: () => void
-    confirmEmail: (email: string) => void
-    changePassword: (oldPassword: string, newPassword: string, confirmPassword: string) => void
+    update: () => Promise<void>
+    edit: () => Promise<void>
+    setProfile: (profile: ProfileSettingsDTO) => Promise<void>
+    removeAccount: () => Promise<void>
+    confirmEmail: (email: string) => Promise<void>
+    changePassword: (oldPassword: string, newPassword: string, confirmPassword: string) => Promise<void>
 }
 
 function useSettingsStore(): ISettingsStore {
@@ -26,12 +26,12 @@ function useSettingsStore(): ISettingsStore {
 
     return {
         ...settings,
-        update: () => { dispatch(updateSettings()); },
-        edit: () => { dispatch(editSettings()); },
-        setProfile: (profile) => { dispatch(setProfile(profile)); },
-        removeAccount: () => { dispatch(removeAccount()); },
-        confirmEmail: (email) => { dispatch(confirmEmail(email)); },
-        changePassword: (oldPassword, newPassword, confirmPassword) => { dispatch(changePassword(oldPassword, newPassword, confirmPassword)); }
+        update: async () => { await dispatch(updateSettings()); },
+        edit: async () => { await dispatch(editSettings()); },
+        setProfile: async (profile) => { await dispatch(setProfile(profile)); },
+        removeAccount: async () => { await dispatch(removeAccount()); },
+        confirmEmail: async (email) => { await dispatch(confirmEmail(email)); },
+        changePassword: async (oldPassword, newPassword, confirmPassword) => { await dispatch(changePassword(oldPassword, newPassword, confirmPassword)); }
     };
 }
 

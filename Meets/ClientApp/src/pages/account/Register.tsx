@@ -35,10 +35,10 @@ function Register() {
 
 
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
 
         try {
-            account.register(fullName, email, password, confirmPassword);
+            await account.register(fullName, email, password, confirmPassword);
 
             history.push('/account/confirmEmailMessage');
         }

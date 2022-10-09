@@ -29,8 +29,8 @@ interface ActivityEditorModalProps {
 }
 
 export default function ActivityEditorModal(props: ActivityEditorModalProps) {
-    const { currentUser } = useAccountStore();
-    const { updateUser } = useUserStore();
+    const accountStore = useAccountStore();
+    const userStore = useUserStore();
 
     const [activity, setActivity] = useState<Activity>(new Activity());
 
@@ -47,7 +47,7 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
         }
     }, [props.ActivityId]);
 
-    const onSaveChanges = () => {
+    const onSaveChanges = async () => {
         if (props.ActivityId) {
             try {
                 let formData = new FormData();
@@ -55,7 +55,7 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
                 formData.append('title', activity.title);
 
                 activityService.edit(formData);
-                updateUser(currentUser?.id);
+                userStore.updateUser(accountStore.currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);
@@ -63,7 +63,7 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
         } else {
             try {
                 activityService.create(activity);
-                updateUser(currentUser?.id);
+                userStore.updateUser(accountStore.currentUser?.id);
                 props.toggle();
             } catch (err: any) {
                 NotificationManager.error(err.message, err.name);

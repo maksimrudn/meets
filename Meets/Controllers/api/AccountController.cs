@@ -56,6 +56,12 @@ namespace Meets.Controllers.api
             
             // todo реализовано не совсем как в изначальных формах identity, необходимо максимально приблизить
             var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                throw new Exception("Пользователь не найден");
+            }
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
             if (!result.Succeeded)
