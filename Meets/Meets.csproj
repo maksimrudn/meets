@@ -217,6 +217,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\test1.pubxml" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\test2.pubxml" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\test3.pubxml" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\test4.pubxml" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\test5.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\src\styles\fonts\" />
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\content\events\1\" />
