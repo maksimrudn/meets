@@ -28,28 +28,34 @@ function ProfileSettings() {
     const [isOpenRemoveAccountModal, setIsOpenRemoveAccountModal] = useState(false);
 
     useEffect(() => {
-        try {
-            settings.update();
-        } catch (err) { }
+        const update = async () => {
+            try {
+                await settings.update();
+            } catch (err) { }
+        }
+
+        update();
     }, []);
 
-    const handleEdit = () => {
+    const handleEdit = async () => {
         try {
-            settings.edit();
+            await settings.edit();
             history.goBack();
         } catch (err) { }
     }
 
-    const handleRemoveAccount = () => {
+    const handleRemoveAccount = async () => {
         try {
-            settings.removeAccount();
-            history.push('/account/login');
+            try {
+                await settings.removeAccount();
+                history.push('/account/login');
+            } catch (err) { }
         } catch (err) { }
     }
 
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
         try {
-            account.logout();
+            await account.logout();
             history.push('/account/login');
         } catch (err) {
 
@@ -106,7 +112,11 @@ function ProfileSettings() {
                         className="form-control"
                         type="text"
                         defaultValue={settings.profile.telegram?.replace('@', '')}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, telegram: e.target.value })}
+                        onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                            try {
+                                await settings.setProfile({ ...settings.profile, telegram: e.target.value });
+                            } catch (err) { }
+                        }}
                     />
                 </div>
             </div>
@@ -119,7 +129,12 @@ function ProfileSettings() {
                             className="checkbox"
                             id="invite"
                             defaultChecked={settings.profile.isInvitable}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, isInvitable: e.target.checked })}
+                            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                                try {
+                                    await settings.setProfile({ ...settings.profile, isInvitable: e.target.checked })
+                                }
+                                catch (err) { }
+                            }}
                         />
                         <label htmlFor="invite"></label>
                     </div>
@@ -139,7 +154,12 @@ function ProfileSettings() {
                             className="checkbox"
                             id="search"
                             defaultChecked={settings.profile.isSearchable}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, isSearchable: e.target.checked })}
+                            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                                try {
+                                    await settings.setProfile({ ...settings.profile, isSearchable: e.target.checked });
+                                }
+                                catch (err) { }
+                            }}
                         />
                         <label htmlFor="search"></label>
                     </div>
@@ -155,7 +175,13 @@ function ProfileSettings() {
                             type="checkbox"
                             id="switch"
                             defaultChecked={settings.profile.isGeoTracking}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, isGeoTracking: e.target.checked })}
+                            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                                try {
+                                    await settings.setProfile({ ...settings.profile, isGeoTracking: e.target.checked });
+                                }
+                                catch (err) { }
+                            }
+                            }
                         />
                         <label htmlFor="switch"></label>
                     </div>
@@ -171,7 +197,12 @@ function ProfileSettings() {
                     className="form-control"
                     type="text"
                     defaultValue={settings.profile.specialization}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, specialization: e.target.value })}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                        try {
+                            await settings.setProfile({ ...settings.profile, specialization: e.target.value });
+                        }
+                        catch (err) { }
+                    }}
                 />
             </div>
 
@@ -181,7 +212,13 @@ function ProfileSettings() {
                     className="form-control"
                     type="text"
                     defaultValue={settings.profile.company}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, company: e.target.value })}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                        try {
+                            await settings.setProfile({ ...settings.profile, company: e.target.value });
+                        }
+                        catch (err) { }
+                    }
+                    }
                 />
             </div>
 
@@ -191,7 +228,12 @@ function ProfileSettings() {
                     className="form-control"
                     type="text"
                     defaultValue={settings.profile.job}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => settings.setProfile({ ...settings.profile, job: e.target.value })}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                        try {
+                            await settings.setProfile({ ...settings.profile, job: e.target.value });
+                        }
+                        catch (err) { }
+                    }}
                 />
             </div>
 

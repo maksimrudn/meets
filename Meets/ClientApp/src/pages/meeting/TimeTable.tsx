@@ -19,14 +19,18 @@ export default function TimeTable() {
 
     const history = useHistory();
 
-    const state = useTimeTableStore();
+    const timetableStore = useTimeTableStore();
 
     useEffect(() => {
-        try {
-            state.update();
-        } catch (err) {
-            history.push(Routes.Error, err);
+        const update = async () => {
+            try {
+                await timetableStore.update();
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
         }
+
+        update();
     }, []);
 
     const compareDates = (date: string) => {
@@ -39,10 +43,10 @@ export default function TimeTable() {
         }
     }
 
-    const sortedTimeTable = (state.timeTable && state.timeTable.length > 0) && _.sortBy(state.timeTable, (item) => (moment(item.meetingDate).format('DD MMMM YYYY')));
+    const sortedTimeTable = (timetableStore.timeTable && timetableStore.timeTable.length > 0) && _.sortBy(timetableStore.timeTable, (item) => (moment(item.meetingDate).format('DD MMMM YYYY')));
     const groupedTimeTable = sortedTimeTable && _.groupBy(sortedTimeTable, (item) => (moment(item.meetingDate).format('DD MMMM YYYY')));
 
-    return state.isLoading ? (
+    return timetableStore.isLoading ? (
         <WaitingScreen />
     ) : (
         <div className="TimeTable">

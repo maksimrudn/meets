@@ -52,7 +52,7 @@ export default function Meeting(props: IMeetingProps) {
     const params = useParams<IMeetingParams>();
 
     const { meetingId } = props.location.state;
-    const state = useMeetingStore();
+    const meetingStore = useMeetingStore();
 
     const [isOpenMeetingModal, setIsOpenMeetingModal] = useState(false);
     const [selectedFieldName, setSelectedFieldName] = useState<string>('');
@@ -60,8 +60,16 @@ export default function Meeting(props: IMeetingProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
-        state.updateMeeting(meetingId);
-        state.updateMessages(meetingId);
+        const update = async () => {
+
+            try {
+                await meetingStore.updateMeeting(meetingId);
+                await meetingStore.updateMessages(meetingId);
+            }
+            catch (err) { }
+        }
+
+        update();
     }, []);
 
     useEffect(() => {
@@ -72,39 +80,39 @@ export default function Meeting(props: IMeetingProps) {
         };
     });
 
-    const onSendMessage = (text: any, receiverId: any) => {
+    const onSendMessage = async (text: any, receiverId: any) => {
         try {
-            state.sendMessage(meetingId, text, receiverId);
+            await meetingStore.sendMessage(meetingId, text, receiverId);
         } catch (err) { }
     }
 
-    const discussOnClick = () => {
+    const discussOnClick = async () => {
         try {
-            state.discuss(meetingId);
+            await meetingStore.discuss(meetingId);
         } catch (err) {
             
         }
     }
 
-    const cancelOnClick = () => {
+    const cancelOnClick = async () => {
         try {
-            state.cancel(meetingId);
+            await meetingStore.cancel(meetingId);
         } catch (err) {
             
         }
     }
 
-    const confirmOnClick = () => {
+    const confirmOnClick = async () => {
         try {
-            state.confirm(meetingId);
+            await meetingStore.confirm(meetingId);
         } catch (err) {
             
         }
     }
 
-    const handleEdit = (value: string, fieldName: string) => {
+    const handleEdit = async (value: string, fieldName: string) => {
         try {
-            state.edit(meetingId, value, fieldName);
+            await meetingStore.edit(meetingId, value, fieldName);
         } catch (err) {
             history.push(Routes.Error, err);
         }
@@ -140,25 +148,25 @@ export default function Meeting(props: IMeetingProps) {
                                 <div className="col-md-7 col-10 d-flex flex-column">
                                     <div className="DateTime mb-2">
                                         <span className="CalendarIcon me-2"><CalendarAltIcon /></span>
-                                        <span className="me-3">{moment(state.meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(state.meeting.meetingDate).format('ddd')})</span>
+                                        <span className="me-3">{moment(meetingStore.meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meetingStore.meeting.meetingDate).format('ddd')})</span>
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
-                                        <span className="me-2">{moment(state.meeting.meetingDate).format('HH:mm')}</span>
-                                        {(state.meeting.isOwner && state.meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{moment(meetingStore.meeting.meetingDate).format('HH:mm')}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
-                                        <span className="me-2">{state.meeting.place}</span>
-                                        {(state.meeting.isOwner && state.meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{meetingStore.meeting.place}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Companion mb-2">
                                         <span className="me-2"><PersonIcon /></span>
-                                        <span>{state.meeting.companion?.fullName}</span>
+                                        <span>{meetingStore.meeting.companion?.fullName}</span>
                                     </div>
-                                    <div className="Status mb-2">{MeetingStatus[state.meeting.status as MeetingStatusItems]?.Title}</div>
+                                    <div className="Status mb-2">{MeetingStatus[meetingStore.meeting.status as MeetingStatusItems]?.Title}</div>
                                     <button className="ExpandBtn" type="button" onClick={expandToggle}><ArrowIcon /></button>
                                 </div>
                             </div>
@@ -169,56 +177,56 @@ export default function Meeting(props: IMeetingProps) {
                                 <div className="col-md-7 col-12 d-flex flex-column">
                                     <div className="Date mb-2">
                                         <span className="CalendarIcon me-2"><CalendarAltIcon /></span>
-                                        <span className="me-3">{moment(state.meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(state.meeting.meetingDate).format('ddd')})</span>
-                                        {(state.meeting.isOwner && state.meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-3">{moment(meetingStore.meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meetingStore.meeting.meetingDate).format('ddd')})</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Time mb-2">
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
-                                        <span className="me-2">{moment(state.meeting.meetingDate).format('HH:mm')}</span>
-                                        {(state.meeting.isOwner && state.meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{moment(meetingStore.meeting.meetingDate).format('HH:mm')}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
-                                        <span className="me-2">{state.meeting.place}</span>
-                                        {(state.meeting.isOwner && state.meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{meetingStore.meeting.place}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Companion mb-2">
-                                        {state.meeting.companion?.avatar
-                                            ? <span className="Avatar me-3"><img src={getAvatarPathForUser(state.meeting.companion)} alt="" /></span>
+                                        {meetingStore.meeting.companion?.avatar
+                                            ? <span className="Avatar me-3"><img src={getAvatarPathForUser(meetingStore.meeting.companion)} alt="" /></span>
                                             : <span className="EmptyAvatar me-3"><EmptyAvatarIcon color='#000' /></span>
                                         }
-                                        <span className="Name">{state.meeting.companion?.fullName}</span>
+                                        <span className="Name">{meetingStore.meeting.companion?.fullName}</span>
                                     </div>
                                     <div className="Status mb-3">
                                         <span className="me-2">Статус</span>
-                                        <span className="Badge">{MeetingStatus[state.meeting.status as MeetingStatusItems]?.Title}</span>
+                                        <span className="Badge">{MeetingStatus[meetingStore.meeting.status as MeetingStatusItems]?.Title}</span>
                                     </div>
                                     {(() => {
-                                        if (!state.meeting.isOwner) {
+                                        if (!meetingStore.meeting.isOwner) {
 
-                                            if (state.meeting.status !== MeetingStatus.Discussion.Code &&
-                                                state.meeting.status !== MeetingStatus.Confirmed.Code &&
-                                                state.meeting.status !== MeetingStatus.Canceled.Code) {
+                                            if (meetingStore.meeting.status !== MeetingStatus.Discussion.Code &&
+                                                meetingStore.meeting.status !== MeetingStatus.Confirmed.Code &&
+                                                meetingStore.meeting.status !== MeetingStatus.Canceled.Code) {
                                                 return (<button className="StatusBtn" type="button" onClick={discussOnClick}>Обсудить</button>);
                                             }
                                         }
                                     })()}
                                     {(() => {
-                                        if (!state.meeting.isOwner) {
+                                        if (!meetingStore.meeting.isOwner) {
 
-                                            if (state.meeting.status !== MeetingStatus.Confirmed.Code &&
-                                                state.meeting.status !== MeetingStatus.Canceled.Code) {
+                                            if (meetingStore.meeting.status !== MeetingStatus.Confirmed.Code &&
+                                                meetingStore.meeting.status !== MeetingStatus.Canceled.Code) {
                                                 return (<button className="StatusBtn" type="button" onClick={confirmOnClick}>Подтвердить</button>);
                                             }
                                         }
                                     })()}
-                                    {state.meeting.status !== MeetingStatus.Canceled.Code &&
+                                    {meetingStore.meeting.status !== MeetingStatus.Canceled.Code &&
                                         <button className="StatusBtn" type="button" onClick={cancelOnClick}>Завершить</button>
                                     }
 
@@ -232,14 +240,14 @@ export default function Meeting(props: IMeetingProps) {
 
             <div className="Messanger">
                 <MessageList
-                    messages={state.messages}
+                    messages={meetingStore.messages}
                     onSendMessage={onSendMessage}
                     targetUserId={params.id}
-                    isCanSendMessage={state.meeting.status === MeetingStatus.Discussion.Code || state.meeting.status === MeetingStatus.Confirmed.Code}
+                    isCanSendMessage={meetingStore.meeting.status === MeetingStatus.Discussion.Code || meetingStore.meeting.status === MeetingStatus.Confirmed.Code}
                 />
             </div>
 
-            {(isOpenMeetingModal && state.dataLoaded) &&
+            {(isOpenMeetingModal && meetingStore.dataLoaded) &&
                 <MeetingEditModal
                     isOpen={isOpenMeetingModal}
                     toggle={meetingModalToggle}

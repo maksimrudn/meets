@@ -18,9 +18,9 @@ interface IUserSearchFilterModalProps {
 }
 
 export default function UserSearchFilterModal(props: IUserSearchFilterModalProps) {
-    const state = useUsersStore();
+    const usersStore = useUsersStore();
 
-    const [filter, setFilter] = useState<IFilter>(state.filter);
+    const [filter, setFilter] = useState<IFilter>(usersStore.filter);
 
     /**
      * onChange обработчик DaData вызывается только когда выбирается город в меню подсказок, когда значение удаляется обработчик не вызывается (и выбранный город сохраняется),
@@ -31,9 +31,9 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
         setFilter({ ...filter, city: e.target.value })
     }
 
-    const findOnClick = () => {
+    const findOnClick = async () => {
         try {
-            state.updateFilter(filter);
+            await usersStore.updateFilter(filter);
         } catch (err) {
 
         }

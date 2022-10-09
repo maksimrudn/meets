@@ -1,10 +1,10 @@
 ﻿import { useDispatch, useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../store/createStore";
-import { IFilter, IUsersState, updateFilter, updateUsers } from "../store/users";
+import { IFilter, IUsersState, updateFilter } from "../store/users";
 
 
 interface IUsersStore extends IUsersState {
-    updateFilter: (filter: IFilter) => void
+    updateFilter: (filter: IFilter) => Promise<void>
 }
 
 function useUsersStore(): IUsersStore {
@@ -13,7 +13,7 @@ function useUsersStore(): IUsersStore {
 
     return {
         ...users,
-        updateFilter: (filter) => { dispatch(updateFilter(filter)) }
+        updateFilter: async (filter) => { await dispatch(updateFilter(filter)) }
     }
 }
 

@@ -7,18 +7,18 @@ import {
     logout,
     register,
     resetPassword,
-    updateCurrentUserOrThrow
+    updateCurrentUser
 } from "../store/account";
 import { RootState, useAppDispatch } from "../store/createStore";
 
 interface IAuthStore extends IAccountState {
-    login(email: string, password: string): void
-    logout(): void
-    register: (fullName: string, email: string, password: string, confirmPassword: string) => void
-    confirmEmail: (userId: any, code: any) => void
-    forgotPassword: (email: string) => void
-    resetPassword: (code: string, email: string, password: string, confirmPassword: string) => void
-    update: () => void
+    login(email: string, password: string): Promise<void>
+    logout(): Promise<void>
+    register: (fullName: string, email: string, password: string, confirmPassword: string) => Promise<void>
+    confirmEmail: (userId: any, code: any) => Promise<void>
+    forgotPassword: (email: string) => Promise<void>
+    resetPassword: (code: string, email: string, password: string, confirmPassword: string) => Promise<void>
+    update: () => Promise<void>
 }
 
 function useAccountStore(): IAuthStore {
@@ -27,13 +27,13 @@ function useAccountStore(): IAuthStore {
 
     return {
         ...account,
-        login: (email: string, password: string) => { dispatch(login(email, password)); },
-        logout: () => { dispatch(logout); },
-        register: (fullName, email, password, confirmPassword) => { dispatch(register(fullName, email, password, confirmPassword)); },
-        confirmEmail: (userId, code) => { dispatch(confirmEmail(userId, code)); },
-        forgotPassword: (email) => { dispatch(forgotPassword(email)); },
-        resetPassword: (code, email, password, confirmPassword) => { dispatch(resetPassword(code, email, password, confirmPassword)); },
-        update: () => { dispatch(updateCurrentUserOrThrow()) }
+        login: async (email: string, password: string) => { await dispatch(login(email, password)); },
+        logout: async () => { await dispatch(logout()); },
+        register: async (fullName, email, password, confirmPassword) => { await dispatch(register(fullName, email, password, confirmPassword)); },
+        confirmEmail: async (userId, code) => { await dispatch(confirmEmail(userId, code)); },
+        forgotPassword: async (email) => { await dispatch(forgotPassword(email)); },
+        resetPassword: async (code, email, password, confirmPassword) => { await dispatch(resetPassword(code, email, password, confirmPassword)); },
+        update: async () => { await dispatch(updateCurrentUser()) }
     }
 
 }

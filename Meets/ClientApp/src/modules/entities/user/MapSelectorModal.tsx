@@ -65,9 +65,12 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
         }
     }
 
-    const onSave = () => {
-        meeting.setMeetRequest({ ...meeting.meetRequest, place: coords.address });
-        props.toggle();
+    const onSave = async () => {
+        try {
+            await meeting.setMeetRequest({ ...meeting.meetRequest, place: coords.address });
+            props.toggle();
+        }
+        catch (err) { }
     }
 
     return (

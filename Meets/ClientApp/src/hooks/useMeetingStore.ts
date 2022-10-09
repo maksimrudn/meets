@@ -12,13 +12,13 @@ import {
 } from "../store/meeting";
 
 interface IMeetingsStore extends IMeetingState {
-    updateMeeting: (meetingId: any) => void
-    updateMessages: (meetingId: any) => void
-    sendMessage: (meetingId: any, text: any, receiverId: any) => void
-    discuss: (meetingId: any) => void
-    cancel: (meetingId: any) => void
-    confirm: (meetingId: any) => void
-    edit: (meetingId: any, value: string, fieldName: string) => void
+    updateMeeting: (meetingId: any) => Promise<void>
+    updateMessages: (meetingId: any) => Promise<void>
+    sendMessage: (meetingId: any, text: any, receiverId: any) => Promise<void>
+    discuss: (meetingId: any) => Promise<void>
+    cancel: (meetingId: any) => Promise<void>
+    confirm: (meetingId: any) => Promise<void>
+    edit: (meetingId: any, value: string, fieldName: string) => Promise<void>
 }
 
 function useMeetingStore(): IMeetingsStore {
@@ -27,13 +27,13 @@ function useMeetingStore(): IMeetingsStore {
 
     return {
         ...meeting,
-        updateMeeting: (meetingId) => { dispatch(updateMeeting(meetingId)); },
-        updateMessages: (meetingId) => { dispatch(updateMessages(meetingId)); },
-        sendMessage: (meetingId, text, receiverId) => { dispatch(sendMessage(meetingId, text, receiverId)); },
-        discuss: (meetingId) => { dispatch(discuss(meetingId)); },
-        cancel: (meetingId) => { dispatch(cancel(meetingId)); },
-        confirm: (meetingId) => { dispatch(confirm(meetingId)); },
-        edit: (meetingId, value, fieldName) => { dispatch(edit(meetingId, value, fieldName)); }
+        updateMeeting: async (meetingId) => { await dispatch(updateMeeting(meetingId)); },
+        updateMessages: async (meetingId) => { await dispatch(updateMessages(meetingId)); },
+        sendMessage: async (meetingId, text, receiverId) => { await dispatch(sendMessage(meetingId, text, receiverId)); },
+        discuss: async (meetingId) => { await dispatch(discuss(meetingId)); },
+        cancel: async (meetingId) => { await dispatch(cancel(meetingId)); },
+        confirm: async (meetingId) => { await dispatch(confirm(meetingId)); },
+        edit: async (meetingId, value, fieldName) => { await dispatch(edit(meetingId, value, fieldName)); }
     };
 }
 

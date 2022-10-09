@@ -51,18 +51,23 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
     }
 
     useEffect(() => {
-        meeting.setMeetRequest(
-            MeetingRequest.create(
-                props.user || userStore.user,
-                `Привет ${(props.user?.fullName || userStore.user.fullName)}! Приглашаю тебя попить кофе`
-            )
-        );
+        const setmeetreq = async () => {
+            await meeting.setMeetRequest(
+                MeetingRequest.create(
+                    props.user || userStore.user,
+                    `Привет ${(props.user?.fullName || userStore.user.fullName)}! Приглашаю тебя попить кофе`
+                )
+            );
+        }
+
+        setmeetreq();
+
     }, []);
 
 
-    const handleInvite = () => {
+    const handleInvite = async () => {
         try {
-            meeting.invite();
+            await meeting.invite();
 
             if (!props.user) {
                 userStore.updateUser(meeting.meetRequest.targetId);
@@ -75,6 +80,27 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
         if (!meeting.isLoading && meeting.error != null) {
             props.toggle();
         }
+    }
+
+    const onChangeDate = async (res: any) => {
+        try {
+            await meeting.setMeetRequest({ ...meeting.meetRequest, meetingDate: moment(res, 'DD.MM.YYYY HH:mm').format() })
+        }
+        catch (err) { }
+    }
+
+    const onChangeIsOnline = async (e: any) => {
+        try {
+            await meeting.setMeetRequest({ ...meeting.meetRequest, place: '', isOnline: e.target.checked });
+        }
+        catch (err) { }
+    }
+
+    const onChangePlace = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        try {
+            await meeting.setMeetRequest({ ...meeting.meetRequest, place: e.target.value });
+        }
+        catch (err) { }
     }
 
     return (
@@ -105,7 +131,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                     <div className="col-12 mb-2">
                         <label className="form-label">Дата / Время</label>
                         <DateTime
-                            onChange={(res: any) => meeting.setMeetRequest({ ...meeting.meetRequest, meetingDate: moment(res, 'DD.MM.YYYY HH:mm').format() })}
+                            onChange={onChangeDate}
                             initialValue={meeting.meetRequest.meetingDate && moment(meeting.meetRequest.meetingDate).format('DD.MM.YYYY HH:mm')  }
                             inputProps={{
                                 placeholder: 'dd.mm.yyyy hh:mm',
@@ -143,7 +169,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                 type="checkbox"
                                 id="isOnline"
                                 checked={meeting.meetRequest.isOnline}
-                                onChange={(e: any) => meeting.setMeetRequest({ ...meeting.meetRequest, place: '', isOnline: e.target.checked })}
+                                onChange={onChangeIsOnline}
                                 disabled={(meeting.isLoading && !meeting.dataLoaded)}
                             />
                             <label htmlFor="isOnline"></label>
@@ -165,7 +191,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                             className="form-control"
                                             value={meeting.meetRequest.place}
                                             placeholder="Тверская ул., 22, Москва, 127006"
-                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => meeting.setMeetRequest({ ...meeting.meetRequest, place: e.target.value })}
+                                            onChange={onChangePlace}
                                             rows={4}
                                             disabled={(meeting.isLoading && !meeting.dataLoaded)}
                                         />
@@ -192,8 +218,8 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                             className="form-control"
                                             placeholder="zoomid ….."
                                             value={meeting.meetRequest.place}
-                                            
-                                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => meeting.setMeetRequest({ ...meeting.meetRequest, place: e.target.value })}
+
+                                            onChange={onChangePlace}
                                             rows={4}
                                             disabled={(meeting.isLoading && !meeting.dataLoaded)}
                                         />

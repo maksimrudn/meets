@@ -25,9 +25,9 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
     const [email, setEmail] = useState<string>(currentUser?.email as string);
     const [showMessage, setShowMessage] = useState(false);
 
-    const handleConfirmEmail = () => {
+    const handleConfirmEmail = async () => {
         try {
-            settings.confirmEmail(email);
+            await settings.confirmEmail(email);
             setShowMessage(true);
         } catch (err) {
             

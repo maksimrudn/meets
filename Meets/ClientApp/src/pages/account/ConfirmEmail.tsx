@@ -19,25 +19,28 @@ function ConfirmEmail() {
     const account = useAccountStore();
 
     useEffect(() => {
-        try {
-            // получить данные из урла и json`ом отправить на ConfirmEmail метод AccountController
-            let query = new URLSearchParams(search);
-            let userId = query.get('userId');
-            let code = query.get('code');
+        const confirmEmail = async () => {
+            try {
+                // получить данные из урла и json`ом отправить на ConfirmEmail метод AccountController
+                let query = new URLSearchParams(search);
+                let userId = query.get('userId');
+                let code = query.get('code');
 
-            account.confirmEmail(userId, code);
+                await account.confirmEmail(userId, code);
 
-            history.push('/account/confirmEmailSuccess');
+                history.push('/account/confirmEmailSuccess');
 
-        } catch (err) {
-            history.push( Routes.Error, err );
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
         }
+
+        confirmEmail();
+
     }, []);
 
     return (
-        <>
-            <NotificationContainer />
-        </>
+        <></>
     );
 }
 
