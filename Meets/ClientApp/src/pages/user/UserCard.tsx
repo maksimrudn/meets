@@ -181,7 +181,7 @@ function UserCard(): JSX.Element {
                                 </span>
 
                                 <span className="col-2 d-flex justify-content-end">
-                                    {userStore.isOwnUserCard &&
+                                    {userStore.isOwner &&
                                         <span className="text-white" role="button" onClick={() => onClickEditIcon(UserFieldNames.FullName)}>
                                             <EditIconSvg />
                                         </span>
@@ -214,7 +214,7 @@ function UserCard(): JSX.Element {
                             }
 
                             {(() => {
-                                if (userStore.isOwnUserCard) {
+                                if (!userStore.isOwner) {
                                     if (userStore.user?.distance) {
                                         return (
                                             <div className="d-flex justify-content-center mb-2">
@@ -232,7 +232,7 @@ function UserCard(): JSX.Element {
                                 }
                             })()}
 
-                            {(userStore.isOwnUserCard)
+                            {(!userStore.isOwner)
                                 ? (<div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
                                         <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={userStore.user?.isInvited}>
@@ -284,7 +284,7 @@ function UserCard(): JSX.Element {
                             <div className="Tags">
                                 <div className="d-flex justify-content-start align-items-center ms-2 my-3">
                                     <span className="fs-4 me-3">Тэги</span>
-                                    {(userStore.isOwnUserCard) &&
+                                    {userStore.isOwner &&
                                         <span className="IconEdit" role="button" onClick={() => onClickEditIcon(UserFieldNames.Tags)}><EditIcon /></span>
                                     }
                                 </div>

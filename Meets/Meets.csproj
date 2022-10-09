@@ -186,7 +186,6 @@
     <None Remove="ClientApp\src\icons\WalkingIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\WeightIconSvg.tsx" />
-    <None Remove="ClientApp\src\modules\datepaginator\DatePaginatorWrapper.tsx" />
     <None Remove="ClientApp\src\modules\entities\activity\ActivityEditorModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\fact\FactEditorModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\learning\LearningEditorModal.tsx" />
@@ -194,7 +193,6 @@
     <None Remove="ClientApp\src\modules\entities\user\ConfirmationModal.tsx" />
 
     <None Remove="ClientApp\src\modules\entities\user\edit\Date.tsx" />
-    <None Remove="ClientApp\src\modules\datatable\event\PlansDataTable.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\MapSelectorModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\MeetRequestModal.tsx" />
     <None Remove="ClientApp\src\modules\entities\user\ShowUserAvatarModal.tsx" />
@@ -207,11 +205,7 @@
     <None Remove="ClientApp\src\pages\meeting\TimeTable.tsx" />
     <None Remove="ClientApp\src\pages\notifications\NotificationList.tsx" />
     <None Remove="ClientApp\src\shared\BottomMenu.tsx" />
-
-    <None Remove="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
-    <None Remove="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
-    <None Remove="ClientApp\src\modules\entities\event\Date.tsx" />
-    <None Remove="ClientApp\src\shared\PretectedRoute.tsx" />
+    <None Remove="ClientApp\src\shared\ProtectedRoute.tsx" />
     <None Remove="ClientApp\src\store\meeting.ts" />
     <None Remove="ClientApp\src\store\meetings.ts" />
     <None Remove="ClientApp\src\store\meetrequest.ts" />
@@ -432,7 +426,6 @@
     <TypeScriptCompile Include="ClientApp\src\icons\CalendarIcon.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\UserSearchIcon.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\modules\datepaginator\DatePaginatorWrapper.tsx" />
     <TypeScriptCompile Include="ClientApp\src\modules\entities\activity\ActivityEditorModal.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -452,8 +445,6 @@
 
     <TypeScriptCompile Include="ClientApp\src\modules\entities\user\edit\Date.tsx" />
 
-    <TypeScriptCompile Include="ClientApp\src\modules\datatable\event\PlansDataTable.tsx" />
-
     <TypeScriptCompile Include="ClientApp\src\modules\entities\work\WorkEditorModal.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -468,13 +459,9 @@
 
     <TypeScriptCompile Include="ClientApp\src\pages\notifications\NotificationList.tsx" />
 
-    <TypeScriptCompile Include="ClientApp\src\shared\PretectedRoute.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\shared\ProtectedRoute.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\shared\BottomMenu.tsx" />
-
-    <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectControl.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\modules\entities\event\CustomSelectDropdown.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\modules\entities\event\Date.tsx" />
     <TypeScriptCompile Include="ClientApp\src\store\meeting.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\meetings.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\meetrequest.ts" />
