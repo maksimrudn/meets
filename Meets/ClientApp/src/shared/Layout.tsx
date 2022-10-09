@@ -1,11 +1,6 @@
 ﻿import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
-import { connect, useSelector } from 'react-redux';
-import mapStateToProps from '../store/mapStateToProps';
-import mapDispatchToProps from '../store/mapDispatchToProps';
-
-
 import UserCard from '../pages/user/UserCard';
 import UserSearch from '../pages/user/UserSearch';
 
@@ -23,7 +18,6 @@ import Lockout from '../pages/account/Lockout';
 
 import 'bootstrap/dist/js/bootstrap.js';
 import BottomMenu from './BottomMenu';
-import { BottomMenuItems } from '../common/BottomMenuItems';
 import ConfirmEmailSuccess from '../pages/account/ConfirmEmailSuccess';
 import ConfirmEmailError from '../pages/account/ConfirmEmailError';
 import ForgotPasswordStep3 from '../pages/account/ForgotPasswordStep3';
@@ -38,8 +32,7 @@ import Meeting from '../pages/meeting/Meeting';
 import NotificationList from '../pages/notifications/NotificationList';
 import TimeTable from '../pages/meeting/TimeTable';
 import useAccountStore from '../hooks/useAccountStore';
-import useCurrentUserStore from '../hooks/useCurrentUserStore';
-import ProtectedRoute from './PretectedRoute';
+import ProtectedRoute from './ProtectedRoute';
 
 
 

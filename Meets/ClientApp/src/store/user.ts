@@ -28,7 +28,7 @@ interface ITabHeaderItem {
 export interface IUserState { 
     user: UserCardResponse | null
 
-    isOwnUserCard: boolean
+    isOwner: boolean
     
     tabHeader: ITabHeaderItem[]
 
@@ -39,7 +39,7 @@ export interface IUserState {
 
 const initialState: IUserState = {
     user: null,
-    isOwnUserCard: false,
+    isOwner: false,
     tabHeader: [],
 
     isLoading: false,
@@ -56,7 +56,7 @@ const userSlice = createSlice({
         },
         userReceived: (state, action) => {
             state.user = action.payload.userCard;
-            state.isOwnUserCard = action.payload.isOwnUserCard;
+            state.isOwner = action.payload.isOwnUserCard;
             
             state.tabHeader = [
                 {
