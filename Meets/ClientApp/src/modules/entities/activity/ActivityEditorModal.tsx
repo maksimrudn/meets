@@ -24,51 +24,37 @@ import useUserStore from '../../../hooks/useUserStore';
 interface ActivityEditorModalProps {
     isOpen: boolean
     toggle: () => void
-
-    ActivityId: any
+    activity: Activity
 }
 
 export default function ActivityEditorModal(props: ActivityEditorModalProps) {
-    const accountStore = useAccountStore();
     const userStore = useUserStore();
 
-    const [activity, setActivity] = useState<Activity>(new Activity());
-
-    useEffect(() => {
-        try {
-            if (props.ActivityId) {
-                let formData = new FormData();
-                formData.append('id', props.ActivityId);
-                let activity: Activity = activityService.get(formData);
-                setActivity(activity);
-            }
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }, [props.ActivityId]);
-
     const onSaveChanges = async () => {
-        if (props.ActivityId) {
+        if (props.activity.id) {
             try {
-                let formData = new FormData();
-                formData.append('id', activity.id);
-                formData.append('title', activity.title);
-
-                activityService.edit(formData);
-                userStore.updateUser(accountStore.currentUser?.id);
+                await userStore.editActivity();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+
             }
         } else {
             try {
-                activityService.create(activity);
-                userStore.updateUser(accountStore.currentUser?.id);
+                await userStore.createActivity();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+
             }
         }
+    }
+
+    const onChangeTitle = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        try {
+            await userStore.setActivity({
+                ...userStore.activity,
+                title: e.target.value
+            })
+        } catch (err) { }
     }
 
     return (
@@ -90,7 +76,7 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
                 }}
                 className="Header"
             >
-                {props.ActivityId ? 'Редактировать' : 'Создать'}
+                {props.activity.id ? 'Редактировать' : 'Создать'}
             </ModalHeader>
             <ModalBody
                 className="Body"
@@ -99,13 +85,8 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
                     <label className="form-label">Название</label>
                     <textarea
                         className="form-control"
-                        defaultValue={activity.title}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setActivity({
-                                ...activity,
-                                title: e.target.value
-                            })
-                        }}
+                        defaultValue={props.activity.title}
+                        onChange={onChangeTitle}
                         cols={5}
                         rows={6}
                     />

@@ -24,61 +24,64 @@ import useUserStore from '../../../hooks/useUserStore';
 interface WorkEditorModalProps {
     isOpen: boolean
     toggle: () => void
-
-    WorkId: any
+    work: Work
 }
 
 export default function WorkEditorModal(props: WorkEditorModalProps) {
-    const { currentUser } = useAccountStore();
-    const { updateUser } = useUserStore();
+    const userStore = useUserStore();
 
-
-    const [work, setWork] = useState<Work>(new Work());
-
-    useEffect(() => {
-        try {
-            if (props.WorkId) {
-                let formData = new FormData();
-                formData.append('id', props.WorkId);
-                let work: Work = workService.get(formData);
-                setWork(work);
-            }
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }, [props.WorkId]);
-
-    const onSaveChanges = () => {
-        if (props.WorkId) {
+    const onSaveChanges = async () => {
+        if (props.work.id) {
             try {
-                let formData = new FormData();
-                formData.append('id', work.id);
-
-                if (work.startDate !== 'Invalid date') {
-                    formData.append('startDate', work.startDate as string);
-                }
-
-                if (work.endDate !== 'Invalid date') {
-                    formData.append('endDate', work.endDate as string);
-                }
-                formData.append('title', work.title);
-                formData.append('post', work.post);
-
-                workService.edit(formData);
-                updateUser(currentUser?.id);
+                await userStore.editWork();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+                
             }
         } else {
             try {
-                workService.create(work);
-                updateUser(currentUser?.id);
+                await userStore.createWork();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+                
             }
         }
+    }
+
+    const onChangeStartDate = async (date: any) => {
+        try {
+            await userStore.setWork({
+                ...userStore.work,
+                startDate: moment(date).format('YYYY-MM-DD')
+            })
+        } catch (err) { }
+    }
+
+    const onChangeEndDate = async (date: any) => {
+        try {
+            await userStore.setWork({
+                ...userStore.work,
+                endDate: moment(date).format('YYYY-MM-DD')
+            })
+        } catch (err) { }
+    }
+
+    const onChangeTitle = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        try {
+            await userStore.setWork({
+                ...userStore.work,
+                title: e.target.value
+            })
+        } catch (err) { }
+    }
+
+    const onChangePost = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        try {
+            await userStore.setWork({
+                ...userStore.work,
+                post: e.target.value
+            })
+        } catch (err) { }
     }
 
     return (
@@ -100,7 +103,7 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
                 }}
                 className="Header"
             >
-                {props.WorkId ? 'Редактировать' : 'Создать'}
+                {props.work.id ? 'Редактировать' : 'Создать'}
             </ModalHeader>
             <ModalBody
                 className="Body"
@@ -108,13 +111,8 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
                 <div className="col-12 mb-2">
                     <label className="form-label">Дата начала</label>
                     <DateTime
-                        onChange={(date: any) => {
-                            setWork({
-                                ...work,
-                                startDate: moment(date).format('YYYY-MM-DD')
-                            })
-                        }}
-                        initialValue={work.startDate && moment(work.startDate).format('DD.MM.YYYY')}
+                        onChange={onChangeStartDate}
+                    initialValue={props.work.startDate && moment(props.work.startDate).format('DD.MM.YYYY')}
                         inputProps={{ placeholder: 'dd.mm.yyyy' }}
                         dateFormat="DD.MM.YYYY"
                         timeFormat={false}
@@ -126,13 +124,8 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
                 <div className="col-12 mb-2">
                     <label className="form-label">Дата окончания</label>
                     <DateTime
-                        onChange={(date: any) => {
-                            setWork({
-                                ...work,
-                                endDate: moment(date).format('YYYY-MM-DD')
-                            })
-                        }}
-                        initialValue={work.endDate && moment(work.endDate).format('DD.MM.YYYY')}
+                        onChange={onChangeEndDate}
+                        initialValue={props.work.endDate && moment(props.work.endDate).format('DD.MM.YYYY')}
                         inputProps={{ placeholder: 'dd.mm.yyyy' }}
                         dateFormat="DD.MM.YYYY"
                         timeFormat={false}
@@ -144,13 +137,8 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
                     <label className="form-label">Название</label>
                     <textarea
                         className="form-control"
-                        defaultValue={work.title}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setWork({
-                                ...work,
-                                title: e.target.value
-                            })
-                        }}
+                        defaultValue={props.work.title}
+                        onChange={onChangeTitle}
                         cols={5}
                         rows={6}
                     //style={{ resize: 'none' }}
@@ -162,13 +150,8 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
                     <input
                         className="form-control"
                         type="text"
-                        defaultValue={work.post}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setWork({
-                                ...work,
-                                post: e.target.value
-                            })
-                        }}
+                        defaultValue={props.work.post}
+                        onChange={onChangePost}
                     />
                 </div>
 

@@ -68,11 +68,6 @@ export default function UserCardTabs(props: UserCardTabsProps) {
     const [isOpenRemoveActivityConfirmModal, setIsOpenRemoveActivityConfirmModal] = useState(false);
     const [isOpenRemoveFactConfirmModal, setIsOpenRemoveFactConfirmModal] = useState(false);
 
-    const [learningId, setLearningId] = useState<string>('');
-    const [workId, setWorkId] = useState<string>('');
-    const [activityId, setActivityId] = useState<string>('');
-    const [factId, setFactId] = useState<string>('');
-
     const learningEditorModalToggler = () => {
         setIsLearningEditorModal(!isOpenLearningEditorModal);
     }
@@ -89,43 +84,66 @@ export default function UserCardTabs(props: UserCardTabsProps) {
         setIsFactEditorModal(!isOpenFactEditorModal);
     }
 
-    const editLearningOnClick = (learningId: string) => {
-        setLearningId(learningId);
+    const editLearningOnClick = async (learning: Learning) => {
+        try {
+            await state.setLearning(learning);
+        } catch (err) { }
+
         learningEditorModalToggler();
     }
 
-    const editWorkOnClick = (workId: string) => {
-        setWorkId(workId);
+    const editWorkOnClick = async (work: Work) => {
+        try {
+            await state.setWork(work);
+        } catch (err) { }
+
         workEditorModalToggler();
     }
 
-    const editActivityOnClick = (activityId: string) => {
-        setActivityId(activityId);
+    const editActivityOnClick = async (activity: Activity) => {
+        try {
+            await state.setActivity(activity);
+        } catch (err) { }
+
         activityEditorModalToggler();
     }
 
-    const editFactOnClick = (factId: string) => {
-        setFactId(factId);
+    const editFactOnClick = async (fact: Fact) => {
+        try {
+            await state.setFact(fact);
+        } catch (err) { }
         factEditorModalToggler();
     }
 
-    const removeLearningOnClick = (learningId: string) => {
-        setLearningId(learningId);
+    const removeLearningOnClick = async (learning: Learning) => {
+        try {
+            await state.setLearning(learning);
+        } catch (err) { }
+
         removeLearningConfirmModalToggler();
     }
 
-    const removeWorkOnClick = (workId: string) => {
-        setWorkId(workId);
+    const removeWorkOnClick = async (work: Work) => {
+        try {
+            await state.setWork(work);
+        } catch (err) { }
+
         removeWorkConfirmModalToggler();
     }
 
-    const removeActivityOnClick = (activityId: string) => {
-        setActivityId(activityId);
+    const removeActivityOnClick = async (activity: Activity) => {
+        try {
+            await state.setActivity(activity);
+        } catch (err) { }
+
         removeActivityConfirmModalToggler();
     }
 
-    const removeFactOnClick = (factId: string) => {
-        setFactId(factId);
+    const removeFactOnClick = async (fact: Fact) => {
+        try {
+            await state.setFact(fact);
+        } catch (err) { }
+
         removeFactConfirmModalToggler();
     }
 
@@ -145,52 +163,28 @@ export default function UserCardTabs(props: UserCardTabsProps) {
         setIsOpenRemoveFactConfirmModal(!isOpenRemoveFactConfirmModal);
     }
 
-    const removeLearning = () => {
+    const handleRemoveLearning = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', learningId);
-            learningService.remove(formData);
-
-            state.updateUser(currentUser?.id);
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
+            await state.removeLearning();
+        } catch (err) { }
     }
 
-    const removeWork = () => {
+    const handleRemoveWork = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', workId);
-            workService.remove(formData);
-
-            state.updateUser(currentUser?.id);
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
+            await state.removeWork();
+        } catch (err) { }
     }
 
-    const removeActivity = () => {
+    const handleRemoveActivity = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', activityId);
-            activityService.remove(formData);
-
-            state.updateUser(currentUser?.id);
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
+            await state.removeActivity();
+        } catch (err) { }
     }
 
-    const removeFact = () => {
+    const handleRemoveFact = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', factId);
-            factService.remove(formData);
-
-            state.updateUser(currentUser?.id);
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
+            await state.removeFact();
+        } catch (err) { }
     }
 
     return (
@@ -286,8 +280,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                 <div className="d-flex align-items-center">
                                                     {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editLearningOnClick(learning.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeLearningOnClick(learning.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editLearningOnClick(learning)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeLearningOnClick(learning)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -325,8 +319,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                 <div className="d-flex align-items-center">
                                                     {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editWorkOnClick(work.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeWorkOnClick(work.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editWorkOnClick(work)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeWorkOnClick(work)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -336,7 +330,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                             <div className="Title">{work.title}</div>
                                             {work.post &&
                                                 <span className="Post">
-                                                    <span className="me-3"><JobIcon /></span>
+                                                    <span className="me-3"><JobIcon color="#000" /></span>
                                                     <span>{work.post}</span>
                                                 </span>
                                             }
@@ -362,8 +356,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                 <div className="d-flex align-items-center">
                                                     {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editActivityOnClick(activity.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeActivityOnClick(activity.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editActivityOnClick(activity)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeActivityOnClick(activity)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -393,8 +387,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                 <div className="d-flex align-items-center">
                                                     {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editFactOnClick(fact.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeFactOnClick(fact.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editFactOnClick(fact)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeFactOnClick(fact)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -417,53 +411,53 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             <LearningEditorModal
                 isOpen={isOpenLearningEditorModal}
                 toggle={learningEditorModalToggler}
-                LearningId={learningId}
+                learning={state.learning}
             />
 
             <WorkEditorModal
                 isOpen={isOpenWorkEditorModal}
                 toggle={workEditorModalToggler}
-                WorkId={workId}
+                work={state.work}
             />
 
             <ActivityEditorModal
                 isOpen={isOpenActivityEditorModal}
                 toggle={activityEditorModalToggler}
-                ActivityId={activityId}
+                activity={state.activity}
             />
 
             <FactEditorModal
                 isOpen={isOpenFactEditorModal}
                 toggle={factEditorModalToggler}
-                FactId={factId}
+                fact={state.fact}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveLearningConfirmModal}
                 toggle={removeLearningConfirmModalToggler}
                 message='Удалить запись об обучении?'
-                confirmAction={removeLearning}
+                confirmAction={handleRemoveLearning}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveWorkConfirmModal}
                 toggle={removeWorkConfirmModalToggler}
                 message='Удалить запись о месте работы?'
-                confirmAction={removeWork}
+                confirmAction={handleRemoveWork}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveActivityConfirmModal}
                 toggle={removeActivityConfirmModalToggler}
                 message='Удалить запись об активности?'
-                confirmAction={removeActivity}
+                confirmAction={handleRemoveActivity}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveFactConfirmModal}
                 toggle={removeFactConfirmModalToggler}
                 message='Удалить запись о факте?'
-                confirmAction={removeFact}
+                confirmAction={handleRemoveFact}
             />
 
         </div>
