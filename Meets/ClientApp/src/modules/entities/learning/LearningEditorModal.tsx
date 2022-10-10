@@ -24,59 +24,51 @@ import useUserStore from '../../../hooks/useUserStore';
 interface LearningEditorModalProps {
     isOpen: boolean
     toggle: () => void
-
-    LearningId: any
+    learning: Learning
 }
 
 export default function LearningEditorModal(props: LearningEditorModalProps) {
-    const { currentUser } = useAccountStore();
-    const { updateUser } = useUserStore();
+    const userStore = useUserStore();
 
-    const [learning, setLearning] = useState<Learning>(new Learning());
-
-    useEffect(() => {
-        try {
-            if (props.LearningId) {
-                let formData = new FormData();
-                formData.append('id', props.LearningId);
-                let learn: Learning = learningService.get(formData);
-                setLearning(learn);
-            }
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }, [props.LearningId]);
-
-    const onSaveChanges = () => {
-        if (props.LearningId) {
+    const onSaveChanges = async () => {
+        if (props.learning.id) {
             try {
-                let formData = new FormData();
-                formData.append('id', learning.id);
-
-                if (learning.startDate !== 'Invalid date') {
-                    formData.append('startDate', learning.startDate as string);
-                }
-
-                if (learning.endDate !== 'Invalid date') {
-                    formData.append('endDate', learning.endDate as string);
-                }
-                formData.append('title', learning.title);
-
-                learningService.edit(formData);
-                updateUser(currentUser?.id);
+                await userStore.editLearning();
                 props.toggle();
-            } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
-            }
+            } catch (err) { }
         } else {
             try {
-                learningService.create(learning);
-                updateUser(currentUser?.id);
+                await userStore.createLearning();
                 props.toggle();
-            } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
-            }
+            } catch (err) { }
         }
+    }
+
+    const onChangeStartDate = async (date: any) => {
+        try {
+            await userStore.setLearning({
+                ...userStore.learning,
+                startDate: moment(date).format('YYYY-MM-DD')
+            })
+        } catch (err) { }
+    }
+
+    const onChangeEndDate = async (date: any) => {
+        try {
+            await userStore.setLearning({
+                ...userStore.learning,
+                endDate: moment(date).format('YYYY-MM-DD')
+            })
+        } catch (err) { }
+    }
+
+    const onChangeTitle = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        try {
+            await userStore.setLearning({
+                ...userStore.learning,
+                title: e.target.value
+            })
+        } catch (err) { }
     }
 
     return (
@@ -98,7 +90,7 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
                 }}
                 className="Header"
             >
-                {props.LearningId ? 'Редактировать' : 'Создать'}
+                {props.learning.id ? 'Редактировать' : 'Создать'}
             </ModalHeader>
             <ModalBody
                 className="Body"
@@ -106,13 +98,8 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
                 <div className="col-12 mb-2">
                     <label className="form-label">Дата начала</label>
                     <DateTime
-                        onChange={(date: any) => {
-                            setLearning({
-                                ...learning,
-                                startDate: moment(date).format('YYYY-MM-DD')
-                            })
-                        }}
-                        initialValue={learning.startDate && moment(learning.startDate).format('DD.MM.YYYY')}
+                        onChange={onChangeStartDate}
+                        initialValue={props.learning.startDate && moment(props.learning.startDate).format('DD.MM.YYYY')}
                         inputProps={{ placeholder: 'dd.mm.yyyy' }}
                         dateFormat="DD.MM.YYYY"
                         timeFormat={false}
@@ -124,13 +111,8 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
                 <div className="col-12 mb-2">
                     <label className="form-label">Дата окончания</label>
                     <DateTime
-                        onChange={(date: any) => {
-                            setLearning({
-                                ...learning,
-                                endDate: moment(date).format('YYYY-MM-DD')
-                            })
-                        }}
-                        initialValue={learning.endDate && moment(learning.endDate).format('DD.MM.YYYY')}
+                        onChange={onChangeEndDate}
+                        initialValue={props.learning.endDate && moment(props.learning.endDate).format('DD.MM.YYYY')}
                         inputProps={{ placeholder: 'dd.mm.yyyy' }}
                         dateFormat="DD.MM.YYYY"
                         timeFormat={false}
@@ -142,13 +124,8 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
                     <label className="form-label">Название</label>
                     <textarea
                         className="form-control"
-                        defaultValue={learning.title}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setLearning({
-                                ...learning,
-                                title: e.target.value
-                            })
-                        }}
+                        defaultValue={props.learning.title}
+                        onChange={onChangeTitle}
                         cols={5}
                         rows={6}
                     //style={{ resize: 'none' }}

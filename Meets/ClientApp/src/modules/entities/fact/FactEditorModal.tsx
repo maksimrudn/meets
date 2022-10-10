@@ -24,51 +24,37 @@ import useUserStore from '../../../hooks/useUserStore';
 interface FactEditorModalProps {
     isOpen: boolean
     toggle: () => void
-
-    FactId: any
+    fact: Fact
 }
 
 export default function FactEditorModal(props: FactEditorModalProps) {
-    const { currentUser } = useAccountStore();
-    const { updateUser } = useUserStore();
+    const userStore = useUserStore();
 
-    const [fact, setFact] = useState<Fact>(new Fact());
-
-    useEffect(() => {
-        try {
-            if (props.FactId) {
-                let formData = new FormData();
-                formData.append('id', props.FactId);
-                let fact: Fact = factService.get(formData);
-                setFact(fact);
-            }
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }, [props.FactId]);
-
-    const onSaveChanges = () => {
-        if (props.FactId) {
+    const onSaveChanges = async () => {
+        if (props.fact.id) {
             try {
-                let formData = new FormData();
-                formData.append('id', fact.id);
-                formData.append('title', fact.title);
-
-                factService.edit(formData);
-                updateUser(currentUser?.id);
+                await userStore.editFact();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+
             }
         } else {
             try {
-                factService.create(fact);
-                updateUser(currentUser?.id);
+                await userStore.createFact();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+
             }
         }
+    }
+
+    const onChangeTitle = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        try {
+            await userStore.setFact({
+                ...userStore.fact,
+                title: e.target.value
+            })
+        } catch (err) { }
     }
 
     return (
@@ -90,7 +76,7 @@ export default function FactEditorModal(props: FactEditorModalProps) {
                 }}
                 className="Header"
             >
-                {props.FactId ? 'Редактировать' : 'Создать'}
+                {props.fact.id ? 'Редактировать' : 'Создать'}
             </ModalHeader>
             <ModalBody
                 className="Body"
@@ -99,13 +85,8 @@ export default function FactEditorModal(props: FactEditorModalProps) {
                     <label className="form-label">Название</label>
                     <textarea
                         className="form-control"
-                        defaultValue={fact.title}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setFact({
-                                ...fact,
-                                title: e.target.value
-                            })
-                        }}
+                        defaultValue={props.fact.title}
+                        onChange={onChangeTitle}
                         cols={5}
                         rows={6}
                     />

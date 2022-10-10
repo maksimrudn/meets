@@ -69,11 +69,15 @@ function UserCard(): JSX.Element {
     let topElement: any = useRef();
 
     useEffect(() => {
-        try {
-            userStore.updateUser(params.id);
-        } catch (err) {
+        const update = async () => {
+            try {
+                await userStore.updateUser(params.id);
+            } catch (err) {
 
+            }
         }
+
+        update();
     }, [params.id]);
 
     const toggleUserCardContextMenuModal = () => {
@@ -98,24 +102,16 @@ function UserCard(): JSX.Element {
 
     
 
-    const onSubscribe = () => {
+    const handleSubscribe = async () => {
         try {
-            subscribtionService.subscribe(userStore.user?.id);
-            userStore.updateUser(userStore.user?.id);
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
+            await userStore.subscribe();
+        } catch (err) { }
     }
 
-    const onUnSubscribe = () => {
+    const handleUnSubscribe = async () => {
         try {
-            subscribtionService.unSubscribe(userStore.user?.id);
-            userStore.updateUser(userStore.user?.id);
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
+            await userStore.unSubscribe();
+        } catch (err) { }
     }
 
     const getSEO = () => {
@@ -244,8 +240,8 @@ function UserCard(): JSX.Element {
                                     <div className="col-3 d-flex justify-content-center">
                                         <SubscribeButton
                                             subscribed={userStore.user?.isSubscribed as boolean}
-                                            onSubscribe={onSubscribe}
-                                            onUnsubscribe={onUnSubscribe}
+                                            onSubscribe={handleSubscribe}
+                                            onUnsubscribe={handleUnSubscribe}
                                         />
                                     </div>
 
