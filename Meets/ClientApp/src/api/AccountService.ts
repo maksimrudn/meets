@@ -2,7 +2,15 @@
 import BaseService from "./BaseService";
 
 class AccountService extends BaseService {
-   
+
+    refreshToken() {
+        let res;
+
+        res = this.executeRequestXHR('/api/account/RefreshToken', 'post', undefined);
+
+        return res;
+    }
+
     login(email: string, password: string) {
         var data = {
             email,

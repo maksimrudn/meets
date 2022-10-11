@@ -86,6 +86,12 @@ namespace Meets.Models
 
         public string Telegram { get; set; }
 
+        /// <summary>
+        /// JWT
+        /// </summary>
+        [JsonIgnore]
+        public List<RefreshToken> RefreshTokens { get; set; }
+
 
         /// <summary>
         /// Подписчики
