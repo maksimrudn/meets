@@ -20,9 +20,12 @@ using Meets.Extensions;
 using Meets.Models.User;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Meets.Settings;
+using Microsoft.Extensions.Options;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [Area("api")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -33,13 +36,15 @@ namespace Meets.Controllers.api
         private readonly SignInManager<ApplicationUser> _signInManager;
         private IWebHostEnvironment _env;
         private IMapper _mapper;
+        private readonly JwtConfiguration _jwtConfiguration;
 
         public AccountController(TokenManager tokenManager,
                                 ApplicationDbContext db,
                                 UserManager<ApplicationUser> userManager,
                                 SignInManager<ApplicationUser> signInManager,
                                 IMapper mapper,
-                                IWebHostEnvironment env)
+                                IWebHostEnvironment env,
+                                IOptions<JwtConfiguration> jwtConfiguration)
         {
             _tokenManager = tokenManager;
             _db = db;
@@ -47,9 +52,10 @@ namespace Meets.Controllers.api
             _signInManager = signInManager;
             _env = env;
             _mapper = mapper;
+            _jwtConfiguration = jwtConfiguration.Value;
         }
 
-
+        [AllowAnonymous]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<LoginResponse>> Login(LoginRequest request)
         {
@@ -69,17 +75,85 @@ namespace Meets.Controllers.api
 
 
             var jwt = await _tokenManager.GenerateAccessToken(user);
+            var refreshToken = _tokenManager.GenerateRefreshToken();
+            user.RefreshTokens.Add(refreshToken);
 
-            return new LoginResponse() { AccessToken = jwt };
+            _removeOldRefreshTokens(user);
+
+            _db.Update(user);
+            await _db.SaveChangesAsync();
+
+            _setTokenCookie(refreshToken.Token);
+
+            return new LoginResponse() { AccessToken = jwt, RefreshToken = refreshToken.Token };
             
         }
 
+        [AllowAnonymous]
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<LoginResponse> RefreshToken()
+        {
+            var refreshTokenFromCookie = Request.Cookies["refreshToken"];
+            var user = _getUserByRefreshToken(refreshTokenFromCookie);
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == refreshTokenFromCookie);
+
+            if (refreshToken.IsRevoked)
+            {
+                _revokeDescendantRefreshTokens(refreshToken, user, $"Attempted reuse of revoked ancestor token {refreshTokenFromCookie}");
+                _db.Update(user);
+                await _db.SaveChangesAsync();
+            }
+
+            if (!refreshToken.IsActive)
+            {
+                throw new Exception("Invalid token");
+            }
+
+            var newRefreshToken = _rotateRefreshToken(refreshToken);
+            user.RefreshTokens.Add(newRefreshToken);
+
+            _removeOldRefreshTokens(user);
+
+            _db.Update(user);
+            await _db.SaveChangesAsync();
+
+            var jwtToken = await _tokenManager.GenerateAccessToken(user);
+
+            _setTokenCookie(newRefreshToken.Token);
+
+            return new LoginResponse { AccessToken = jwtToken, RefreshToken = newRefreshToken.Token };
+        }
+
+        [HttpPost("[area]/[controller]/[action]")]
+        public async Task<IActionResult> RevokeToken(RevokeTokenRequest model)
+        {
+            var token = model.Token ?? Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(token))
+            {
+                throw new Exception("Token is empty");
+            }
+
+            var user = _getUserByRefreshToken(token);
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+
+            if (!refreshToken.IsActive)
+            {
+                throw new Exception("Invalid token");
+            }
+
+            _revokeRefreshToken(refreshToken, null, "Revoked without replacement");
+            _db.Update(user);
+            await _db.SaveChangesAsync();
+
+            return Ok(); // new { message = "Token revoked" }
+        }
 
         /// <summary>
         /// Получение данных о текущем пользователе
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        //[Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
@@ -93,6 +167,7 @@ namespace Meets.Controllers.api
             return _mapper.Map<UserDTO>(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<RegisterResponse>> Register(RegisterRequest request)
         {
@@ -273,6 +348,70 @@ namespace Meets.Controllers.api
             //StatusMessage = "Спасибо за подтверждение изменения email.";
             return Ok();
             
+        }
+
+        // controller helper methods
+
+        private void _setTokenCookie(string token)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.Now.AddDays(_jwtConfiguration.RefreshTokenExpirationDays)
+            };
+
+            Response.Cookies.Append("refreshToken", token, cookieOptions);
+        }
+
+        // jwt utils helper methods
+
+        private ApplicationUser _getUserByRefreshToken(string token)
+        {
+            var user = _db.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+
+            if (user is null)
+            {
+                throw new Exception("Invalid token");
+            }
+
+            return user;
+        }
+
+        private RefreshToken _rotateRefreshToken(RefreshToken refreshToken)
+        {
+            var newRefreshToken = _tokenManager.GenerateRefreshToken();
+            _revokeRefreshToken(refreshToken, "Replaced by new token", newRefreshToken.Token);
+            return newRefreshToken;
+        }
+
+        private void _removeOldRefreshTokens(ApplicationUser user)
+        {
+            user.RefreshTokens.RemoveAll(x =>
+                !x.IsActive &&
+                x.Created.AddDays(_jwtConfiguration.RefreshTokenTTL) <= DateTime.Now);
+        }
+
+        private void _revokeDescendantRefreshTokens(RefreshToken refreshToken, ApplicationUser user, string reason)
+        {
+            if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
+            {
+                var childToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+                if (childToken.IsActive)
+                {
+                    _revokeRefreshToken(childToken, reason);
+                }
+                else
+                {
+                    _revokeDescendantRefreshTokens(childToken, user, reason);
+                }
+            }
+        }
+
+        private void _revokeRefreshToken(RefreshToken token, /*string ipAddress*/string reason = null, string replacedByToken = null)
+        {
+            token.Revoked = DateTime.Now;
+            token.ReasonRevoked = reason;
+            token.ReplacedByToken = replacedByToken;
         }
     }
 }

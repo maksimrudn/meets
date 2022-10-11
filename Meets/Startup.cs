@@ -31,6 +31,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
 using Meets.Services;
+using Meets.Infrastructure;
+using Meets.Middlewares;
 
 namespace Meets
 {
@@ -95,6 +97,10 @@ namespace Meets
             services.AddScoped<Services.TokenManager>();
 
             services.AddScoped<NotificationService>();
+
+            //services.AddScoped<IUserService, UserService>();
+
+            //services.AddScoped<IJwtUtils, JwtUtils>();
 
             //services.AddIdentityServer()
             //    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
@@ -222,6 +228,8 @@ namespace Meets
             app.UseRouting();
 
             app.UseCustomExceptionHandler();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseAuthentication();
             app.UseAuthorization();

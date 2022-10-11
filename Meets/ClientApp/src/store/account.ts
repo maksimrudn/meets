@@ -75,6 +75,20 @@ const {
     clean
 } = actions;
 
+export const refreshToken = (): AppThunk => async (dispatch, getState) => {
+    dispatch(authRequested());
+
+    try {
+        let jwtResponse = accountService.refreshToken();
+        Cookies.set('access_token', jwtResponse.accessToken);
+
+        await dispatch(authReceived(true));
+    } catch (error: any) {
+        dispatch(authFailed(error.message));
+        throw error;
+    }
+}
+
 export const login = (email: string, password: string): AppThunk => async dispatch => {
     dispatch(authRequested());
 
