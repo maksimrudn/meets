@@ -2,6 +2,7 @@
 using Meets.Controllers.api.dto.Learning;
 using Meets.Data;
 using Meets.Extensions;
+using Meets.Infrastructure;
 using Meets.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using System;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [Area("api")]
     [ApiController]
     public class LearningController : ControllerBase

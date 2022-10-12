@@ -12,7 +12,6 @@ using Meets.Extensions;
 using Meets.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Meets.Domain;
-using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
@@ -25,9 +24,11 @@ using Meets.Services;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
+using Meets.Infrastructure;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [DisableCors]
     [Area("api")]
     [ApiController]
@@ -162,7 +163,7 @@ namespace Meets.Controllers.api
             
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<ProfileSettingsDTO>> GetProfileSettings(ByUserIdRequest request)
         {
@@ -182,7 +183,7 @@ namespace Meets.Controllers.api
             return settingsDTO;
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> EditProfileSettings(EditProfileSettingsDTO request)
         {
@@ -314,7 +315,7 @@ namespace Meets.Controllers.api
             
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public IActionResult SaveUserGeo([FromForm]UserGeodataDTO userGeodata)
         {   
@@ -328,7 +329,7 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public IActionResult SaveUserCity(CityDTO request)
         {
@@ -342,7 +343,7 @@ namespace Meets.Controllers.api
             
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public ActionResult<Coordinates> GetCoordinatesForCurrentUser()
         {
@@ -361,7 +362,7 @@ namespace Meets.Controllers.api
             }
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public ActionResult<UserDTO> Get(GetParamsDTO getParamsDTO)
         {
@@ -375,7 +376,7 @@ namespace Meets.Controllers.api
             return _mapper.Map<UserDTO>(user);
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult> Edit([FromForm]UserDTO userDto, [FromForm]IFormFile photo)
         {
@@ -449,7 +450,7 @@ namespace Meets.Controllers.api
             return resultImageSequence;
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public ActionResult RemoveUserAvatar()
         { 
@@ -473,7 +474,7 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequest model)
         {
@@ -491,7 +492,7 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult> ConfirmEmail(ConfirmEmailDTO request)
         {

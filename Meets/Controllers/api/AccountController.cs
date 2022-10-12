@@ -19,9 +19,10 @@ using System.Threading.Tasks;
 using Meets.Extensions;
 using Meets.Models.User;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Meets.Settings;
 using Microsoft.Extensions.Options;
+using Meets.Infrastructure;
+using System.Collections.Generic;
 
 namespace Meets.Controllers.api
 {
@@ -199,6 +200,16 @@ namespace Meets.Controllers.api
                                                     $"Подтвердите ваш email по ссылке <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>кликнув здесь</a>.");
 
                 var jwt = await _tokenManager.GenerateAccessToken(newUser);
+                var refreshToken = _tokenManager.GenerateRefreshToken();
+                newUser.RefreshTokens = new List<RefreshToken>();
+                newUser.RefreshTokens.Add(refreshToken);
+
+                //_removeOldRefreshTokens(user);
+
+                _db.Update(newUser);
+                await _db.SaveChangesAsync();
+
+                _setTokenCookie(refreshToken.Token);
 
                 return new RegisterResponse() { AccessToken = jwt };
             }

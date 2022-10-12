@@ -1,5 +1,6 @@
 ﻿import AppConfig from "./AppConfig";
 import * as Cookies from 'js-cookie';
+import * as moment from 'moment-timezone';
 
 
 export const formToObject = (htmlForm) => {
@@ -141,6 +142,14 @@ export function getAvatarPathForUser(user) {
 
     return res
 }
+
+/**
+ * получает время жизни токена доступа
+ * */
+export function getTokenExpireTime() {
+    return moment().add(15, 'minutes').toDate();
+}
+
 
 /**
  * получает путь для event картинки из папки Content

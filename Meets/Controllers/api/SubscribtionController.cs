@@ -2,8 +2,8 @@
 using Meets.Data;
 using Meets.Exceptions;
 using Meets.Extensions;
+using Meets.Infrastructure;
 using Meets.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [Area("api")]
     [ApiController]
     public class SubscribtionController : ControllerBase
@@ -25,14 +26,12 @@ namespace Meets.Controllers.api
             _db = db;
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<List<Subscribtion>>> GetList(ByUserIdRequest request)
         {
             return await _db.Subscribtions.Where(x=>x.OwnerId == request.UserId).ToListAsync();
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> Subscribe(ByUserIdRequest request)
         {
@@ -63,7 +62,6 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> UnSubscribe(ByUserIdRequest request)
         {

@@ -11,13 +11,17 @@ class AccountService extends BaseService {
         return res;
     }
 
+    revokeToken() {
+        this.executeRequestXHR('/api/account/RevokeToken', 'post', JSON.stringify({ token: null }));
+    }
+
     login(email: string, password: string) {
         var data = {
             email,
             password
         }
 
-        return this.executeRequestXHR('/api/account/login', 'post', JSON.stringify(data));
+        return this.executeRequestXHR('/api/account/login', 'post', JSON.stringify(data), null, true);
     }
 
     getCurrentUser(): UserDTO {
@@ -36,7 +40,7 @@ class AccountService extends BaseService {
             confirmPassword
         }
 
-        return this.executeRequestXHR('/api/account/register', 'post', JSON.stringify(data));
+        return this.executeRequestXHR('/api/account/register', 'post', JSON.stringify(data), null, false, true);
     }
 
     removeAccount() {
