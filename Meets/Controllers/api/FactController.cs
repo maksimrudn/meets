@@ -1,6 +1,7 @@
 ﻿using Meets.Controllers.api.dto.Fact;
 using Meets.Data;
 using Meets.Extensions;
+using Meets.Infrastructure;
 using Meets.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using System;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [Area("api")]
     [ApiController]
     public class FactController : ControllerBase

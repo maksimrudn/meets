@@ -1,18 +1,47 @@
 ﻿import Cookies from 'js-cookie'
-import { isJson } from "../common/Utils";
+import { isJson, getTokenExpireTime } from "../common/Utils";
 import ApiError from "../common/ApiError";
+import accountService from './AccountService';
+
 
 export default class BaseService {
 
+    private _refreshTokenIfNeeded(isLogin: boolean, isRegister: boolean) {
+        if (isLogin || isRegister) {
+            return;
+        }
 
+        let token = Cookies.get('access_token');
+        let isExpire = !token;
 
+        if (isExpire) {
+            try {
+                let xhr = new XMLHttpRequest();
+                xhr.open('post', '/api/account/RefreshToken', false);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        let jwtResponse = JSON.parse(xhr.response);
+                        Cookies.set('access_token', jwtResponse.accessToken, { expires: getTokenExpireTime() });
+                    }
+                }
+                xhr.send(null);
+            } catch (error: any) {
+                console.error(error);
+            }
+        }
 
-	executeRequestXHR(url, method, data, tokenDadata = null): any {
+    }
+
+    // без проверки isLogin, isRegister токен будет бесконечно обновляться
+    executeRequestXHR(url, method, data, tokenDadata = null, isLogin = false, isRegister = false): any {
 
         let errorCode = null;
         let errorFlag = false;
         var errorText = null;
         var res = null;
+
+        // обновление токена jwt
+        this._refreshTokenIfNeeded(isLogin, isRegister);
 
         let xhr = new XMLHttpRequest();
         xhr.open(method, url, false);

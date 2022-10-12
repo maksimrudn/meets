@@ -5,8 +5,7 @@ import * as Cookies from 'js-cookie';
 import { isSignedIn } from '../common/Utils';
 //import { updateCurrentUserOrThrow } from './currentUser';
 import IUserDTO from '../contracts/user/IUserDTO';
-
-
+import { getTokenExpireTime } from '../common/Utils'
 
 export interface IAccountState {
     currentUser: IUserDTO | null
@@ -80,9 +79,23 @@ export const refreshToken = (): AppThunk => async (dispatch, getState) => {
 
     try {
         let jwtResponse = accountService.refreshToken();
-        Cookies.set('access_token', jwtResponse.accessToken);
+        Cookies.set('access_token', jwtResponse.accessToken, { expires: getTokenExpireTime() });
 
         await dispatch(authReceived(true));
+    } catch (error: any) {
+        dispatch(authFailed(error.message));
+        throw error;
+    }
+}
+
+export const revokeToken = (): AppThunk => async (dispatch, getState) => {
+    dispatch(authRequested());
+
+    try {
+        accountService.revokeToken();
+
+        await dispatch(authReceived(false));
+        await dispatch(clean());
     } catch (error: any) {
         dispatch(authFailed(error.message));
         throw error;
@@ -94,19 +107,18 @@ export const login = (email: string, password: string): AppThunk => async dispat
 
     try {
         var jwtResponse = accountService.login(email, password);
-        Cookies.set('access_token', jwtResponse.accessToken);
+        Cookies.set('access_token', jwtResponse.accessToken, { expires: getTokenExpireTime() });
 
 
         try {
-            dispatch(updateCurrentUser());
+            await dispatch(updateCurrentUser());
+
+            await dispatch(authReceived(true));
         }
         catch (error: any) {
             dispatch(authFailed(error.message));
             throw error;
         }
-
-        await dispatch(authReceived(true));
-
 
     } catch (error: any) {
         dispatch(authFailed(error.message));
@@ -117,11 +129,13 @@ export const login = (email: string, password: string): AppThunk => async dispat
 };
 
 export const logout = (): AppThunk => async dispatch => {
-
-    Cookies.remove('access_token');
-
-    await clean();
-
+    try {
+        await dispatch(revokeToken());
+        Cookies.remove('access_token');
+    } catch (error: any) {
+        dispatch(authFailed(error.message));
+        throw error;
+    }
 };
 
 export const register = (fullName: string, email: string, password: string, confirmPassword: string): AppThunk => async dispatch => {
@@ -129,7 +143,7 @@ export const register = (fullName: string, email: string, password: string, conf
 
     try {
         let jwtResponse = accountService.register(fullName, email, password, confirmPassword);
-        Cookies.set('access_token', jwtResponse.accessToken);
+        Cookies.set('access_token', jwtResponse.accessToken, { expires: getTokenExpireTime() });
 
         await dispatch(updateCurrentUser());
         await dispatch(authReceived(true));

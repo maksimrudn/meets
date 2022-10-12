@@ -5,6 +5,7 @@ import {
     IAccountState,
     login,
     logout,
+    refreshToken,
     register,
     resetPassword,
     updateCurrentUser
@@ -12,6 +13,7 @@ import {
 import { RootState, useAppDispatch } from "../store/createStore";
 
 interface IAuthStore extends IAccountState {
+    //refreshToken: () => Promise<void>
     login(email: string, password: string): Promise<void>
     logout(): Promise<void>
     register: (fullName: string, email: string, password: string, confirmPassword: string) => Promise<void>
@@ -27,6 +29,7 @@ function useAccountStore(): IAuthStore {
 
     return {
         ...account,
+        //refreshToken: async () => { await dispatch(refreshToken()); },
         login: async (email: string, password: string) => { await dispatch(login(email, password)); },
         logout: async () => { await dispatch(logout()); },
         register: async (fullName, email, password, confirmPassword) => { await dispatch(register(fullName, email, password, confirmPassword)); },
