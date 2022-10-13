@@ -54,7 +54,7 @@ export const updateSettings = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        const profile = userService.getProfileSettings(state.account.currentUser?.id);
+        const profile = await userService.getProfileSettings(state.account.currentUser?.id);
         await dispatch(settingsReceived(profile));
     } catch (err: any) {
         dispatch(settingsFailed(err.message));
@@ -73,7 +73,7 @@ export const editSettings = (): AppThunk => async (dispatch, getState) => {
             userId: state.account.currentUser?.id
         };
 
-        userService.editProfileSettings(data);
+        await userService.editProfileSettings(data);
         await dispatch(updateSettings());
     } catch (err: any) {
         dispatch(settingsFailed(err.message));
@@ -87,7 +87,7 @@ export const setProfile = (profile: ProfileSettingsDTO): AppThunk => async (disp
 
 export const removeAccount = (): AppThunk => async dispatch => {
     try {
-        accountService.removeAccount();
+        await accountService.removeAccount();
         await dispatch(logout());
     } catch (err: any) {
         dispatch(settingsFailed(err.message));
@@ -97,7 +97,7 @@ export const removeAccount = (): AppThunk => async dispatch => {
 
 export const confirmEmail = (email: string): AppThunk => async dispatch => {
     try {
-        userService.confirmEmail({ email });
+        await userService.confirmEmail({ email });
     } catch (err: any) {
         dispatch(settingsFailed(err.message));
         throw err;
@@ -106,7 +106,7 @@ export const confirmEmail = (email: string): AppThunk => async dispatch => {
 
 export const changePassword = (oldPassword: string, newPassword: string, confirmPassword: string): AppThunk => async dispatch => {
     try {
-        userService.changePassword(oldPassword, newPassword, confirmPassword);
+        await userService.changePassword(oldPassword, newPassword, confirmPassword);
     } catch (err: any) {
         dispatch(settingsFailed(err.message));
         throw err;
