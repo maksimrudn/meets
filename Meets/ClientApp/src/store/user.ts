@@ -149,7 +149,7 @@ export const updateUser = (userId: any): AppThunk => async (dispatch, getState) 
     dispatch(userRequested());
 
     try {
-        const userCard = userService.getCard(userId);
+        const userCard = await userService.getCard(userId);
         const payload = {
             userCard,
             isOwnUserCard: getState().account.currentUser?.id === userCard.id
@@ -186,11 +186,9 @@ export const editUser = (fieldName: string, value: any): AppThunk => async (disp
     }
 
     try {
-        userService.edit(userData);
-        //updateUser(state.user?.id);
-        const userCard = userService.getCard(state.user?.id);
-        await dispatch(userReceived(userCard));
+        await userService.edit(userData);
 
+        await dispatch(updateUser(state.user?.id));
         await dispatch(updateCurrentUser());
     }
     catch (err: any) {
@@ -203,19 +201,12 @@ export const removeAvatar = (): AppThunk => async (dispatch, getState) => {
     const state = getState().user;
 
     try {
-        userService.removeAvatar();
+        await userService.removeAvatar();
 
-        const userCard = userService.getCard(state.user?.id);
-        await dispatch(userReceived(userCard));
+        await dispatch(updateUser(state.user?.id));
+        await dispatch(updateCurrentUser());
     }
     catch (err: any) {
-        dispatch(userFailed(err.message));
-        throw err;
-    }
-
-    try {
-        await dispatch(updateCurrentUser());
-    } catch (err: any) {
         dispatch(userFailed(err.message));
         throw err;
     }

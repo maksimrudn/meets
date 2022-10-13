@@ -78,7 +78,7 @@ export const refreshToken = (): AppThunk => async (dispatch, getState) => {
     dispatch(authRequested());
 
     try {
-        let jwtResponse = accountService.refreshToken();
+        let jwtResponse = await accountService.refreshToken();
         Cookies.set('access_token', jwtResponse.accessToken, { expires: getTokenExpireTime() });
 
         await dispatch(authReceived(true));
@@ -92,7 +92,7 @@ export const revokeToken = (): AppThunk => async (dispatch, getState) => {
     dispatch(authRequested());
 
     try {
-        accountService.revokeToken();
+        await accountService.revokeToken();
 
         await dispatch(authReceived(false));
         await dispatch(clean());
@@ -106,7 +106,7 @@ export const login = (email: string, password: string): AppThunk => async dispat
     dispatch(authRequested());
 
     try {
-        var jwtResponse = accountService.login(email, password);
+        var jwtResponse = await accountService.login(email, password);
         Cookies.set('access_token', jwtResponse.accessToken, { expires: getTokenExpireTime() });
 
 
@@ -142,7 +142,7 @@ export const register = (fullName: string, email: string, password: string, conf
     dispatch(authRequested());
 
     try {
-        let jwtResponse = accountService.register(fullName, email, password, confirmPassword);
+        let jwtResponse = await accountService.register(fullName, email, password, confirmPassword);
         Cookies.set('access_token', jwtResponse.accessToken, { expires: getTokenExpireTime() });
 
         await dispatch(updateCurrentUser());
@@ -157,7 +157,7 @@ export const confirmEmail = (userId: any, code: any): AppThunk => async dispatch
     dispatch(authRequested());
 
     try {
-        let jwtResponse = accountService.confirmEmail(userId, code);
+        let jwtResponse = await accountService.confirmEmail(userId, code);
         Cookies.set('access_token', jwtResponse.accessToken);
 
         await dispatch(updateCurrentUser());
@@ -171,7 +171,7 @@ export const confirmEmail = (userId: any, code: any): AppThunk => async dispatch
 export const forgotPassword = (email: string): AppThunk => async dispatch => {
 
     try {
-        accountService.forgotPassword(email);
+        await accountService.forgotPassword(email);
     } catch (error: any) {
         throw error;
     }
@@ -181,7 +181,7 @@ export const resetPassword = (code: string, email: string, password: string, con
     dispatch(authRequested());
 
     try {
-        accountService.resetPassword(code, email, password, confirmPassword);
+        await accountService.resetPassword(code, email, password, confirmPassword);
 
         await dispatch(updateCurrentUser());
         await dispatch(authReceived(true));
@@ -195,7 +195,7 @@ export const updateCurrentUser = (): AppThunk => async dispatch => {
     dispatch(currentUserRequested());
 
     try {
-        const currentUser = accountService.getCurrentUser();
+        const currentUser = await accountService.getCurrentUser();
         await dispatch(currentUserReceived(currentUser));
     } catch (error: any) {
         dispatch(currentUserFailed(error.message));
