@@ -67,7 +67,7 @@ export const updateMeeting = (meetingId: any): AppThunk => async (dispatch, getS
     dispatch(meetingRequested());
 
     try {
-        let mt = meetingsService.get(meetingId);
+        let mt = await meetingsService.get(meetingId);
         await dispatch(meetingReceived(mt));
     } catch (err: any) {
         dispatch(meetingFailed(err.message));
@@ -77,7 +77,7 @@ export const updateMeeting = (meetingId: any): AppThunk => async (dispatch, getS
 
 export const updateMessages = (meetingId: any): AppThunk => async (dispatch, getState) => {
     try {
-        let res = messageService.getMessages(meetingId);
+        let res = await messageService.getMessages(meetingId);
         await dispatch(messagesReceived(res));
     } catch (err: any) {
         dispatch(messagesFailed(err.message));
@@ -93,7 +93,7 @@ export const sendMessage = (meetingId: any, text: any, receiverId: any): AppThun
             meetingId: meetingId
         };
 
-        messageService.sendMessage(msgDto);
+        await messageService.sendMessage(msgDto);
         await dispatch(updateMessages(meetingId));
     } catch (err: any) {
         dispatch(messagesFailed(err.message));
@@ -103,7 +103,7 @@ export const sendMessage = (meetingId: any, text: any, receiverId: any): AppThun
 
 export const discuss = (meetingId: any): AppThunk => async (dispatch, getState) => {
     try {
-        meetingsService.discuss(meetingId);
+        await meetingsService.discuss(meetingId);
         await dispatch(updateMeeting(meetingId));
     } catch (err: any) {
         dispatch(messagesFailed(err.message));
@@ -113,7 +113,7 @@ export const discuss = (meetingId: any): AppThunk => async (dispatch, getState) 
 
 export const cancel = (meetingId: any): AppThunk => async (dispatch, getState) => {
     try {
-        meetingsService.cancel(meetingId);
+        await meetingsService.cancel(meetingId);
         await dispatch(updateMeeting(meetingId));
     } catch (err: any) {
         dispatch(messagesFailed(err.message));
@@ -123,7 +123,7 @@ export const cancel = (meetingId: any): AppThunk => async (dispatch, getState) =
 
 export const confirm = (meetingId: any): AppThunk => async (dispatch, getState) => {
     try {
-        meetingsService.confirm(meetingId);
+        await meetingsService.confirm(meetingId);
         await dispatch(updateMeeting(meetingId));
     } catch (err: any) {
         dispatch(messagesFailed(err.message));
@@ -149,7 +149,7 @@ export const edit = (meetingId: any, value: string, fieldName: string): AppThunk
             mt.place = value;
         }
 
-        meetingsService.edit(mt);
+        await meetingsService.edit(mt);
         await dispatch(updateMeeting(meetingId));
     } catch (err: any) {
         dispatch(messagesFailed(err.message));

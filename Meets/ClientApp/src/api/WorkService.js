@@ -1,32 +1,33 @@
-﻿import BaseService from "./BaseService";
+﻿import httpService from "./BaseService";
 
-class WorkService extends BaseService {
+const workService = {
     /**
-     * функция получающая запись о месте работы по id
-     * @param {any} formData объект соодержащий id записи об обучении
-     */
-    get(formData) {
+ * функция получающая запись о месте работы по id
+ * @param {any} formData объект соодержащий id записи об обучении
+    */
+    get: async (formData)=> {
         if (!formData) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/work/get', 'post', formData);
-    }
+        const { data } = await httpService.post('/api/work/get', formData);
+        return data;
+    },
 
     /**
      * функция создающая запись о месте работы
-     * @param {any} data 
+     * @param {any} payload 
      * startDate - дата начала
      * endDate - дата завершения
      * title - название (#курсов)
      */
-    create(data) {
-        if (!data) {
+    create: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/work/create', 'post', JSON.stringify(data));
-    }
+        await httpService.post('/api/work/create', JSON.stringify(payload));
+    },
 
     /**
      * функция изменяющая запись о месте работы
@@ -36,27 +37,26 @@ class WorkService extends BaseService {
      * endDate - дата завершения
      * title - название (#курсов)
      */
-    edit(formData) {
+    edit: async (formData) => {
         if (!formData) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/work/edit', 'post', formData);
-    }
+        await httpService.post('/api/work/edit', formData);
+    },
 
     /**
      * isDelete = true (удаляет запись о месте работы)
      * @param {any} formData
      * id - идентификатор записи о месте работы
      */
-    remove(formData) {
+    remove: async (formData) => {
         if (!formData) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/work/remove', 'post', formData);
+        await httpService.post('/api/work/remove', formData);
     }
-}
+};
 
-let workService = new WorkService();
 export default workService;

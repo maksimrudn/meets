@@ -97,8 +97,9 @@ export const revokeToken = (): AppThunk => async (dispatch, getState) => {
         await dispatch(authReceived(false));
         await dispatch(clean());
     } catch (error: any) {
-        dispatch(authFailed(error.message));
-        throw error;
+        let message = error.response?.data.errors?.map((err: any) => err.description).join('<br/>');
+        dispatch(authFailed(message));
+        throw message;
     }
 }
 
@@ -121,8 +122,9 @@ export const login = (email: string, password: string): AppThunk => async dispat
         }
 
     } catch (error: any) {
-        dispatch(authFailed(error.message));
-        throw error;
+        let message = error.response?.data.errors?.map((err: any) => err.description).join('<br/>');
+        dispatch(authFailed(message));
+        throw message;
     }
 
     
@@ -148,8 +150,9 @@ export const register = (fullName: string, email: string, password: string, conf
         await dispatch(updateCurrentUser());
         await dispatch(authReceived(true));
     } catch (error: any) {
-        dispatch(authFailed(error.message));
-        throw error;
+        let message = error.response?.data.errors?.map((err: any) => err.description).join('<br/>');
+        dispatch(authFailed(message));
+        throw message;
     }
 };
 

@@ -61,7 +61,7 @@ export const invite = (): AppThunk => async (dispatch, getState) => {
     const state = getState().meetRequest;
 
     try {
-        meetingsService.invite(state.meetRequest);
+        await meetingsService.invite(state.meetRequest);
     } catch (err: any) {
         dispatch(meetRequestFailed(err.message));
         throw err;

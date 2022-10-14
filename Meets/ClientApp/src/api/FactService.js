@@ -1,30 +1,31 @@
-﻿import BaseService from "./BaseService";
+﻿import httpService from "./BaseService";
 
-class FactService extends BaseService {
+const factService = {
     /**
-     * функция получающая запись о факте по id
-     * @param {any} formData объект соодержащий id записи об обучении
-     */
-    get(formData) {
+ * функция получающая запись о факте по id
+ * @param {any} formData объект соодержащий id записи об обучении
+    */
+    get: async (formData) => {
         if (!formData) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/fact/get', 'post', formData);
-    }
+        const { data } = await httpService.post('/api/fact/get', formData);
+        return data;
+    },
 
     /**
      * функция создающая запись о факте
-     * @param {any} data 
+     * @param {any} payload 
      * title - название
      */
-    create(data) {
-        if (!data) {
+    create: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/fact/create', 'post', JSON.stringify(data));
-    }
+        await httpService.post('/api/fact/create', JSON.stringify(payload));
+    },
 
     /**
      * функция изменяющая запись о факте
@@ -32,27 +33,26 @@ class FactService extends BaseService {
      * id - идентификатор записи о факте
      * title - название (#курсов)
      */
-    edit(formData) {
+    edit: async (formData) => {
         if (!formData) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/fact/edit', 'post', formData);
-    }
+        await httpService.post('/api/fact/edit', formData);
+    },
 
     /**
      * isDelete = true (удаляет запись о факте)
      * @param {any} formData
      * id - идентификатор записи о факте
      */
-    remove(formData) {
+    remove: async (formData) => {
         if (!formData) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        return this.executeRequestXHR('/api/fact/remove', 'post', formData);
+        await httpService.post('/api/fact/remove', formData);
     }
-}
+};
 
-let factService = new FactService();
 export default factService;

@@ -78,19 +78,19 @@ const userSlice = createSlice({
                 },
                 {
                     title: UserCardTabsNames.Learning,
-                    count: action.payload.learnings?.length
+                    count: action.payload.userCard.learnings?.length
                 },
                 {
                     title: UserCardTabsNames.Work,
-                    count: action.payload.works?.length
+                    count: action.payload.userCard.works?.length
                 },
                 {
                     title: UserCardTabsNames.Activity,
-                    count: action.payload.activities?.length
+                    count: action.payload.userCard.activities?.length
                 },
                 {
                     title: UserCardTabsNames.Facts,
-                    count: action.payload.facts?.length
+                    count: action.payload.userCard.facts?.length
                 }
             ];
            
@@ -216,7 +216,7 @@ export const subscribe = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState().user;
 
-        subscribtionService.subscribe(state.user?.id);
+        await subscribtionService.subscribe(state.user?.id);
         await dispatch(updateUser(state.user?.id));
     }
     catch (err: any) {
@@ -229,7 +229,7 @@ export const unSubscribe = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState().user;
 
-        subscribtionService.unSubscribe(state.user?.id);
+        await subscribtionService.unSubscribe(state.user?.id);
         await dispatch(updateUser(state.user?.id));
     }
     catch (err: any) {
@@ -246,7 +246,7 @@ export const createLearning = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        learningService.create(state.user.learning);
+        await learningService.create(state.user.learning);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(learningCleaned());
     } catch (err: any) {
@@ -272,7 +272,7 @@ export const editLearning = (): AppThunk => async (dispatch, getState) => {
         }
         formData.append('title', state.user.learning.title);
 
-        learningService.edit(formData);
+        await learningService.edit(formData);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(learningCleaned());
     } catch (err: any) {
@@ -287,7 +287,7 @@ export const removeLearning = (): AppThunk => async (dispatch, getState) => {
 
         let formData = new FormData();
         formData.append('id', state.user.learning.id);
-        learningService.remove(formData);
+        await learningService.remove(formData);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {
@@ -304,7 +304,7 @@ export const createWork = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        workService.create(state.user.work);
+        await workService.create(state.user.work);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(workCleaned());
     } catch (err: any) {
@@ -331,7 +331,7 @@ export const editWork = (): AppThunk => async (dispatch, getState) => {
         formData.append('title', state.user.work.title);
         formData.append('post', state.user.work.post);
 
-        workService.edit(formData);
+        await workService.edit(formData);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(workCleaned());
     } catch (err: any) {
@@ -346,7 +346,7 @@ export const removeWork = (): AppThunk => async (dispatch, getState) => {
 
         let formData = new FormData();
         formData.append('id', state.user.work.id);
-        workService.remove(formData);
+        await workService.remove(formData);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {
@@ -363,7 +363,7 @@ export const createActivity = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        activityService.create(state.user.activity);
+        await activityService.create(state.user.activity);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(activityCleaned());
     } catch (err: any) {
@@ -381,7 +381,7 @@ export const editActivity = (): AppThunk => async (dispatch, getState) => {
         formData.append('id', state.user.activity.id);
         formData.append('title', state.user.activity.title);
 
-        activityService.edit(formData);
+        await activityService.edit(formData);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(activityCleaned());
     } catch (err: any) {
@@ -396,7 +396,7 @@ export const removeActivity = (): AppThunk => async (dispatch, getState) => {
 
         let formData = new FormData();
         formData.append('id', state.user.activity.id);
-        activityService.remove(formData);
+        await activityService.remove(formData);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {
@@ -413,7 +413,7 @@ export const createFact = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        factService.create(state.user.fact);
+        await factService.create(state.user.fact);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(factCleaned());
     } catch (err: any) {
@@ -431,7 +431,7 @@ export const editFact = (): AppThunk => async (dispatch, getState) => {
         formData.append('id', state.user.fact.id);
         formData.append('title', state.user.fact.title);
 
-        factService.edit(formData);
+        await factService.edit(formData);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(factCleaned());
     } catch (err: any) {
@@ -446,7 +446,7 @@ export const removeFact = (): AppThunk => async (dispatch, getState) => {
 
         let formData = new FormData();
         formData.append('id', state.user.fact.id);
-        factService.remove(formData);
+        await factService.remove(formData);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {

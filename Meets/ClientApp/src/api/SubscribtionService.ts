@@ -1,8 +1,20 @@
 ﻿import ByUserIdRequest from "../contracts/ByUserIdRequest";
-import BaseService from "./BaseService";
+import httpService from "./BaseService";
 
-class SubscribtionService extends BaseService{
+const subscribtionService = {
+    /**
+ * @param {FormData} formData
+ * senderid - sender id
+ * receiverid - receiver id
+ * @returns {void}
+    */
+    subscribe: async (userId: string) => {
+        if (!userId) {
+            throw new Error('Передано пустое/неверное значение');
+        }
 
+        await httpService.post('/api/subscribtion/subscribe', JSON.stringify(new ByUserIdRequest(userId)));
+    },
 
     /**
      * @param {FormData} formData
@@ -10,29 +22,13 @@ class SubscribtionService extends BaseService{
      * receiverid - receiver id
      * @returns {void}
      */
-    subscribe(userId: string) {
+    unSubscribe: async (userId: string) => {
         if (!userId) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        this.executeRequestXHR('/api/subscribtion/subscribe', 'post', JSON.stringify(new ByUserIdRequest(userId)));
+        await httpService.post('/api/subscribtion/unsubscribe', JSON.stringify(new ByUserIdRequest(userId)));
     }
+};
 
-    /**
-     * @param {FormData} formData
-     * senderid - sender id
-     * receiverid - receiver id
-     * @returns {void}
-     */
-    unSubscribe(userId: string) {
-        if (!userId) {
-            throw new Error('Передано пустое/неверное значение');
-        }
-
-        this.executeRequestXHR('/api/subscribtion/unsubscribe', 'post', JSON.stringify(new ByUserIdRequest(userId)));
-    }
-
-}
-
-const subscribtionService = new SubscribtionService();
 export default subscribtionService;

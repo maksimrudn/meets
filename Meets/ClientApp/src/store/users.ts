@@ -80,7 +80,7 @@ export const updateFilter = (filter: IFilter): AppThunk => async (dispatch, getS
     try {
         await dispatch(filterUpdated(filter));
 
-        const users = userService.getList(filter);
+        const users = await userService.getList(filter);
         await dispatch(usersReceived(users));
     } catch (err: any) {
         dispatch(usersFailed(err.message));
