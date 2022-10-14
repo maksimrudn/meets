@@ -48,7 +48,7 @@
     .TabWork,
     .TabActivity,
     .TabFacts {
-        margin-bottom: 2rem;
+        padding-bottom: 2rem;
 
         .Desc {
             @extend .text-md-center, .text-sm-start;

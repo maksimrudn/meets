@@ -46,7 +46,7 @@ export const updateMeetings = (): AppThunk => async dispatch => {
     dispatch(meetingsRequested());
 
     try {
-        let meetings = meetingsService.getList();
+        let meetings = await meetingsService.getList();
         await dispatch(meetingsReceived(meetings));
     } catch (err: any) {
         dispatch(meetingsFailed(err.message));

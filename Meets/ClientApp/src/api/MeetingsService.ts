@@ -3,53 +3,43 @@ import GetMeetingDTO from "../contracts/meeting/GetMeetingDTO";
 import GetTimeTableDTO from "../contracts/meeting/GetTimeTableDTO";
 import MeetingDTO from "../contracts/meeting/MeetingDTO";
 import MeetingRequest from "../contracts/meeting/MeetingRequest";
-import BaseService from "./BaseService";
+import httpService from "./BaseService";
 
-class MeetingsService extends BaseService {
-    invite(data: MeetingRequest): void {
-        this.executeRequestXHR('/api/meetings/invite', 'post', JSON.stringify(data));
-    }
+const meetingsService = {
+    invite: async (payload: MeetingRequest) => {
+        await httpService.post('/api/meetings/invite', JSON.stringify(payload));
+    },
 
-    getList(): MeetingDTO[] {
-        let res: any = null;
-        res = this.executeRequestXHR('/api/meetings/getlist', 'post');
-        return res;
-    }
+    getList: async (): Promise<MeetingDTO[]> => {
+        const { data } = await httpService.post('/api/meetings/getlist');
+        return data;
+    },
 
-    getTimeTable(): GetTimeTableDTO[] {
-        let res: any = null;
-        res = this.executeRequestXHR('/api/meetings/gettimetable', 'post');
-        return res;
-    }
+    getTimeTable: async (): Promise<GetTimeTableDTO[]> => {
+        const { data } = await httpService.post('/api/meetings/gettimetable');
+        return data;
+    },
 
-    get(meetingId: any): GetMeetingDTO {
-        let res: any = null;
-        res = this.executeRequestXHR('/api/meetings/get', 'post', JSON.stringify({ meetingId }));
-        return res;
-    }
+    get: async (meetingId: any): Promise<GetMeetingDTO> => {
+        const { data } = await httpService.post('/api/meetings/get', JSON.stringify({ meetingId }));
+        return data;
+    },
 
-    edit(data: any) {
-        this.executeRequestXHR('/api/meetings/edit', 'post', JSON.stringify(data));
-    }
+    edit: async (payload: any) => {
+        await httpService.post('/api/meetings/edit', JSON.stringify(payload));
+    },
 
-    discuss(meetingId: any) {
-        let res: any = null;
-        res = this.executeRequestXHR('/api/meetings/discuss', 'post', JSON.stringify({ meetingId }));
-        return res;
-    }
+    discuss: async (meetingId: any) => {
+        await httpService.post('/api/meetings/discuss', JSON.stringify({ meetingId }));
+    },
 
-    cancel(meetingId: any) {
-        let res: any = null;
-        res = this.executeRequestXHR('/api/meetings/cancel', 'post', JSON.stringify({ meetingId }));
-        return res;
-    }
+    cancel: async (meetingId: any) => {
+        await httpService.post('/api/meetings/cancel', JSON.stringify({ meetingId }));
+    },
 
-    confirm(meetingId: any) {
-        let res: any = null;
-        res = this.executeRequestXHR('/api/meetings/confirm', 'post', JSON.stringify({ meetingId }));
-        return res;
-    }
-}
+    confirm: async (meetingId: any) => {
+        await httpService.post('/api/meetings/confirm', JSON.stringify({ meetingId }));
+    },
+};
 
-let meetingsService = new MeetingsService();
 export default meetingsService;

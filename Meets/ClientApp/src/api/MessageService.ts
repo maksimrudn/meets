@@ -1,52 +1,40 @@
 ﻿import MessageDTO from "../contracts/message/MessageDTO";
-import BaseService from "./BaseService";
+import httpService from "./BaseService";
 
-
-class MessageService extends BaseService {
-
+const messageService = {
     /**
-     * Получает список диалогов для текущего пользователя
-     * */
-    getDialogs() {
+ * Получает список диалогов для текущего пользователя
+ * */
+    getDialogs: async () => {
+        const { data } = await httpService.post(`/api/message/getdialogs`);
+        return data;
+    },
 
-        var res = this.executeRequestXHR(`/api/message/getdialogs`, 'post');
-
-        return res;
-    }
-
-    getMessages(meetingId: any): MessageDTO[] {
+    getMessages: async (meetingId: any): Promise<MessageDTO[]> => {
         if (!meetingId) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        var data = { meetingId };
+        const { data } = await httpService.post(`/api/message/getMessages`, JSON.stringify({ meetingId }));
+        return data;
+    },
 
-        var res = this.executeRequestXHR(`/api/message/getMessages`, 'post', JSON.stringify(data));
-
-        return res;
-    }
-
-    
-    getReceiverInfo(targetUserId) {
+    getReceiverInfo: async (targetUserId: any) => {
         if (!targetUserId) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        var data = { targetUserId };
+        const { data } = await httpService.post(`/api/message/getReceiverInfo`, JSON.stringify({ targetUserId }));
+        return data;
+    },
 
-        var res = this.executeRequestXHR(`/api/message/getReceiverInfo`, 'post', JSON.stringify(data));
-
-        return res;
-    }
-
-    sendMessage(data) {
-        if (!data) {
+    sendMessage: async (payload: any) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        this.executeRequestXHR('/api/message/sendMessage', 'post', JSON.stringify(data));
+        await httpService.post('/api/message/sendMessage', JSON.stringify(payload));
     }
-}
+};
 
-const messageService = new MessageService();
 export default messageService;
