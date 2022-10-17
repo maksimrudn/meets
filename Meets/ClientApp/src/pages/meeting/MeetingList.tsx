@@ -35,7 +35,7 @@ function MeetingList(props: IMeetingsListProps) {
             try {
                 await meetingsStore.update();
             } catch (err) {
-
+                history.push(Routes.Error, err);
             }
         }
 

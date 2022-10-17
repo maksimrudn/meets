@@ -6,7 +6,6 @@ import userService from '../../api/UserService';
 import { connect, useSelector } from 'react-redux';
 import mapDispatchToProps from '../../store/mapDispatchToProps';
 import mapStateToProps from '../../store/mapStateToProps';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Routes  from '../../common/Routes';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import { updateCurrentUser } from '../../store/currentUser';

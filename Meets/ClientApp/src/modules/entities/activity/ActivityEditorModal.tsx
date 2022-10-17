@@ -8,8 +8,6 @@ import PlusIcon from '../../../icons/PlusIcon';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import CalendarAltIcon from '../../../icons/CalendarAltIcon';
 import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 
@@ -18,7 +16,7 @@ import { Activity } from '../../../contracts/activity/Activity';
 import activityService from '../../../api/ActivityService';
 import useAccountStore from '../../../hooks/useAccountStore';
 import useUserStore from '../../../hooks/useUserStore';
-
+import { toast } from 'react-toastify';
 
 
 interface ActivityEditorModalProps {
@@ -36,14 +34,14 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
                 await userStore.editActivity();
                 props.toggle();
             } catch (err: any) {
-
+                toast.error(`Ошибка, ${err.message}`);
             }
         } else {
             try {
                 await userStore.createActivity();
                 props.toggle();
             } catch (err: any) {
-
+                toast.error(`Ошибка, ${err.message}`);
             }
         }
     }

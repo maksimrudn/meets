@@ -1,7 +1,5 @@
 ﻿import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect, NavLink } from "react-router-dom";
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import './BottomMenu.scss';
 import { BottomMenuItems } from '../common/BottomMenuItems';
 import TimeIconSvg from '../icons/TimeIconSvg';

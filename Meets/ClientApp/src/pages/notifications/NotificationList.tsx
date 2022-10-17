@@ -19,9 +19,9 @@ export default function NotificationList() {
 
     useEffect(() => { updateNotifications(); }, []);
 
-    const updateNotifications = () => {
+    const updateNotifications = async () => {
         try {
-            let res = notificationService.getList();
+            let res = await notificationService.getList();
             setNotifications(res);
         } catch (err) {
             history.push(Routes.Error, err);

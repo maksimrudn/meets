@@ -33,6 +33,7 @@ import AppConfig from '../../common/AppConfig';
 import MeetingFieldNames from '../../common/MeetingFieldNames';
 import MeetingEditModal from '../../modules/entities/meeting/MeetingEditModal';
 import useMeetingStore from '../../hooks/useMeetingStore';
+import { toast } from 'react-toastify';
 
 interface IMeetingParams {
     id?: string
@@ -66,7 +67,9 @@ export default function Meeting(props: IMeetingProps) {
                 await meetingStore.updateMeeting(meetingId);
                 await meetingStore.updateMessages(meetingId);
             }
-            catch (err) { }
+            catch (err: any) {
+                history.push(Routes.Error, err);
+            }
         }
 
         update();
@@ -83,30 +86,32 @@ export default function Meeting(props: IMeetingProps) {
     const onSendMessage = async (text: any, receiverId: any) => {
         try {
             await meetingStore.sendMessage(meetingId, text, receiverId);
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const discussOnClick = async () => {
         try {
             await meetingStore.discuss(meetingId);
-        } catch (err) {
-            
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
     const cancelOnClick = async () => {
         try {
             await meetingStore.cancel(meetingId);
-        } catch (err) {
-            
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
     const confirmOnClick = async () => {
         try {
             await meetingStore.confirm(meetingId);
-        } catch (err) {
-            
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 

@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import useAccountStore from '../../hooks/useAccountStore';
 import useSettingsStore from '../../hooks/useSettingsStore';
-
+import { toast } from 'react-toastify';
 
 
 function ProfileSettings() {
@@ -31,7 +31,9 @@ function ProfileSettings() {
         const update = async () => {
             try {
                 await settings.update();
-            } catch (err) { }
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
         }
 
         update();
@@ -41,24 +43,26 @@ function ProfileSettings() {
         try {
             await settings.edit();
             history.goBack();
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const handleRemoveAccount = async () => {
         try {
-            try {
-                await settings.removeAccount();
-                history.push('/account/login');
-            } catch (err) { }
-        } catch (err) { }
+            await settings.removeAccount();
+            history.push('/account/login');
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const handleLogOut = async () => {
         try {
             await account.logout();
             history.push('/account/login');
-        } catch (err) {
-
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 

@@ -17,8 +17,6 @@ import PlusIcon from '../../../icons/PlusIcon';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import learningService from '../../../api/LearningService';
 import { Learning } from '../../../contracts/learning/Learning';
 import CalendarAltIcon from '../../../icons/CalendarAltIcon';
@@ -41,7 +39,7 @@ import { RootState } from '../../../store/createStore';
 import useAccountStore from '../../../hooks/useAccountStore';
 import useUserStore from '../../../hooks/useUserStore';
 import { UserCardTabsNames } from '../../../common/UserCardTabsNames';
-
+import { toast } from 'react-toastify';
 
 
 
@@ -166,25 +164,33 @@ export default function UserCardTabs(props: UserCardTabsProps) {
     const handleRemoveLearning = async () => {
         try {
             await state.removeLearning();
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const handleRemoveWork = async () => {
         try {
             await state.removeWork();
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const handleRemoveActivity = async () => {
         try {
             await state.removeActivity();
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const handleRemoveFact = async () => {
         try {
             await state.removeFact();
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     return (

@@ -1,7 +1,5 @@
 import React, { Component, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 
 import { AddressSuggestions } from 'react-dadata';
 import 'react-dadata/dist/react-dadata.css';
@@ -19,6 +17,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'styles/scss/main.scss';
 import { formToObject } from '../../../common/Utils';
 import Place from '../../../contracts/Place';
+import { toast } from 'react-toastify';
 
 interface PlaceEditorProps {
     placeId: any,
@@ -62,7 +61,7 @@ export default function PlaceEditor(
             setPlace(pl);
 
         } catch (err: any) {
-            NotificationManager.error(err.message, err.name)
+            toast.error(`Ошибка, ${err.message}`);
         }
 
     }, []);
@@ -71,7 +70,7 @@ export default function PlaceEditor(
         e.preventDefault();
 
         if (!formIsValid(e.target)) {
-            NotificationManager.error('Некорректные данные. Место не cоздано', 'Ошибка');
+            toast.error(`Ошибка, Некорректные данные. Место не cоздано`);
             return false;
         }
 
@@ -102,7 +101,7 @@ export default function PlaceEditor(
             }
 
         } catch (err: any) {
-            NotificationManager.error(err.message, err.name)
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
@@ -139,7 +138,6 @@ export default function PlaceEditor(
 
     return (
         <>
-            <NotificationContainer />
             <form method="post" encType="multipart/form-data" name="placeForm" onSubmit={onSubmit}>
                 <div className="col-12">
                     <div className="card border-0">

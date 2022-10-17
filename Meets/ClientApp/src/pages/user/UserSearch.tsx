@@ -1,8 +1,6 @@
 import React, { Component, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Select from 'react-select/creatable';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import userService from '../../api/UserService';
 import { Helmet } from 'react-helmet';
 import { getAvatarPathForUser, objectToFormData } from '../../common/Utils';
@@ -16,6 +14,7 @@ import SlidersIcon from '../../icons/SlidersIcon';
 import UserSearchFilterModal, { IFilter } from '../../modules/entities/user/UserSearchFilterModal';
 
 import useUsersStore from '../../hooks/useUsersStore';
+import Routes from '../../common/Routes';
 
 
 
@@ -31,7 +30,9 @@ export default function UserSearch() {
         const update = async () => {
             try {
                 await usersStore.updateFilter(usersStore.filter);
-            } catch (err) { }
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
         }
 
         update();
@@ -60,8 +61,6 @@ export default function UserSearch() {
                 <meta property="og:title" content={seo.title} />
                 <meta property="og:description" content={seo.description} />
             </Helmet>
-
-            <NotificationContainer />
 
             <div className="UserSearch">
 

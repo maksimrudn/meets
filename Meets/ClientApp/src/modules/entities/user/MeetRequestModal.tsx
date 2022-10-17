@@ -1,9 +1,6 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import moment from 'moment';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
-
 
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css'

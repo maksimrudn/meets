@@ -1,12 +1,10 @@
 ﻿import React, { Component, useEffect, useState } from 'react';
 import 'moment-timezone';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import MessageList from './MessageList';
 import DialogsList from './DialogsList';
 import messageService from '../../api/MessageService';
 import { objectToFormData } from '../../common/Utils';
-
+import { toast } from 'react-toastify';
 
 
 
@@ -45,7 +43,7 @@ export default function Messanger(props) {
 
         }
         catch (err) {
-            NotificationManager.error(err.message);
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
@@ -65,7 +63,7 @@ export default function Messanger(props) {
 
         }
         catch (err) {
-            NotificationManager.error(err.message, undefined);
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
@@ -91,8 +89,6 @@ export default function Messanger(props) {
 
     return (
         <>
-            <NotificationContainer />
-
             <div className="row g-0">
                 <div className="col-12 d-flex">
                     <DialogsList
