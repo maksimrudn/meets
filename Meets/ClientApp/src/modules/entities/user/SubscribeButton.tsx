@@ -1,9 +1,6 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
-
 import friendRequestServie from '../../../api/FriendRequestService';
 import UserCheckedIcon from '../../../icons/UserCheckedIcon';
 import UserPlusIcon from '../../../icons/UserPlusIcon';

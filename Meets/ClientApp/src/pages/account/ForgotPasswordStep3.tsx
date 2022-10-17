@@ -5,7 +5,6 @@ import mapStateToProps from '../../store/mapStateToProps';
 import * as Cookies from 'js-cookie';
 import { connect } from 'react-redux';
 import accountService from '../../api/AccountService';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { useForm } from 'react-hook-form';
 import userService from '../../api/UserService';
 import LockOutlineIcon from '../../icons/LockOutlineIcon';
@@ -57,8 +56,6 @@ function ForgotPasswordStep3() {
 
     return (
         <>
-            <NotificationContainer />
-
             <div className="ForgotPasswordStep3">
 
                 <div className="Actions d-flex justify-content-between">

@@ -1,8 +1,5 @@
-
 import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import { getAvatarPathForUser } from '../../common/Utils';
 import moment from 'moment';
 

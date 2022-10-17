@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/createStore';
 import { editUser } from '../../../store/user';
 import useUserStore from '../../../hooks/useUserStore';
-
+import { toast } from 'react-toastify';
 
 
 
@@ -66,7 +66,9 @@ export default function UserEditorModal(props: UserEditorModalProps) {
             state.editUser(props.fieldName, editedFieldValue);
             props.toggle();
         }
-        catch { }
+        catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     return (

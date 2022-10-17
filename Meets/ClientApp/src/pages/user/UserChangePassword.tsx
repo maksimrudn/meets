@@ -1,7 +1,5 @@
 ﻿import React, { Component, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import userService from '../../api/UserService';
 import parse from 'html-react-parser';
 import { useForm } from 'react-hook-form';
@@ -10,6 +8,7 @@ import Routes from '../../common/Routes';
 
 import './UserChangePassword.scss';
 import useSettingsStore from '../../hooks/useSettingsStore';
+import { toast } from 'react-toastify';
 
 export default function UserChangePassword() {
     const history = useHistory();
@@ -25,14 +24,13 @@ export default function UserChangePassword() {
         try {
             await settings.changePassword(oldPassword, newPassword, confirmPassword);
             history.goBack();
-        } catch (err) {
-            
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
     return (
         <div className="UserChangePassword">
-            <NotificationContainer />
 
             <div className="Header d-flex justify-content-start align-items-center mb-5">
                 <span className="GoBackBtn me-5" role="button" onClick={() => history.goBack()}><GoBackIcon /></span>

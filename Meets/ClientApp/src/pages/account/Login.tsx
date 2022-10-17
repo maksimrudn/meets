@@ -1,7 +1,5 @@
-﻿
-import React, { Component, useState } from 'react';
+﻿import React, { Component, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import 'react-notifications/lib/notifications.css';
 
 import MenuCloseIcon from '../../icons/MenuCloseIcon';
 import UserOutlineIcon from '../../icons/UserOutlineIcon';

@@ -10,7 +10,7 @@ import { RootState } from '../../../store/createStore';
 import ConfirmationModal from '../../ConfirmationModal';
 import ShowUserAvatarModal from './ShowUserAvatarModal';
 import './UserCardContextMenuModal.scss';
-
+import { toast } from 'react-toastify';
 
 interface UserCardContextMenuModalProps {
     isOpen: boolean
@@ -39,7 +39,7 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
             toggleRemoveAvatarModal();
         }
         catch (err: any) {
-
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
@@ -53,7 +53,9 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
         try {
             state.editUser(UserFieldNames.Photo, files[0]);
         }
-        catch { }
+        catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     return (

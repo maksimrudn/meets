@@ -5,7 +5,6 @@ import mapStateToProps from '../../store/mapStateToProps';
 import * as Cookies from 'js-cookie';
 import { connect, useSelector } from 'react-redux';
 import accountService from '../../api/AccountService';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { useForm } from 'react-hook-form';
 import userService from '../../api/UserService';
 import LockOutlineIcon from '../../icons/LockOutlineIcon';
@@ -49,8 +48,6 @@ function Register() {
 
     return (
         <>
-            <NotificationContainer />
-
             <div className="Register">
 
                 <div className="Actions d-flex justify-content-between">

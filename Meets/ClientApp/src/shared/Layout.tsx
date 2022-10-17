@@ -33,7 +33,8 @@ import NotificationList from '../pages/notifications/NotificationList';
 import TimeTable from '../pages/meeting/TimeTable';
 import useAccountStore from '../hooks/useAccountStore';
 import ProtectedRoute from './ProtectedRoute';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Layout() {
@@ -118,6 +119,9 @@ function Layout() {
                                 <BottomMenu />
                             }
 
+                            <ToastContainer
+                                position="bottom-right"
+                            />
                         </div>
                     </Route>
                 </Switch>

@@ -8,8 +8,6 @@ import PlusIcon from '../../../icons/PlusIcon';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import CalendarAltIcon from '../../../icons/CalendarAltIcon';
 import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 
@@ -18,7 +16,7 @@ import { Fact } from '../../../contracts/fact/Fact';
 import factService from '../../../api/FactService';
 import useAccountStore from '../../../hooks/useAccountStore';
 import useUserStore from '../../../hooks/useUserStore';
-
+import { toast } from 'react-toastify';
 
 
 interface FactEditorModalProps {
@@ -36,14 +34,14 @@ export default function FactEditorModal(props: FactEditorModalProps) {
                 await userStore.editFact();
                 props.toggle();
             } catch (err: any) {
-
+                toast.error(`Ошибка, ${err.message}`);
             }
         } else {
             try {
                 await userStore.createFact();
                 props.toggle();
             } catch (err: any) {
-
+                toast.error(`Ошибка, ${err.message}`);
             }
         }
     }

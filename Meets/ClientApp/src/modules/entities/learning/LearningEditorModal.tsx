@@ -8,8 +8,6 @@ import PlusIcon from '../../../icons/PlusIcon';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import learningService from '../../../api/LearningService';
 import { Learning } from '../../../contracts/learning/Learning';
 import CalendarAltIcon from '../../../icons/CalendarAltIcon';
@@ -18,7 +16,7 @@ import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 import './LearningEditorModal.scss'
 import useAccountStore from '../../../hooks/useAccountStore';
 import useUserStore from '../../../hooks/useUserStore';
-
+import { toast } from 'react-toastify';
 
 
 interface LearningEditorModalProps {
@@ -35,12 +33,16 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
             try {
                 await userStore.editLearning();
                 props.toggle();
-            } catch (err) { }
+            } catch (err: any) {
+                toast.error(`Ошибка, ${err.message}`);
+            }
         } else {
             try {
                 await userStore.createLearning();
                 props.toggle();
-            } catch (err) { }
+            } catch (err: any) {
+                toast.error(`Ошибка, ${err.message}`);
+            }
         }
     }
 

@@ -3,8 +3,6 @@ import { Link, useParams, useHistory } from 'react-router-dom';
 import Moment from 'react-moment';
 import moment from 'moment';
 import 'moment-timezone';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 
 import { Helmet } from 'react-helmet';
 import { getAllowedPhotoFilesByMask, getAvatarPathForUser, loadPhotoContentFromFiles, objectToFormData } from '../../common/Utils';
@@ -39,7 +37,7 @@ import CoffeeIcon from '../../icons/CoffeeIcon';
 import WaitingScreen from '../common/WaitingScreen';
 import useAccountStore from '../../hooks/useAccountStore';
 import useUserStore from '../../hooks/useUserStore';
-
+import { toast } from 'react-toastify';
 
 
 interface UserCardParams {
@@ -61,8 +59,6 @@ function UserCard(): JSX.Element {
     const [selectedTab, setSelectedTab] = useState<any>(UserCardTabsNames.Info);
     const [isOpenUserCardContextMenuModal, setIsOpenOpenUserCardContextMenuModal] = useState(false);
 
-    
-
     const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
 
     // элемент к которому скроллит после изменеия id пользователя
@@ -73,7 +69,7 @@ function UserCard(): JSX.Element {
             try {
                 await userStore.updateUser(params.id);
             } catch (err) {
-
+                history.push(Routes.Error, err);
             }
         }
 
@@ -105,13 +101,17 @@ function UserCard(): JSX.Element {
     const handleSubscribe = async () => {
         try {
             await userStore.subscribe();
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const handleUnSubscribe = async () => {
         try {
             await userStore.unSubscribe();
-        } catch (err) { }
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const getSEO = () => {
@@ -144,7 +144,6 @@ function UserCard(): JSX.Element {
                         <meta property="og:title" content={seo.title} />
                         <meta property="og:description" content={seo.description} />
                     </Helmet>
-                    <NotificationContainer />
 
                     <div className="UserCard col-12">
                         {/* UserDetails container: Start */}
@@ -293,7 +292,7 @@ function UserCard(): JSX.Element {
 
                         </div>
 
-                        {userStore.dataLoaded &&
+                        {(userStore.dataLoaded && !userStore.error) &&
                             <UserCardTabs
                                 tabs={UserCardTabsNames}
                                 selectedTab={selectedTab}

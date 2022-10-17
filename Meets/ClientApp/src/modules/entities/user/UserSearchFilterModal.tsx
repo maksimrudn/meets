@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/createStore';
 import { IFilter, updateFilter, updateUsers } from '../../../store/users';
 import useUsersStore from '../../../hooks/useUsersStore';
+import Routes from '../../../common/Routes';
 
 interface IUserSearchFilterModalProps {
     isOpen: boolean
@@ -18,6 +19,7 @@ interface IUserSearchFilterModalProps {
 }
 
 export default function UserSearchFilterModal(props: IUserSearchFilterModalProps) {
+    const history = useHistory();
     const usersStore = useUsersStore();
 
     const [filter, setFilter] = useState<IFilter>(usersStore.filter);
@@ -35,7 +37,7 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
         try {
             await usersStore.updateFilter(filter);
         } catch (err) {
-
+            history.push(Routes.Error, err);
         }
 
         props.toggle();

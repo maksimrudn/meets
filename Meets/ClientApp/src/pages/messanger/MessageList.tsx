@@ -1,13 +1,12 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
 import Message from './Message';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import { Link } from 'react-router-dom';
 import { scrollIntoView } from 'scroll-polyfill';
 import MessageDTO from '../../contracts/message/MessageDTO';
 
 import './MessageList.scss';
 import SendMessageIcon from '../../icons/SendMessageIcon';
+import { toast } from 'react-toastify';
 
 interface MessageListProps {
     targetUserId: any,
@@ -40,7 +39,7 @@ export default function MessageList(props: MessageListProps): JSX.Element {
                         setMessageText('');
                     }
                     catch (err: any) {
-                        NotificationManager.error(err.message, undefined);
+                        toast.error(`Ошибка, ${err.message}`);
                     }
                 }
             }
@@ -53,7 +52,7 @@ export default function MessageList(props: MessageListProps): JSX.Element {
                     setMessageText('');
                 }
                 catch (err: any) {
-                    NotificationManager.error(err.message, undefined);
+                    toast.error(`Ошибка, ${err.message}`);
                 }
             }
 
@@ -62,8 +61,6 @@ export default function MessageList(props: MessageListProps): JSX.Element {
 
     return (
         <>
-            <NotificationContainer />
-
             {props.targetUserId &&
                 <div className="MessageList">
                     <ul className="Chat">
