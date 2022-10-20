@@ -51,6 +51,8 @@
 
     <None Remove="ClientApp\src\api\NotificationService.ts" />
 
+    <None Remove="ClientApp\src\api\WebRTCService.ts" />
+
     <None Remove="ClientApp\src\common\ApiError.ts" />
 
     <None Remove="ClientApp\src\common\BottomMenuItems.tsx" />
@@ -204,6 +206,7 @@
     <None Remove="ClientApp\src\pages\meeting\MeetingList.tsx" />
     <None Remove="ClientApp\src\pages\meeting\TimeTable.tsx" />
     <None Remove="ClientApp\src\pages\notifications\NotificationList.tsx" />
+    <None Remove="ClientApp\src\pages\webrtc\WebRTC.tsx" />
     <None Remove="ClientApp\src\shared\BottomMenu.tsx" />
     <None Remove="ClientApp\src\shared\ProtectedRoute.tsx" />
     <None Remove="ClientApp\src\store\meeting.ts" />
@@ -242,6 +245,8 @@
     <TypeScriptCompile Include="ClientApp\src\api\MeetingsService.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\api\NotificationService.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\api\WebRTCService.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\common\IApiError.ts" />
 
@@ -466,6 +471,8 @@
     <TypeScriptCompile Include="ClientApp\src\pages\meeting\TimeTable.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\pages\notifications\NotificationList.tsx" />
+
+    <TypeScriptCompile Include="ClientApp\src\pages\webrtc\WebRTC.tsx" />
 
     <TypeScriptCompile Include="ClientApp\src\shared\ProtectedRoute.tsx" />
 

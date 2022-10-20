@@ -33,6 +33,7 @@ using System.Security.Claims;
 using Meets.Services;
 using Meets.Infrastructure;
 using Meets.Middlewares;
+using Meets.Hubs;
 
 namespace Meets
 {
@@ -127,6 +128,8 @@ namespace Meets
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
             // .AddJsonOptions(x => x.JsonSerializerOptions.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); ;
+
+            services.AddSignalR();
 
             services.AddAuthentication(x =>
             {
@@ -243,6 +246,11 @@ namespace Meets
             //        pattern: "{controller=Home}/{action=Index}/{id?}");
             //    endpoints.MapRazorPages();
             //});
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<WebRTCHub>("/WebRTCHub");
+            });
 
             app.UseMvc(routes =>
             {

@@ -35,6 +35,7 @@ import useAccountStore from '../hooks/useAccountStore';
 import ProtectedRoute from './ProtectedRoute';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import WebRTC from '../pages/webrtc/WebRTC';
 
 
 function Layout() {
@@ -77,6 +78,10 @@ function Layout() {
 
                             <div className="body d-flex">
                                 <div className="container-xl">
+
+                                    {/*  ссылка на WebRTC signalR */}
+                                    <Link to={Routes.WebRTC} className="btn btn-primary w-100">WebRTC</Link>
+
                                     <Switch>
 
 
@@ -85,32 +90,33 @@ function Layout() {
                                         }} />
 
 
-                                            <>
+                                        <>
                                             <ProtectedRoute path={Routes.UserCard} render={(routeProps) => (
-                                                    <UserCard />
+                                                <UserCard />
 
                                             )}></ProtectedRoute>
                                             <ProtectedRoute path={Routes.ProfileSettings} render={(props) => <ProfileSettings />}></ProtectedRoute>
                                             <ProtectedRoute path="/user/Search">
-                                                    <UserSearch />
+                                                <UserSearch />
                                             </ProtectedRoute>
                                             <ProtectedRoute path={Routes.UserChangePassword} render={props => <UserChangePassword />} />
                                             <ProtectedRoute path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail />} />
                                             <ProtectedRoute path={Routes.MeetingList} render={(props) => <MeetingList {...props} />} />
                                             <ProtectedRoute path={Routes.Meeting} render={(routeProps) => (
-                                                    <Meeting
+                                                <Meeting
 
-                                                        setIsOpenMeeting={setIsOpenMeeting}
-                                                        {...routeProps}
-                                                    />
-                                                )} />
+                                                    setIsOpenMeeting={setIsOpenMeeting}
+                                                    {...routeProps}
+                                                />
+                                            )} />
                                             <ProtectedRoute path={Routes.Notifications} render={() => (
-                                                    <NotificationList />
-                                                )} />
+                                                <NotificationList />
+                                            )} />
                                             <ProtectedRoute path={Routes.TimeTable} render={() => <TimeTable />} />
-                                                <Route path={Routes.Error} render={() => <Error />} />
-                                            </>
-                                        
+                                            <ProtectedRoute path={Routes.WebRTC} render={() => <WebRTC />} />
+                                            <Route path={Routes.Error} render={() => <Error />} />
+                                        </>
+
                                     </Switch>
                                 </div>
                             </div>

@@ -20,6 +20,8 @@
 
     TimeTable: '/timetable',
 
+    WebRTC: '/WebRTCHub',
+
     Error: "/error",
 }
 
