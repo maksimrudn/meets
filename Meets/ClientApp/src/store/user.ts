@@ -260,19 +260,14 @@ export const editLearning = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.learning.id);
+        const payload = {
+            id: state.user.learning.id,
+            startDate: state.user.learning.startDate as string,
+            endDate: state.user.learning.endDate as string,
+            title: state.user.learning.title
+        };
 
-        if (state.user.learning.startDate !== 'Invalid date') {
-            formData.append('startDate', state.user.learning.startDate as string);
-        }
-
-        if (state.user.learning.endDate !== 'Invalid date') {
-            formData.append('endDate', state.user.learning.endDate as string);
-        }
-        formData.append('title', state.user.learning.title);
-
-        await learningService.edit(formData);
+        await learningService.edit(payload);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(learningCleaned());
     } catch (err: any) {
@@ -285,9 +280,10 @@ export const removeLearning = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.learning.id);
-        await learningService.remove(formData);
+        const payload = {
+            id: state.user.learning.id
+        };
+        await learningService.remove(payload);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {
@@ -318,20 +314,15 @@ export const editWork = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.work.id);
+        const payload = {
+            id: state.user.work.id,
+            startDate: state.user.work.startDate as string,
+            endDate: state.user.work.endDate as string,
+            title: state.user.work.title,
+            post: state.user.work.post
+        };
 
-        if (state.user.work.startDate !== 'Invalid date') {
-            formData.append('startDate', state.user.work.startDate as string);
-        }
-
-        if (state.user.work.endDate !== 'Invalid date') {
-            formData.append('endDate', state.user.work.endDate as string);
-        }
-        formData.append('title', state.user.work.title);
-        formData.append('post', state.user.work.post);
-
-        await workService.edit(formData);
+        await workService.edit(payload);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(workCleaned());
     } catch (err: any) {
@@ -344,9 +335,8 @@ export const removeWork = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.work.id);
-        await workService.remove(formData);
+        const payload = { id: state.user.work.id };
+        await workService.remove(payload);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {
@@ -377,11 +367,12 @@ export const editActivity = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.activity.id);
-        formData.append('title', state.user.activity.title);
+        const payload = {
+            id: state.user.activity.id,
+            title: state.user.activity.title
+        };
 
-        await activityService.edit(formData);
+        await activityService.edit(payload);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(activityCleaned());
     } catch (err: any) {
@@ -394,9 +385,10 @@ export const removeActivity = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.activity.id);
-        await activityService.remove(formData);
+        const payload = {
+            id: state.user.activity.id
+        };
+        await activityService.remove(payload);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {
@@ -427,11 +419,12 @@ export const editFact = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.fact.id);
-        formData.append('title', state.user.fact.title);
+        const payload = {
+            id: state.user.fact.id,
+            title: state.user.fact.title
+        };
 
-        await factService.edit(formData);
+        await factService.edit(payload);
         await dispatch(updateUser(state.account.currentUser?.id));
         await dispatch(factCleaned());
     } catch (err: any) {
@@ -444,9 +437,10 @@ export const removeFact = (): AppThunk => async (dispatch, getState) => {
     try {
         const state = getState();
 
-        let formData = new FormData();
-        formData.append('id', state.user.fact.id);
-        await factService.remove(formData);
+        const payload = {
+            id: state.user.fact.id
+        };
+        await factService.remove(payload);
 
         await dispatch(updateUser(state.account.currentUser?.id));
     } catch (err: any) {

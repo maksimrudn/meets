@@ -50,7 +50,7 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
         try {
             await userStore.setLearning({
                 ...userStore.learning,
-                startDate: moment(date).format('YYYY-MM-DD')
+                startDate: moment(date).isValid() ? moment(date).format('YYYY-MM-DD') : null
             })
         } catch (err) { }
     }
@@ -59,7 +59,7 @@ export default function LearningEditorModal(props: LearningEditorModalProps) {
         try {
             await userStore.setLearning({
                 ...userStore.learning,
-                endDate: moment(date).format('YYYY-MM-DD')
+                endDate: moment(date).isValid() ? moment(date).format('YYYY-MM-DD') : null
             })
         } catch (err) { }
     }

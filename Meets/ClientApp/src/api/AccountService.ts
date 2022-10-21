@@ -3,7 +3,7 @@ import UserDTO from "../contracts/user/UserDTO";
 import httpService from "./BaseService";
 
 const httpAccount = axios.create({
-    baseURL: 'http://localhost:53237/api/account/',
+    baseURL: '/api/account/', // http://localhost:53237
     headers: { "Content-Type": "application/json;charset=UTF-8" }
 });
 

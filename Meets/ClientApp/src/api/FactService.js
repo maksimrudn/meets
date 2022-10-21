@@ -3,14 +3,14 @@
 const factService = {
     /**
  * функция получающая запись о факте по id
- * @param {any} formData объект соодержащий id записи об обучении
+ * @param {any} payload объект соодержащий id записи об обучении
     */
-    get: async (formData) => {
-        if (!formData) {
+    get: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        const { data } = await httpService.post('/api/fact/get', formData);
+        const { data } = await httpService.post('/api/fact/get', JSON.stringify(payload));
         return data;
     },
 
@@ -29,29 +29,29 @@ const factService = {
 
     /**
      * функция изменяющая запись о факте
-     * @param {any} formData 
+     * @param {any} payload 
      * id - идентификатор записи о факте
      * title - название (#курсов)
      */
-    edit: async (formData) => {
-        if (!formData) {
+    edit: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        await httpService.post('/api/fact/edit', formData);
+        await httpService.post('/api/fact/edit', JSON.stringify(payload));
     },
 
     /**
      * isDelete = true (удаляет запись о факте)
-     * @param {any} formData
+     * @param {any} payload
      * id - идентификатор записи о факте
      */
-    remove: async (formData) => {
-        if (!formData) {
+    remove: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        await httpService.post('/api/fact/remove', formData);
+        await httpService.post('/api/fact/remove', JSON.stringify(payload));
     }
 };
 

@@ -50,7 +50,7 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
         try {
             await userStore.setWork({
                 ...userStore.work,
-                startDate: moment(date).format('YYYY-MM-DD')
+                startDate: moment(date).isValid() ? moment(date).format('YYYY-MM-DD') : null
             })
         } catch (err) { }
     }
@@ -59,7 +59,7 @@ export default function WorkEditorModal(props: WorkEditorModalProps) {
         try {
             await userStore.setWork({
                 ...userStore.work,
-                endDate: moment(date).format('YYYY-MM-DD')
+                endDate: moment(date).isValid() ? moment(date).format('YYYY-MM-DD') : null
             })
         } catch (err) { }
     }

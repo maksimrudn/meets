@@ -249,7 +249,7 @@ namespace Meets
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<WebRTCHub>("/WebRTCHub");
+                endpoints.MapHub<WebRTCHub>("/meeting/{id?}"); // WebRTCHub
             });
 
             app.UseMvc(routes =>

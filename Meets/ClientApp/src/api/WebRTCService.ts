@@ -1,4 +1,5 @@
 ﻿import * as signalR from '@microsoft/signalr';
+import { toast } from 'react-toastify'
 
 export interface IRoomInfo {
     roomId: any
@@ -7,9 +8,9 @@ export interface IRoomInfo {
 }
 
 export default class WebRTCService {
-    private _roomNameTxt: HTMLInputElement;
-    private _createRoomBtn: HTMLButtonElement;
-    private _roomTable: HTMLTableElement;
+    //private _roomNameTxt: HTMLInputElement;
+    //private _createRoomBtn: HTMLButtonElement;
+    //private _roomTable: HTMLTableElement;
     private _connectionStatusMessage: HTMLParagraphElement;
     //private _fileInput;
     //private _sendFileBtn;
@@ -18,7 +19,7 @@ export default class WebRTCService {
     private _remoteVideo: HTMLVideoElement;
 
     //private _roomsData: IRoomInfo[];
-    private _setRoomsData: (roomsData: IRoomInfo[]) => void;
+    private _setRoomData: (roomData: IRoomInfo) => void;
 
     connection;
     private _peerConnection;
@@ -31,25 +32,25 @@ export default class WebRTCService {
     private _hasRoomJoined = false;
 
 
-    constructor(roomNameTxt: HTMLInputElement,
-        createRoomBtn: HTMLButtonElement,
-        roomTable: HTMLTableElement,
+    constructor(//roomNameTxt: HTMLInputElement,
+        //createRoomBtn: HTMLButtonElement,
+        //roomTable: HTMLTableElement,
         connectionStatusMessage: HTMLParagraphElement,
         localVideo: HTMLVideoElement,
         remoteVideo: HTMLVideoElement,
         //roomsData: IRoomInfo[],
-        setRoomsData: (roomsData: IRoomInfo[]) => void
+        setRoomData: (roomData: IRoomInfo) => void
     ) {
-        this._roomNameTxt = roomNameTxt;
-        this._createRoomBtn = createRoomBtn;
-        this._roomTable = roomTable;
+        //this._roomNameTxt = roomNameTxt;
+        //this._createRoomBtn = createRoomBtn;
+        //this._roomTable = roomTable;
         this._connectionStatusMessage = connectionStatusMessage;
         this._localVideo = localVideo;
         this._remoteVideo = remoteVideo;
         //this._roomsData = roomsData;
-        this._setRoomsData = setRoomsData;
+        this._setRoomData = setRoomData;
 
-        this.connection = new signalR.HubConnectionBuilder().withUrl('/WebRTCHub').build();
+        this.connection = new signalR.HubConnectionBuilder().withUrl('/meeting/{id?}').build(); // WebRTCHub
         /****************************************************************************
          * WebRTC соединение может не работать из-за NAT и брэндмауэра (ограничит. сетей)
          * чтобы спавиться с NAT и брэндмауэрами, обычно используются серверы STUN и TURN
@@ -73,16 +74,22 @@ export default class WebRTCService {
         this.connection.start().then(() => {
             // room updated
             this.connection.on('updateRoom', (data) => {
-                let obj: IRoomInfo[] = JSON.parse(data);
-                this._setRoomsData(obj);
+                let obj: IRoomInfo = JSON.parse(data);
+                this._setRoomData(obj);
+
+                toast.info('Video call', {
+                    onClick: () => {
+                        this.joinRoom(obj);
+                    }
+                });
                 //$(roomTable).DataTable().clear().rows.add(obj).draw();
             });
 
             // room created
             this.connection.on('created', (roomId) => {
                 console.log('Created room', roomId);
-                this._roomNameTxt.disabled = true;
-                this._createRoomBtn.disabled = true;
+                //this._roomNameTxt.disabled = true;
+                //this._createRoomBtn.disabled = true;
                 this._hasRoomJoined = true;
                 this._connectionStatusMessage.innerText = 'You created Room ' + roomId + '. Waiting for participants...';
                 this._myRoomId = roomId;
@@ -103,8 +110,8 @@ export default class WebRTCService {
 
             this.connection.on('ready', () => {
                 console.log('Socket is ready');
-                this._roomNameTxt.disabled = true;
-                this._createRoomBtn.disabled = true;
+                //this._roomNameTxt.disabled = true;
+                //this._createRoomBtn.disabled = true;
                 this._hasRoomJoined = true;
                 this._connectionStatusMessage.innerText = 'Connecting...';
                 this._createPeerConnection(this._isInitiator); //configuration
@@ -154,14 +161,14 @@ export default class WebRTCService {
     /****************************************************************************
     * Room management
     ****************************************************************************/
-    createRoomBtnOnClick = () => {
-        let name = this._roomNameTxt.value;
-        this.connection.invoke("CreateRoom", name).catch(function (err) {
+    createRoom = (reveiverId: any) => {
+        //let name = this._roomNameTxt.value;
+        this.connection.invoke("CreateRoom", reveiverId).catch(function (err) {
             return console.error(err.toString());
         });
     }
 
-    joinRoomBtnOnClick = (room: IRoomInfo) => {
+    joinRoom = (room: IRoomInfo) => {
         if (this._hasRoomJoined) {
             alert('You already joined the room. Please use a new tab or window.');
         } else {

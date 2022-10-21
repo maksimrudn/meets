@@ -5,7 +5,7 @@ import accountService from './AccountService';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 const http = axios.create({
-    baseURL: 'http://localhost:53237/' // IIS Express
+    baseURL: '/' // IIS Express // http://localhost:53237
 });
 
 http.interceptors.request.use(

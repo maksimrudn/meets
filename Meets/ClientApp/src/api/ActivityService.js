@@ -3,14 +3,14 @@
 const activityService = {
     /**
  * функция получающая запись об активности по id
- * @param {any} formData объект соодержащий id записи об обучении
+ * @param {any} payload объект соодержащий id записи об обучении
     */
-    get: async (formData) => {
-        if (!formData) {
+    get: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        const { data } = await httpService.post('/api/activity/get', formData);
+        const { data } = await httpService.post('/api/activity/get', JSON.stringify(payload));
         return data;
     },
 
@@ -29,29 +29,29 @@ const activityService = {
 
     /**
      * функция изменяющая запись об активности
-     * @param {any} formData 
+     * @param {any} payload 
      * id - идентификатор записи об активности
      * title - название (#курсов)
      */
-    edit: async (formData) => {
-        if (!formData) {
+    edit: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        await httpService.post('/api/activity/edit', formData);
+        await httpService.post('/api/activity/edit', JSON.stringify(payload));
     },
 
     /**
      * isDelete = true (удаляет запись об активности)
-     * @param {any} formData
+     * @param {any} payload
      * id - идентификатор записи об активности
      */
-    remove: async (formData) => {
-        if (!formData) {
+    remove: async (payload) => {
+        if (!payload) {
             throw new Error('Передано пустое/неверное значение');
         }
 
-        await httpService.post('/api/activity/remove', formData);
+        await httpService.post('/api/activity/remove', JSON.stringify(payload));
     }
 };
 

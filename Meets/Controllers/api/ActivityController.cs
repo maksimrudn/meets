@@ -24,119 +24,55 @@ namespace Meets.Controllers.api
         [HttpPost("[area]/[controller]/[action]")]
         public IActionResult Create(CreateRequest request)
         {
-            try
-            {
-                Activity activity = new Activity();
-                activity.UserId = User.GetUserId();
-                activity.CreatedDate = DateTime.Now;
-                activity.Title = request.Title;
+            Activity activity = new Activity();
+            activity.UserId = User.GetUserId();
+            activity.CreatedDate = DateTime.Now;
+            activity.Title = request.Title;
 
-                _db.Activities.Add(activity);
-                _db.SaveChanges();
+            _db.Activities.Add(activity);
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Edit([FromForm] EditRequest request)
+        public IActionResult Edit(EditRequest request)
         {
-            try
-            {
-                Activity activity = _db.Activities.Find(request.Id);
+            Activity activity = _db.Activities.Find(request.Id);
 
-                if (activity is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
+            if (activity is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                activity.Title = request.Title;
+            activity.Title = request.Title;
 
-                _db.Entry(activity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                _db.SaveChanges();
+            _db.Entry(activity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Get([FromForm] Guid Id)
+        public IActionResult Get(ByActivityIdRequest request)
         {
-            try
-            {
-                Activity activity = _db.Activities.Find(Id);
+            Activity activity = _db.Activities.Find(request.Id);
 
-                if (activity is null) throw new Exception($"Запись с идентификатором {Id} - не найдена");
+            if (activity is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                return Ok(activity);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok(activity);
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Remove([FromForm] Guid Id)
+        public IActionResult Remove(ByActivityIdRequest request)
         {
-            try
-            {
-                Activity activity = _db.Activities.Find(Id);
+            Activity activity = _db.Activities.Find(request.Id);
 
-                if (activity is null) throw new Exception($"Запись с идентификатором {Id} - не найдена");
+            if (activity is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                activity.IsDeleted = true;
+            activity.IsDeleted = true;
 
-                _db.Entry(activity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                _db.SaveChanges();
+            _db.Entry(activity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
 
     }

@@ -79,9 +79,6 @@ function Layout() {
                             <div className="body d-flex">
                                 <div className="container-xl">
 
-                                    {/*  ссылка на WebRTC signalR */}
-                                    <Link to={Routes.WebRTC} className="btn btn-primary w-100">WebRTC</Link>
-
                                     <Switch>
 
 

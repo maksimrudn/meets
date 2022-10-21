@@ -25,123 +25,60 @@ namespace Meets.Controllers.api
         [HttpPost("[area]/[controller]/[action]")]
         public IActionResult Create(CreateRequest request)
         {
-            try
-            {
-                Learning learning = new Learning();
-                learning.UserId = User.GetUserId();
-                learning.CreatedDate = DateTime.Now;
-                learning.StartDate = request.StartDate;
-                learning.EndDate = request.EndDate;
-                learning.Title = request.Title;
+            Learning learning = new Learning();
+            learning.UserId = User.GetUserId();
+            learning.CreatedDate = DateTime.Now;
+            learning.StartDate = request.StartDate;
+            learning.EndDate = request.EndDate;
+            learning.Title = request.Title;
 
-                _db.Learnings.Add(learning);
-                _db.SaveChanges();
+            _db.Learnings.Add(learning);
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Edit([FromForm] EditRequest request)
+        public IActionResult Edit(EditRequest request)
         {
-            try
-            {
-                Learning learning = _db.Learnings.Find(request.Id);
+            Learning learning = _db.Learnings.Find(request.Id);
 
-                if (learning is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
+            if (learning is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                learning.StartDate = request.StartDate;
-                learning.EndDate = request.EndDate;
-                learning.Title = request.Title;
+            learning.StartDate = request.StartDate;
+            learning.EndDate = request.EndDate;
+            learning.Title = request.Title;
 
-                _db.Entry(learning).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                _db.SaveChanges();
+            _db.Entry(learning).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Get([FromForm] Guid Id)
+        public IActionResult Get(ByLearningIdRequest request)
         {
-            try
-            {
-                Learning learning = _db.Learnings.Find(Id);
+            Learning learning = _db.Learnings.Find(request.Id);
 
-                if (learning is null) throw new Exception($"Запись с идентификатором {Id} - не найдена");
+            if (learning is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                return Ok(learning);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok(learning);
         }
-        
+
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Remove([FromForm] Guid Id)
+        public IActionResult Remove(ByLearningIdRequest request)
         {
-            try
-            {
-                Learning learning = _db.Learnings.Find(Id);
+            Learning learning = _db.Learnings.Find(request.Id);
 
-                if (learning is null) throw new Exception($"Запись с идентификатором {Id} - не найдена");
+            if (learning is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                learning.IsDeleted = true;
+            learning.IsDeleted = true;
 
-                _db.Entry(learning).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                _db.SaveChanges();
+            _db.Entry(learning).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
     }
 }
+

@@ -24,125 +24,61 @@ namespace Meets.Controllers.api
         [HttpPost("[area]/[controller]/[action]")]
         public IActionResult Create(CreateRequest request)
         {
-            try
-            {
-                Work work = new Work();
-                work.UserId = User.GetUserId();
-                work.CreatedDate = DateTime.Now;
-                work.StartDate = request.StartDate;
-                work.EndDate = request.EndDate;
-                work.Title = request.Title;
-                work.Post = request.Post;
+            Work work = new Work();
+            work.UserId = User.GetUserId();
+            work.CreatedDate = DateTime.Now;
+            work.StartDate = request.StartDate;
+            work.EndDate = request.EndDate;
+            work.Title = request.Title;
+            work.Post = request.Post;
 
-                _db.Works.Add(work);
-                _db.SaveChanges();
+            _db.Works.Add(work);
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Edit([FromForm] EditRequest request)
+        public IActionResult Edit(EditRequest request)
         {
-            try
-            {
-                Work work = _db.Works.Find(request.Id);
+            Work work = _db.Works.Find(request.Id);
 
-                if (work is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
+            if (work is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                work.StartDate = request.StartDate;
-                work.EndDate = request.EndDate;
-                work.Title = request.Title;
-                work.Post = request.Post;
+            work.StartDate = request.StartDate;
+            work.EndDate = request.EndDate;
+            work.Title = request.Title;
+            work.Post = request.Post;
 
-                _db.Entry(work).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                _db.SaveChanges();
+            _db.Entry(work).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Get([FromForm] Guid Id)
+        public IActionResult Get(ByWorkIdRequest request)
         {
-            try
-            {
-                Work work = _db.Works.Find(Id);
+            Work work = _db.Works.Find(request.Id);
 
-                if (work is null) throw new Exception($"Запись с идентификатором {Id} - не найдена");
+            if (work is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                return Ok(work);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok(work);
         }
 
         [HttpPost("[area]/[controller]/[action]")]
-        public IActionResult Remove([FromForm] Guid Id)
+        public IActionResult Remove(ByWorkIdRequest request)
         {
-            try
-            {
-                Work work = _db.Works.Find(Id);
+            Work work = _db.Works.Find(request.Id);
 
-                if (work is null) throw new Exception($"Запись с идентификатором {Id} - не найдена");
+            if (work is null) throw new Exception($"Запись с идентификатором {request.Id} - не найдена");
 
-                work.IsDeleted = true;
+            work.IsDeleted = true;
 
-                _db.Entry(work).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                _db.SaveChanges();
+            _db.Entry(work).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _db.SaveChanges();
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                        new
-                                        {
-                                            errors = new[] {
-                                                new
-                                                {
-                                                    code = "",
-                                                    description = ex.Message
-                                                }}
-                                        });
-            }
+            return Ok();
         }
     }
 }

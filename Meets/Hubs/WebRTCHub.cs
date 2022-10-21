@@ -29,16 +29,18 @@ namespace Meets.Hubs
         /// <summary>
         /// создание комнаты
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="receiverId"></param>
         /// <returns></returns>
-        public async Task CreateRoom(string name)
+        public async Task CreateRoom(string receiverId) // string name
         {
-            RoomInfo roomInfo = _roomManager.CreateRoom(Context.ConnectionId, name);
+            // string roomName = name ?? new Guid().ToString();
+
+            RoomInfo roomInfo = _roomManager.CreateRoom(Context.ConnectionId, new Guid().ToString());
             if (roomInfo != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, roomInfo.RoomId);
                 await Clients.Caller.SendAsync("created", roomInfo.RoomId);
-                await NotifyRoomInfoAsync(false);
+                await NotifyRoomInfoAsync(receiverId, roomInfo);
             }
             else
             {
@@ -61,7 +63,7 @@ namespace Meets.Hubs
             if (int.TryParse(roomId, out int id))
             {
                 _roomManager.DeleteRoom(id);
-                await NotifyRoomInfoAsync(false);
+                //await NotifyRoomInfoAsync(false);
             }
         }
 
@@ -77,7 +79,7 @@ namespace Meets.Hubs
 
         public async Task GetRoomInfo()
         {
-            await NotifyRoomInfoAsync(true);
+            //await NotifyRoomInfoAsync(true);
         }
 
         public async Task SendMessage(string roomId, object message)
@@ -85,27 +87,34 @@ namespace Meets.Hubs
             await Clients.OthersInGroup(roomId).SendAsync("message", message);
         }
 
-        public async Task NotifyRoomInfoAsync(bool notifyOnlyCaller)
+        public async Task NotifyRoomInfoAsync(string receiverId, RoomInfo room) // bool notifyOnlyCaller
         {
-            List<RoomInfo> roomInfos = _roomManager.GetAllRoomInfo();
-            var list = from room in roomInfos
-                       select new
-                       {
-                           roomId = room.RoomId,
-                           name = room.Name,
-                           //Button = "<button class=\"joinButton\">Join!</button>"
-                       };
-            var data = JsonConvert.SerializeObject(list);
+            //List<RoomInfo> roomInfos = _roomManager.GetAllRoomInfo();
+            //var list = from room in roomInfos
+            //           select new
+            //           {
+            //               roomId = room.RoomId,
+            //               name = room.Name,
+            //               //Button = "<button class=\"joinButton\">Join!</button>"
+            //           };
+            var data = JsonConvert.SerializeObject(new
+            {
+                roomId = room.RoomId,
+                name = room.Name
+            });
 
-            if (notifyOnlyCaller)
-            {
-                await Clients.Caller.SendAsync("updateRoom", data);
-            }
-            else
-            {
-                // отправка сообщения с данными о созанной комнате всем подключенным пользоваетлям
-                await Clients.All.SendAsync("updateRoom", data);
-            }
+            await Clients.User(receiverId).SendAsync("updateRoom", data);
+
+            //if (notifyOnlyCaller)
+            //{
+            //    await Clients.Caller.SendAsync("updateRoom", data);
+            //}
+            //else
+            //{
+                
+            //    // отправка сообщения с данными о созанной комнате всем подключенным пользоваетлям
+            //    await Clients.All.SendAsync("updateRoom", data);
+            //}
         }
     }
 

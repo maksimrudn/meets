@@ -3,10 +3,15 @@ import { useHistory } from 'react-router-dom';
 import * as signalR from '@microsoft/signalr';
 import WebRTCService, { IRoomInfo } from '../../api/WebRTCService';
 
+import './WebRTC.scss';
 
+interface IWebRTCProps {
+    isCaller: boolean
+    receiverId: any
+}
 
-export default function WebRTC() {
-    const [roomsData, setRoomsData] = useState<IRoomInfo[]>([]);
+export default function WebRTC(props: IWebRTCProps) {
+    const [roomData, setRoomData] = useState<IRoomInfo>({} as IRoomInfo);
     //const [connection, setConnection] = useState<signalR.HubConnection>({} as signalR.HubConnection);
 
     //const [roomNameTxt]
@@ -20,7 +25,7 @@ export default function WebRTC() {
 
     //let webRTCService: {} as ;
 
-    let createRoomOnclick: () => void;
+    //let createRoomOnclick: () => void;
     let joinRoomOnClick: (room: IRoomInfo) => void;
 
     useEffect(() => {
@@ -32,14 +37,20 @@ export default function WebRTC() {
             localVideo.current,
             remoteVideo.current,
             //roomsData,
-            setRoomsData
+            setRoomData
         );
 
-        createRoomOnclick = webRTCService.createRoomBtnOnClick;
-        joinRoomOnClick = webRTCService.joinRoomBtnOnClick;
+        //createRoomOnclick = webRTCService.createRoom;
+        joinRoomOnClick = webRTCService.joinRoom;
 
         webRTCService.grabWebCamVideo();
         webRTCService.startServerSignaling();
+
+        if (props.isCaller) {
+            webRTCService.createRoom(props.receiverId);
+        } else {
+            webRTCService.joinRoom(roomData);
+        }
 
         return () => {
             webRTCService.leaveRoom();
@@ -51,12 +62,12 @@ export default function WebRTC() {
     //}, [connection]);
 
     return (
-        <div className="WebRTC">
+        <div className="WebRTC" hidden>
 
             <div className="RoomCreate">
                 <label>Room Name:</label>
                 <input type="text" id="roomNameTxt" ref={roomNameTxt} />
-                <button id="createRoomBtn" ref={createRoomBtn} onClick={() => createRoomOnclick()}>Create</button>
+                {/*<button id="createRoomBtn" ref={createRoomBtn} onClick={() => createRoomOnclick()}>Create</button>*/}
             </div>
 
             {/********************************************************************************
@@ -67,26 +78,26 @@ export default function WebRTC() {
              *
              * (ориг. ипольз. datatables.net)
              ********************************************************************************/}
-            <div className="Rooms">
-                <table id="roomTable" className="display" style={{ width: '100%' }} ref={roomTable}>
-                    <thead>
-                        <tr>
-                            <th>Room ID</th>
-                            <th>Name</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {roomsData.length > 0 && roomsData.map(item =>
-                            <tr>
-                                <th>{item.roomId}</th>
-                                <th>{item.name}</th>
-                                <th><button className="JoinButton" onClick={() => joinRoomOnClick(item)}>Join!</button></th>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            {/*<div className="Rooms" hidden>*/}
+            {/*    <table id="roomTable" className="display" style={{ width: '100%' }} ref={roomTable}>*/}
+            {/*        <thead>*/}
+            {/*            <tr>*/}
+            {/*                <th>Room ID</th>*/}
+            {/*                <th>Name</th>*/}
+            {/*                <th></th>*/}
+            {/*            </tr>*/}
+            {/*        </thead>*/}
+            {/*        <tbody>*/}
+            {/*            {roomsData.length > 0 && roomsData.map(item =>*/}
+            {/*                <tr>*/}
+            {/*                    <th>{item.roomId}</th>*/}
+            {/*                    <th>{item.name}</th>*/}
+            {/*                    <th><button className="JoinButton" onClick={() => joinRoomOnClick(item)}>Join!</button></th>*/}
+            {/*                </tr>*/}
+            {/*            )}*/}
+            {/*        </tbody>*/}
+            {/*    </table>*/}
+            {/*</div>*/}
 
             <div className="borderLine"></div>
 
