@@ -113,6 +113,8 @@
 
     <None Remove="ClientApp\src\hooks\useUserStore.ts" />
 
+    <None Remove="ClientApp\src\hooks\useWebRTCStore.ts" />
+
     <None Remove="ClientApp\src\icons\AccessTimeIcon.tsx" />
 
     <None Remove="ClientApp\src\icons\BirthDateIconSvg.tsx" />
@@ -217,6 +219,7 @@
     <None Remove="ClientApp\src\store\timetable.ts" />
     <None Remove="ClientApp\src\store\user.ts" />
     <None Remove="ClientApp\src\store\users.ts" />
+    <None Remove="ClientApp\src\store\webrtc.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -305,6 +308,8 @@
     <TypeScriptCompile Include="ClientApp\src\hooks\useUsersStore.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\hooks\useUserStore.ts" />
+
+    <TypeScriptCompile Include="ClientApp\src\hooks\useWebRTCStore.ts" />
 
     <TypeScriptCompile Include="ClientApp\src\icons\CoffeeIcon.tsx" />
 
@@ -485,6 +490,7 @@
     <TypeScriptCompile Include="ClientApp\src\store\timetable.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\user.ts" />
     <TypeScriptCompile Include="ClientApp\src\store\users.ts" />
+    <TypeScriptCompile Include="ClientApp\src\store\webrtc.ts" />
   </ItemGroup>
 
 	<!--<ItemGroup>

@@ -36,7 +36,13 @@ import useMeetingStore from '../../hooks/useMeetingStore';
 import { toast } from 'react-toastify';
 import WebRTC from '../webrtc/WebRTC';
 import WebRTCService, { IRoomInfo } from '../../api/WebRTCService';
+import useWebRTCStore from '../../hooks/useWebRTCStore';
 
+interface IWebRTCActions {
+    grabWebCamVideo: () => void
+    createRoom: (receierId: any) => void
+    leaveRoom: () => void
+}
 
 interface IWebRTCModalProps {
     isOpen: boolean
@@ -48,25 +54,57 @@ interface IWebRTCModalProps {
     remoteVideoRef: React.MutableRefObject<HTMLVideoElement>
     connectionStatusMessageRef: React.MutableRefObject<HTMLParagraphElement>
 
+    meetingId: any,
+    companionId: any
+
     webRTCService: WebRTCService
+    //actions: IWebRTCActions
 }
 
 function WebRTCModal(props: IWebRTCModalProps) {
+    const rtcStore = useWebRTCStore();
+
+    //const localVideoRef = useRef<HTMLVideoElement>();
+    //const remoteVideoRef = useRef<HTMLVideoElement>();
 
     useEffect(() => {
-        props.webRTCService.grabWebCamVideo();
-        //webRTCService.startServerSignaling();
+        //const onCall = async () => {
+        //    try {
+        //        await rtcStore.setLocalVideo(localVideoRef.current);
+        //        await rtcStore.setRemoteVideo(remoteVideoRef.current);
+
+        //        await rtcStore.grabWebCamVideo();
+        //        //props.webRTCService.startServerSignaling();
+
+        //        if (props.isCaller) {
+        //            await rtcStore.createRoom(props.meetingId, props.companionId);
+        //        } else {
+        //            //props.webRTCService.joinRoom(roomData);
+        //        }
+        //    } catch (err: any) {
+        //        toast.error(err.message);
+        //    }
+        //}
+        //onCall();
+        
+        //props.webRTCService.startServerSignaling();
 
         if (props.isCaller) {
-            props.webRTCService.createRoom(props.receiverId);
+            props.webRTCService.createRoom(props.meetingId, props.companionId);
         } else {
             //props.webRTCService.joinRoom(roomData);
         }
 
+        props.webRTCService.grabWebCamVideo();
+
         return () => {
             props.webRTCService.leaveRoom();
+        //    const leave = async () => {
+        //        await rtcStore.leaveRoom();
+        //    }
+        //    leave();
         };
-    });
+    }, []);
 
     return (
         <Modal
@@ -89,7 +127,7 @@ function WebRTCModal(props: IWebRTCModalProps) {
                  ********************************************************************************/}
                 <div className="VideoChat">
                     <div className="ConnectionStatus">
-                        <p id="connectionStatusMessage" ref={props.connectionStatusMessageRef}>*You can create your own room or join the other room.</p>
+                        <p id="connectionStatusMessage" ref={props.connectionStatusMessageRef}>Waiting...</p>
                     </div>
                     <h5>Video chat</h5>
                     <div className="VideoArea">
@@ -129,6 +167,8 @@ export default function Meeting(props: IMeetingProps) {
     const { meetingId } = props.location.state;
     const meetingStore = useMeetingStore();
 
+    const rtcStore = useWebRTCStore();
+
     const [isOpenMeetingModal, setIsOpenMeetingModal] = useState(false);
     const [selectedFieldName, setSelectedFieldName] = useState<string>('');
 
@@ -137,17 +177,13 @@ export default function Meeting(props: IMeetingProps) {
     const [showRTCWin, setShowRTCWin] = useState(false);
     const [isRTCCaller, setIsRTCCaller] = useState(false);
 
-    const [roomData, setRoomData] = useState<IRoomInfo>({} as IRoomInfo);
+    //const [roomData, setRoomData] = useState<IRoomInfo>({} as IRoomInfo);
     const localVideoRef = useRef<HTMLVideoElement>();
     const remoteVideoRef = useRef<HTMLVideoElement>();
     const connectionStatusMessageRef = useRef<HTMLParagraphElement>();
 
-    let webRTCService = new WebRTCService(
-        connectionStatusMessageRef.current,
-        localVideoRef.current,
-        remoteVideoRef.current,
-        setRoomData
-    );
+    const [webRTCService, setWebRTCService] = useState({} as WebRTCService);
+
 
     useEffect(() => {
         const update = async () => {
@@ -160,10 +196,30 @@ export default function Meeting(props: IMeetingProps) {
                 history.push(Routes.Error, err);
             }
         }
-
         update();
 
+        //const createConnectionsAndStartSignaling = async () => {
+
+
+        //    try {
+        //        //await rtcStore.update(webRTCService as IWebRTCService);
+        //        await rtcStore.createConnections();
+        //        await rtcStore.startSignalingServer();
+        //    } catch (err) { }
+        //}
+        //createConnectionsAndStartSignaling();
+
+        let webRTCService = new WebRTCService(
+            connectionStatusMessageRef.current,
+            localVideoRef.current,
+            remoteVideoRef.current,
+            //setRoomData
+            //history.location.pathname
+        );
         webRTCService.startServerSignaling();
+
+        setWebRTCService(webRTCService);
+        //rtcStore.webRTCService.startServerSignaling();
     }, []);
 
     useEffect(() => {
@@ -359,6 +415,8 @@ export default function Meeting(props: IMeetingProps) {
                     />
                 </div>
 
+                {/*showRTCWin && */}
+
                 {showRTCWin &&
                     <WebRTCModal
                         isOpen={showRTCWin}
@@ -368,6 +426,8 @@ export default function Meeting(props: IMeetingProps) {
                         localVideoRef={localVideoRef}
                         remoteVideoRef={remoteVideoRef}
                         connectionStatusMessageRef={connectionStatusMessageRef}
+                        meetingId={props.location.state.meetingId}
+                        companionId={meetingStore.meeting.companion?.email}
                         webRTCService={webRTCService}
                     />
                 }

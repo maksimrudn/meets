@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Meets.Hubs
 {
-    [Authorize]
+    //[Authorize]
     public class WebRTCHub : Hub
     {
         private static RoomManager _roomManager = new RoomManager();
@@ -21,7 +21,7 @@ namespace Meets.Hubs
 
         public override Task OnDisconnectedAsync(Exception exception)
         {
-            _roomManager.DeleteRoom(Context.ConnectionId);
+            //_roomManager.DeleteRoom(Context.ConnectionId);
             //_ = NotifyRoomInfoAsync(false);
             return base.OnDisconnectedAsync(exception);
         }
@@ -29,52 +29,60 @@ namespace Meets.Hubs
         /// <summary>
         /// создание комнаты
         /// </summary>
-        /// <param name="receiverId"></param>
+        /// <param name="meetingId">ид встречи</param>
         /// <returns></returns>
-        public async Task CreateRoom(string receiverId) // string name
+        public async Task CreateRoom(string meetingId, string companionId) // string name
         {
             // string roomName = name ?? new Guid().ToString();
 
-            RoomInfo roomInfo = _roomManager.CreateRoom(Context.ConnectionId, new Guid().ToString());
-            if (roomInfo != null)
-            {
-                await Groups.AddToGroupAsync(Context.ConnectionId, roomInfo.RoomId);
-                await Clients.Caller.SendAsync("created", roomInfo.RoomId);
-                await NotifyRoomInfoAsync(receiverId, roomInfo);
-            }
-            else
-            {
-                await Clients.Caller.SendAsync("error", "error occurred when creating a new room.");
-            }
+            await Groups.AddToGroupAsync(Context.ConnectionId, meetingId);
+            await Clients.Caller.SendAsync("created", meetingId);
+
+            // уведомение второго пользователя о звонке чтобы он мог подключиться
+            await Clients.User(companionId).SendAsync("updateRoom");
+            //await NotifyRoomInfoAsync(receiverId, roomInfo);
+
+            //RoomInfo roomInfo = _roomManager.CreateRoom(Context.ConnectionId, new Guid().ToString());
+            //if (roomInfo != null)
+            //{
+            //    await Groups.AddToGroupAsync(Context.ConnectionId, roomInfo.RoomId);
+            //    await Clients.Caller.SendAsync("created", roomInfo.RoomId);
+            //    await NotifyRoomInfoAsync(receiverId, roomInfo);
+            //}
+            //else
+            //{
+            //    await Clients.Caller.SendAsync("error", "error occurred when creating a new room.");
+            //}
         }
 
         /// <summary>
         /// подключение к созданной комнате
         /// </summary>
-        /// <param name="roomId"></param>
+        /// <param name="meetingId">ид встречи</param>
         /// <returns></returns>
-        public async Task Join(string roomId)
+        public async Task Join(string meetingId)
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-            await Clients.Caller.SendAsync("joined", roomId);
-            await Clients.Group(roomId).SendAsync("ready");
+            await Groups.AddToGroupAsync(Context.ConnectionId, meetingId);
+            await Clients.Caller.SendAsync("joined", meetingId);
+            await Clients.Group(meetingId).SendAsync("ready");
 
             //remove the room from room list.
-            if (int.TryParse(roomId, out int id))
-            {
-                _roomManager.DeleteRoom(id);
-                //await NotifyRoomInfoAsync(false);
-            }
+            //if (int.TryParse(roomId, out int id))
+            //{
+            //    _roomManager.DeleteRoom(id);
+            //    //await NotifyRoomInfoAsync(false);
+            //}
         }
 
         /// <summary>
-        /// отключение
+        /// выход из комнаты
         /// </summary>
-        /// <param name="roomId"></param>
+        /// <param name="meetingId">ид встречи</param>
         /// <returns></returns>
-        public async Task LeaveRoom(string roomId)
+        public async Task LeaveRoom(string meetingId)
         {
-            await Clients.Group(roomId).SendAsync("leave");
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, meetingId);
+            await Clients.Group(meetingId).SendAsync("leave");
         }
 
         public async Task GetRoomInfo()

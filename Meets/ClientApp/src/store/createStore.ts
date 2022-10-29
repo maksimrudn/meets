@@ -9,6 +9,7 @@ import settingsReducer from './settings';
 import meetRequestReducer from './meetrequest';
 import meetingsReducer from './meetings';
 import meetingReducer from './meeting';
+import webRTCReducer from './webrtc';
 
 const rootReducer = combineReducers({
     account: accountReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     menu: menuReducer,
     meetRequest: meetRequestReducer,
     meetings: meetingsReducer,
-    meeting: meetingReducer
+    meeting: meetingReducer,
+    webrtc: webRTCReducer
 });
 
 export function createStore() {

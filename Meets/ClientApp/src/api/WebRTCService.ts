@@ -19,9 +19,10 @@ export default class WebRTCService {
     private _remoteVideo: HTMLVideoElement;
 
     //private _roomsData: IRoomInfo[];
-    private _setRoomData: (roomData: IRoomInfo) => void;
+    //private _setRoomData: (roomData: IRoomInfo) => void;
 
-    connection;
+    connection: signalR.HubConnection;
+    //private _connectionUrl;
     private _peerConnection;
 
     private _myRoomId: any;
@@ -39,7 +40,8 @@ export default class WebRTCService {
         localVideo: HTMLVideoElement,
         remoteVideo: HTMLVideoElement,
         //roomsData: IRoomInfo[],
-        setRoomData: (roomData: IRoomInfo) => void
+        //setRoomData: (roomData: IRoomInfo) => void,
+        //connectionUrl: any
     ) {
         //this._roomNameTxt = roomNameTxt;
         //this._createRoomBtn = createRoomBtn;
@@ -48,9 +50,18 @@ export default class WebRTCService {
         this._localVideo = localVideo;
         this._remoteVideo = remoteVideo;
         //this._roomsData = roomsData;
-        this._setRoomData = setRoomData;
+        //this._setRoomData = setRoomData;
+        //this._connectionUrl = connectionUrl;
 
-        this.connection = new signalR.HubConnectionBuilder().withUrl('/meeting/{id?}').build(); // WebRTCHub
+        this.connection = new signalR.HubConnectionBuilder().withUrl('/WebRTCHub').build(); //  /meeting/{id}
+        /*
+         , {
+            skipNegotiation: false,
+            transport: signalR.HttpTransportType.WebSockets |
+                signalR.HttpTransportType.LongPolling |
+                signalR.HttpTransportType.ServerSentEvents
+        }
+         */
         /****************************************************************************
          * WebRTC соединение может не работать из-за NAT и брэндмауэра (ограничит. сетей)
          * чтобы спавиться с NAT и брэндмауэрами, обычно используются серверы STUN и TURN
@@ -66,6 +77,13 @@ export default class WebRTCService {
     }
 
     /****************************************************************************
+    * Create signalR connection
+    ****************************************************************************/
+    //createConnection = () => {
+    //    this.connection = new signalR.HubConnectionBuilder().withUrl('/WebRTCHub').build();
+    //}
+
+    /****************************************************************************
     * Signaling server
     ****************************************************************************/
 
@@ -73,33 +91,34 @@ export default class WebRTCService {
     startServerSignaling = () => {
         this.connection.start().then(() => {
             // room updated
-            this.connection.on('updateRoom', (data) => {
-                let obj: IRoomInfo = JSON.parse(data);
-                this._setRoomData(obj);
+            this.connection.on('updateRoom', () => { // data
+                //let obj: IRoomInfo = JSON.parse(data);
+                //this._setRoomData(obj);
 
                 toast.info('Video call', {
                     onClick: () => {
-                        this.joinRoom(obj);
+                        //this.joinRoom(obj);
+                        alert('connected');
                     }
                 });
                 //$(roomTable).DataTable().clear().rows.add(obj).draw();
             });
 
             // room created
-            this.connection.on('created', (roomId) => {
-                console.log('Created room', roomId);
+            this.connection.on('created', (meetingId) => {
+                console.log('Created room', meetingId);
                 //this._roomNameTxt.disabled = true;
                 //this._createRoomBtn.disabled = true;
                 this._hasRoomJoined = true;
-                this._connectionStatusMessage.innerText = 'You created Room ' + roomId + '. Waiting for participants...';
-                this._myRoomId = roomId;
+                this._connectionStatusMessage.innerText = 'You created Room ' + meetingId + '. Waiting for participant...';
+                this._myRoomId = meetingId;
                 this._isInitiator = true;
             });
 
             // user has joined room
-            this.connection.on('joined', (roomId) => {
-                console.log('This peer has joined room', roomId);
-                this._myRoomId = roomId;
+            this.connection.on('joined', (meetingId) => {
+                console.log('This peer has joined room', meetingId);
+                this._myRoomId = meetingId;
                 this._isInitiator = false;
             });
 
@@ -161,19 +180,19 @@ export default class WebRTCService {
     /****************************************************************************
     * Room management
     ****************************************************************************/
-    createRoom = (reveiverId: any) => {
+    createRoom = (meetingId: any, companionId: any) => {
         //let name = this._roomNameTxt.value;
-        this.connection.invoke("CreateRoom", reveiverId).catch(function (err) {
+        this.connection.invoke("CreateRoom", meetingId, companionId).catch(function (err) {
             return console.error(err.toString());
         });
     }
 
-    joinRoom = (room: IRoomInfo) => {
+    joinRoom = (meetingId: any) => {
         if (this._hasRoomJoined) {
             alert('You already joined the room. Please use a new tab or window.');
         } else {
             //var data = $(roomTable).DataTable().row($(this).parents('tr')).data();
-            this.connection.invoke("Join", room.roomId).catch(function (err) {
+            this.connection.invoke("Join", meetingId).catch(function (err) {
                 return console.error(err.toString());
             });
         }

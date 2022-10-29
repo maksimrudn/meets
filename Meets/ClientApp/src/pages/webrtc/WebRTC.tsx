@@ -30,13 +30,9 @@ export default function WebRTC(props: IWebRTCProps) {
 
     useEffect(() => {
         let webRTCService = new WebRTCService(
-            roomNameTxt.current,
-            createRoomBtn.current,
-            roomTable.current,
             connectionStatusMessage.current,
             localVideo.current,
             remoteVideo.current,
-            //roomsData,
             setRoomData
         );
 
@@ -49,7 +45,7 @@ export default function WebRTC(props: IWebRTCProps) {
         if (props.isCaller) {
             webRTCService.createRoom(props.receiverId);
         } else {
-            webRTCService.joinRoom(roomData);
+            //webRTCService.joinRoom(roomData);
         }
 
         return () => {
