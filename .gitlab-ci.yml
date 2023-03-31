@@ -12,13 +12,13 @@
     - do{
     - $status = Get-WebAppPoolState -name "$NAME_SITE"
     - if ($status -eq "Stopped"){ \
-          - <....your code here....> \
-          - $success = $true; \
-        - } \
-        - Start-Sleep -s 1 \
-        - $currentRetry = $currentRetry + 1; \        
-    - } \
-    - while (!$success -and $currentRetry -le 4) 
+           <....your code here....> \
+           $success = $true; \
+         } \
+         Start-Sleep -s 1 \
+         $currentRetry = $currentRetry + 1; \        
+     } \
+     while (!$success -and $currentRetry -le 4) 
 
 
     - Stop-WebAppPool -Name "$NAME_POOL" -Passthru
