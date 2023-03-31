@@ -47,14 +47,11 @@ prod:
   tags:
     - vw-app-prod-1
   script:
-    - dotnet restore "Meets/Meets.csproj"
-    - dotnet build "Meets/Meets.csproj" -c Release -o ./bin/Release
-    - Stop-WebSite -Name "$NAME_SITE" -Passthru
-    - Stop-WebAppPool -Name "$NAME_POOL" -Passthru
-    - rm $PATH_SITE\* -r -fo
-    - dotnet publish "Meets/Meets.csproj" -c Release -o $PATH_SITE
-    - Start-WebAppPool -Name "$NAME_POOL" -Passthru
-    - Start-WebSite -Name "$NAME_SITE" -Passthru
+    - !reference [.deployToStand, script]
+  variables:
+    NAME_SITE: meets
+    NAME_POOL: meets
+    PATH_SITE: C:\inetpub\meets
   when: manual
 
 test1:
@@ -69,4 +66,52 @@ test1:
     PATH_SITE: C:\inetpub\test1
   when: manual
 
+test2:
+  stage: deploy
+  tags:
+    - vw-app-test-1
+  script:
+    - !reference [.deployToStand, script]
+  variables:
+    NAME_SITE: test2
+    NAME_POOL: test2
+    PATH_SITE: C:\inetpub\test2
+  when: manual
 
+test3:
+  stage: deploy
+  tags:
+    - vw-app-test-1
+  script:
+    - !reference [.deployToStand, script]
+  variables:
+    NAME_SITE: test3
+    NAME_POOL: test3
+    PATH_SITE: C:\inetpub\test3
+  when: manual
+
+
+test4:
+  stage: deploy
+  tags:
+    - vw-app-test-1
+  script:
+    - !reference [.deployToStand, script]
+  variables:
+    NAME_SITE: test4
+    NAME_POOL: test4
+    PATH_SITE: C:\inetpub\test4
+  when: manual
+
+
+test5:
+  stage: deploy
+  tags:
+    - vw-app-test-1
+  script:
+    - !reference [.deployToStand, script]
+  variables:
+    NAME_SITE: test5
+    NAME_POOL: test5
+    PATH_SITE: C:\inetpub\test5
+  when: manual
