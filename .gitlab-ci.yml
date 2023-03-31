@@ -15,14 +15,8 @@ prod:
   tags:
     - vw-app-prod-1
   script:
-    - dotnet restore "Meets/Meets.csproj"
-    - dotnet build "Meets/Meets.csproj" -c Release -o ./bin/Release
-    - Stop-WebSite -Name "$NAME_SITE" -Passthru
-    - Stop-WebAppPool -Name "$NAME_POOL" -Passthru
-    - rm $PATH_SITE\* -r -fo
-    - dotnet publish "Meets/Meets.csproj" -c Release -o $PATH_SITE
-    - Start-WebAppPool -Name "$NAME_POOL" -Passthru
-    - Start-WebSite -Name "$NAME_SITE" -Passthru
+    - echo "123"
+    - dir
   when: manual
 
 test:
