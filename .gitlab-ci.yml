@@ -18,7 +18,7 @@
          Start-Sleep -s 1 \
          $currentRetry = $currentRetry + 1; \        
      } \
-     while (!$success -and $currentRetry -le 4) 
+     while (!$success -and $currentRetry -le 4) \
 
 
     - Stop-WebAppPool -Name "$NAME_POOL" -Passthru
@@ -57,7 +57,7 @@ prod:
 test1:
   stage: deploy
   tags:
-    - test
+    - vw-app-test-1
   script:
     - !reference [.deployToStand, script]
   variables:
