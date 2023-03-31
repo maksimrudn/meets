@@ -10,9 +10,8 @@
     - $currentRetry = 0; \
      $success = $false; \
      do{ \
-     $status = Get-WebAppPoolState -name "$NAME_SITE" \
-     if ($status -eq "Stopped"){ \
-           <....your code here....> \
+          $status = Get-WebAppPoolState -name "$NAME_SITE" \
+          if ($status -eq "Stopped"){ \
            $success = $true; \
          } \
          Start-Sleep -s 1 \
