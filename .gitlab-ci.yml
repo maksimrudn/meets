@@ -2,9 +2,7 @@
 .deployToStand:
   script: |
      dotnet restore "Meets/Meets.csproj"
-     dotnet build "Meets/Meets.csproj" -c Release -o ./bin/Release
-
-    #stoping WebSite
+     dotnet build "Meets/Meets.csproj" -c Release -o ./bin/Release  
      Stop-WebSite -Name "$NAME_SITE" -Passthru
      $currentRetry = 0; 
       $success = $false; 
@@ -15,11 +13,7 @@
           } 
           Start-Sleep -s 1 
           $currentRetry = $currentRetry + 1;         
-      } while (!$success -and $currentRetry -le 4) 
-
-
-
-    # stoping WebAppPool
+      } while (!$success -and $currentRetry -le 4)
      Stop-WebAppPool -Name "$NAME_SITE" -Passthru
      $currentRetry = 0; 
      $success = $false; 
@@ -31,11 +25,8 @@
          Start-Sleep -s 1 
          $currentRetry = $currentRetry + 1;         
      } while (!$success -and $currentRetry -le 4) 
-
-    # removing previous files
      rm $PATH_SITE\* -r -fo
      dotnet publish "Meets/Meets.csproj" -c Release -o $PATH_SITE
-    
      Start-WebAppPool -Name "$NAME_POOL" -Passthru
      Start-WebSite -Name "$NAME_SITE" -Passthru
 
