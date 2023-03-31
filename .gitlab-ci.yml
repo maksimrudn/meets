@@ -25,7 +25,7 @@ prod:
     - Start-WebSite -Name "$NAME_SITE" -Passthru
   when: manual
 
-prod:
+test:
   stage: deploy
   tags:
     - test
