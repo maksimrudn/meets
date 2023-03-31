@@ -11,7 +11,7 @@
     - $success = $false;
     - do{ \
      $status = Get-WebAppPoolState -name "$NAME_SITE" \
-     if ($status -eq "Stopped"){ \
+     if ($status -eq "Stopped"){ 
            <....your code here....> \
            $success = $true; \
          } \
