@@ -13,7 +13,7 @@ variables:
 prod:
   stage: deploy
   tags:
-    - vw-app-prod-1
+    - prod
   script:
     - dotnet restore "Meets/Meets.csproj"
     - dotnet build "Meets/Meets.csproj" -c Release -o ./bin/Release
