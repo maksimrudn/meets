@@ -2,10 +2,10 @@
  * объект содержащий названия табов UserCard
  * */
 export const UserCardTabsNames = {
-    Info: 'Инфо',
+    Info: 'Info',
     //Plans: 'Планы'
-    Learning: 'Учеба',
-    Work: 'Места работы',
-    Activity: 'Активности',
-    Facts: 'Факты'
+    Learning: 'Education',
+    Work: 'Work expirience',
+    Activity: 'Activity',
+    Facts: 'Facts'
 };
