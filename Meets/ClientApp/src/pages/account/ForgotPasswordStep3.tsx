@@ -63,7 +63,7 @@ function ForgotPasswordStep3(props) {
                 </div>
 
                 <div className="Data d-flex flex-column justify-content-center h-100">
-                    <div className="fs-3 text-center mb-2">Восстановить пароль</div>
+                    <div className="fs-3 text-center mb-2">Recovery password</div>
 
                     <form className="row g-1 p-3 p-md-4" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
 
@@ -84,7 +84,7 @@ function ForgotPasswordStep3(props) {
                                         value={password}
                                         onChange={(e) => { setPassword(e.target.value) }}
                                     />
-                                    {errors.Password && <p className='Error'>Обязательно к заполнению</p>}
+                                    {errors.Password && <p className='Error'>Required</p>}
                                 </div>
                             </div>
                         </div>
@@ -106,14 +106,14 @@ function ForgotPasswordStep3(props) {
                                         value={confirmPassword}
                                         onChange={(e) => { setConfirmPassword(e.target.value) }}
                                     />
-                                    {errors.ConfirmPassword?.type === 'required' && <p className='Error'>Обязательно к заполнению</p>}
-                                    {errors.ConfirmPassword?.type === 'validate' && <p className='Error'>Пароли отличаются</p>}
+                                    {errors.ConfirmPassword?.type === 'required' && <p className='Error'>Required</p>}
+                                    {errors.ConfirmPassword?.type === 'validate' && <p className='Error'>Passwords are different</p>}
                                 </div>
                             </div>
                         </div>
 
                         <div className="col-12 text-center mt-4">
-                            <button type="submit" className="Save btn">Сохранить</button>
+                            <button type="submit" className="Save btn">Save</button>
                         </div>
                     </form>
                 </div>

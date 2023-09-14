@@ -57,7 +57,7 @@ function Login(props) {
                 </div>
 
                 <div className="Data d-flex flex-column justify-content-center h-100">
-                    <div className="fs-3 text-center mb-2">Вход</div>
+                    <div className="fs-3 text-center mb-2">Authorization</div>
 
                     <form className="d-block" onSubmit={onLoginSubmit}>
 
@@ -74,15 +74,15 @@ function Login(props) {
                         {errMessage && <p className='text-danger w-100 text-center mt-2'>{errMessage}</p>}
 
                         <div className="col-12 text-center">
-                            <button type="submit" className="ComeIn btn">Войти</button>
+                            <button type="submit" className="ComeIn btn">Log In</button>
                         </div>
 
                         <div className="col-12 text-center mt-4">
-                            <Link to="/account/forgotPasswordStep1" className="Link">Забыли пароль?</Link>
+                            <Link to="/account/forgotPasswordStep1" className="Link">Forgot password?</Link>
                         </div>
 
                         <div className="col-12 text-center mt-4">
-                            <span className="ToRegister">Вы новенький? <Link to="/account/register" className="Link ms-3">Зарегистрироваться</Link></span>
+                            <span className="ToRegister">Are you newbie? <Link to="/account/register" className="Link ms-3">Register</Link></span>
                         </div>
                     </form>
                 </div>
