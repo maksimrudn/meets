@@ -13,7 +13,7 @@ function WaitingScreen() {
 
     return (
         <>
-            <div>ожидание</div>
+            <div>Waiting...</div>
         </>
     );
 }

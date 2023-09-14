@@ -15,9 +15,9 @@ function ForgotPasswordStep4() {
 
                 <div className="Icon mx-auto mb-5"><CheckIcon /></div>
 
-                <div className="Title fs-3 text-center">Пароль восстановлен!</div>
+                <div className="Title fs-3 text-center">Password is recovered!</div>
 
-                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>На главную</button></div>
+                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>Main page</button></div>
 
             </div>
         </>

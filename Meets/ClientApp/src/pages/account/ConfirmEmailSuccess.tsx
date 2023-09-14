@@ -15,9 +15,9 @@ function ConfirmEmailSuccess() {
 
                 <div className="Icon mx-auto mb-5"><CheckIcon /></div>
 
-                <div className="Title fs-3 text-center">Email подтверждён!</div>
+                <div className="Title fs-3 text-center">Email is confirmed!</div>
 
-                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>На главную</button></div>
+                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>Main page</button></div>
 
             </div>
         </>

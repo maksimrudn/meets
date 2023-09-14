@@ -18,7 +18,7 @@ export interface IFilter {
     weightTo: number
     ageFrom: number
     ageTo: number
-    company: string
+    work: string
     learning: string
     activity: string
 }
@@ -76,13 +76,13 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                 }}
                 className="Header"
             >
-                Параметры
+                Charecteristics
             </ModalHeader>
             <ModalBody
                 className="Body"
             >
                 <div className="col-12 mb-2">
-                    <label className="form-label">Город</label>
+                    <label className="form-label">City</label>
                     <AddressSuggestions
                         token={AppConfig.TokenDadata}
                         value={{ value: filter.city }}
@@ -95,7 +95,7 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                 </div>
 
                 <div className="col-12 mb-3">
-                    <label className="form-label">Интересы</label>
+                    <label className="form-label">Interests</label>
                     <Select
                         isMulti
                         defaultValue={filter.tags && filter.tags.map((x: any) => { return { label: x, value: x } })}
@@ -104,16 +104,16 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                 </div>
 
                 <div className="col-12 mb-2">
-                    <label className="form-label">Рост</label>
+                    <label className="form-label">Height</label>
                     <div className="d-flex flex-row align-items-center">
-                        <span className="fw-light text-muted me-3">от</span>
+                        <span className="fw-light text-muted me-3">from</span>
                         <input
                             className="form-control me-4"
                             type="number"
                             defaultValue={filter.growthFrom}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, growthFrom: e.target.valueAsNumber })}
                         />
-                        <span className="fw-light text-muted me-3">до</span>
+                        <span className="fw-light text-muted me-3">to</span>
                         <input
                             className="form-control"
                             type="number"
@@ -124,16 +124,16 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                 </div>
 
                 <div className="col-12 mb-2">
-                    <label className="form-label">Вес</label>
+                    <label className="form-label">Weight</label>
                     <div className="d-flex flex-row align-items-center">
-                        <span className="fw-light text-muted me-3">от</span>
+                        <span className="fw-light text-muted me-3">from</span>
                         <input
                             className="form-control me-4"
                             type="number"
                             defaultValue={filter.weightFrom}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, weightFrom: e.target.valueAsNumber })}
                         />
-                        <span className="fw-light text-muted me-3">до</span>
+                        <span className="fw-light text-muted me-3">to</span>
                         <input
                             className="form-control"
                             type="number"
@@ -144,16 +144,16 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                 </div>
 
                 <div className="col-12 mb-3">
-                    <label className="form-label">Возраст</label>
+                    <label className="form-label">Age</label>
                     <div className="d-flex flex-row align-items-center">
-                        <span className="fw-light text-muted me-3">от</span>
+                        <span className="fw-light text-muted me-3">from</span>
                         <input
                             className="form-control me-4"
                             type="number"
                             defaultValue={filter.ageFrom}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, ageFrom: e.target.valueAsNumber })}
                         />
-                        <span className="fw-light text-muted me-3">до</span>
+                        <span className="fw-light text-muted me-3">to</span>
                         <input
                             className="form-control"
                             type="number"
@@ -164,17 +164,17 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                 </div>
 
                 <div className="col-12 mb-2">
-                    <label className="form-label">Место работы</label>
+                    <label className="form-label">Workplace</label>
                     <input
                         className="form-control"
                         type="text"
-                        defaultValue={filter.company}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, company: e.target.value })}
+                        defaultValue={filter.work}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, work: e.target.value })}
                     />
                 </div>
 
                 <div className="col-12 mb-2">
-                    <label className="form-label">Учёба</label>
+                    <label className="form-label">Education</label>
                     <input
                         className="form-control"
                         type="text"
@@ -184,7 +184,7 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                 </div>
 
                 <div className="col-12">
-                    <label className="form-label">Активности</label>
+                    <label className="form-label">Activities</label>
                     <input
                         className="form-control"
                         type="text"
@@ -193,7 +193,7 @@ export default function UserSearchFilterModal(props: IUserSearchFilterModalProps
                     />
                 </div>
 
-                <button className="Find btn mt-3" type="button" onClick={findOnClick}>Найти</button>
+                <button className="Find btn mt-3" type="button" onClick={findOnClick}>Search</button>
             </ModalBody>
 
         </Modal>

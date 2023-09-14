@@ -297,7 +297,7 @@ function UserCard(): JSX.Element {
                                                     <span className="text-white me-1">
                                                         <LocationIconSvg />
                                                     </span>
-                                                    <span>{userCard.distance} км от вас</span>
+                                                    <span>{userCard.distance} km far</span>
 
 
                                                 </span>
@@ -311,7 +311,7 @@ function UserCard(): JSX.Element {
                                     <div className="col-9 me-3">
                                         <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={userCard.isInvited}>
                                             <span className="me-4"><CoffeeIcon /></span>
-                                            <span className="fs-5 text-black">Пригласить</span>
+                                            <span className="fs-5 text-black">Invite</span>
                                         </button>
                                     </div>
 
@@ -328,7 +328,7 @@ function UserCard(): JSX.Element {
                                     <div className="col-12">
                                         <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettingsBuild(userCard.id)}>
                                             <span className="me-4"><ProfileSettingsIcon /></span>
-                                            <span className="fs-5 text-black">Настройки</span>
+                                            <span className="fs-5 text-black">Settings</span>
                                         </Link>
                                     </div>
                                 )
@@ -341,17 +341,17 @@ function UserCard(): JSX.Element {
                             <div className="ActivityInfo d-flex justify-content-evenly">
                                 <div className="d-flex flex-column justify-content-center">
                                     <span className="fs-4 text-center">{userCard.subscribers}</span>
-                                    <small>подписчиков</small>
+                                    <small>Subscribers</small>
                                 </div>
 
                                 <div className="d-flex flex-column justify-content-center">
                                     <span className="fs-4 text-center">{userCard.subscriptions}</span>
-                                    <small>подписок</small>
+                                    <small>Subscribes</small>
                                 </div>
 
                                 <div className=" d-flex flex-column justify-content-center">
                                     <span className="fs-4 text-center">{userCard.meetings}</span>
-                                    <small>встречь</small>
+                                    <small>Meetings</small>
                                 </div>
                             </div>
 

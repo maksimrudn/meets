@@ -34,7 +34,7 @@ export default function NotificationList() {
 
             <div className="Header">
                 <span className="GoBackBtn" onClick={() => history.goBack()}><GoBackIcon /></span>
-                <span className="Title">Уведомления</span>
+                <span className="Title">Notifications</span>
                 <span></span>
             </div>
 
@@ -79,7 +79,7 @@ export default function NotificationList() {
                                 <span className="InfoIcon"><InfoIcon /></span>
                                 <div className="Message">
                                     <div className="Title">
-                                        <div>Встреча {moment(item.meeting?.meetingDate).format('DD.MM.YYYY HH:mm')}</div>
+                                        <div>Meetings {moment(item.meeting?.meetingDate).format('DD.MM.YYYY HH:mm')}</div>
                                         <div><Link
                                             to={location => ({
                                                 ...location,
