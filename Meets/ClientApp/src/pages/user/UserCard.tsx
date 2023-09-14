@@ -251,7 +251,7 @@ function UserCard(): JSX.Element {
 
                             <div className="d-flex justify-content-end">
                                 <span className="col-8 d-flex justify-content-center">
-                                    <h2>{userCard.fullName || 'не указано'}</h2>
+                                    <h2>{userCard.fullName || 'not specified'}</h2>
                                 </span>
 
                                 <span className="col-2 d-flex justify-content-end">
@@ -357,13 +357,13 @@ function UserCard(): JSX.Element {
 
                             <div className="Tags">
                                 <div className="d-flex justify-content-start align-items-center ms-2 my-3">
-                                    <span className="fs-4 me-3">Тэги</span>
+                                    <span className="fs-4 me-3">Tags</span>
                                     {(currentUser.user?.user?.id === userCard.id) &&
                                         <span className="IconEdit" role="button" onClick={() => onClickEditIcon(UserFieldNames.Tags)}><EditIcon /></span>
                                     }
                                 </div>
                                 <div className="ms-2">
-                                    {!userCard.tags?.length ? 'не указано' : userCard.tags.map((tag: any) =>
+                                    {!userCard.tags?.length ? 'not specified' : userCard.tags.map((tag: any) =>
                                         <span key={tag} className="Tag badge bg-secondary rounded-pill text-black py-2 px-3 me-2">{tag}</span>
                                     )}
                                 </div>

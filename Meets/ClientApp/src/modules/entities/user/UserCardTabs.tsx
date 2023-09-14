@@ -240,7 +240,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 <div className="Main mb-2">
 
                         <div className="d-flex justify-content-start mb-5">
-                                        <span className="fs-5 me-4">{props.user.description || 'О себе ничего не указано'}</span>
+                                        <span className="fs-5 me-4">{props.user.description || 'About is not specified'}</span>
                                         {(currentUser.userId === props.user.id) &&
                                 <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Description)}><EditIcon /></span>
                             }
@@ -250,7 +250,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconBirthDate text-white me-2">
                                             <BirthDateIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.birthDate && (moment().diff(moment(props.user.birthDate), 'years')) + ' лет' || 'не указано'}</span>
+                                        <span className="fs-5 me-4">{props.user.birthDate && (moment().diff(moment(props.user.birthDate), 'years')) + ' лет' || 'not specified'}</span>
                                         {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.BirthDate)}><EditIcon /></span>
                                         }
@@ -262,7 +262,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                 <path id="Icon_metro-location" data-name="Icon metro-location" d="M16.257,1.392A10.223,10.223,0,0,0,6.034,11.616c0,10.223,10.223,22.492,10.223,22.492S26.481,21.839,26.481,11.616A10.223,10.223,0,0,0,16.257,1.392Zm0,16.485a6.262,6.262,0,1,1,6.262-6.262,6.262,6.262,0,0,1-6.262,6.262ZM12.3,11.616a3.962,3.962,0,1,1,3.962,3.962A3.962,3.962,0,0,1,12.3,11.616Z" transform="translate(-5.534 -0.892)" fill="#fff" stroke="rgba(0,0,0,0.2)" stroke-width="1" />
                                             </svg>
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.city || 'не указано'}</span>
+                                        <span className="fs-5 me-4">{props.user.city || 'not specified'}</span>
                                         {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.City)}><EditIcon /></span>
                                         }
@@ -272,7 +272,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconGrowth text-white me-2">
                                             <GrowthIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.growth ? `${props.user.growth} см` : 'не указано'}</span>
+                                        <span className="fs-5 me-4">{props.user.growth ? `${props.user.growth} см` : 'not specified'}</span>
                                         {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Growth)}><EditIcon /></span>
                                         }
@@ -282,7 +282,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconWeight text-white me-2">
                                             <WeightIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.weight ? `${props.user.weight} кг` : 'не указано'}</span>
+                                        <span className="fs-5 me-4">{props.user.weight ? `${props.user.weight} кг` : 'not specified'}</span>
                                         {(currentUser.userId === props.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Weight)}><EditIcon /></span>
                                         }
@@ -297,7 +297,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (props.user.id !== currentUser.userId && !props.learnings?.length) return null;
                         return (
                             <div className="TabLearning">
-                                <div className="Desc">Пройденные учебные курсы и события</div>
+                                <div className="Desc">Completed courses and education events</div>
 
                                 {props.learnings && props.learnings.map((learning: Learning) =>
                                     <div className="Item" key={learning.id}>
@@ -338,7 +338,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (props.user.id !== currentUser.userId && !props.works?.length) return null;
                         return (
                             <div className="TabWork">
-                                <div className="Desc">Места работы и другой занятости</div>
+                                <div className="Desc">Places of work and other occupation</div>
 
                                 {props.works && props.works.map((work: Work) =>
                                     <div className="Item" key={work.id}>
@@ -385,7 +385,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (props.user.id !== currentUser.userId && !props.activities?.length) return null;
                         return (
                             <div className="TabActivity">
-                                <div className="Desc">Хобби, увлечения и другие дела, которым периодически уделяется время</div>
+                                <div className="Desc">Hobby, interests and other businesses that are payed attention periodically </div>
 
                                 {props.activities && props.activities.map((activity: Activity) =>
                                     <div className="Item" key={activity.id}>
@@ -418,7 +418,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (props.user.id !== currentUser.userId && !props.facts?.length) return null;
                         return (
                             <div className="TabFacts">
-                                <div className="Desc">Любые факты о себе</div>
+                                <div className="Desc">Whatever facts about yourself</div>
 
                                 {props.facts && props.facts.map((fact: Fact) =>
                                     <div className="Item" key={fact.id}>
