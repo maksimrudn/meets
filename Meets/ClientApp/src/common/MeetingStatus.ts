@@ -7,19 +7,19 @@ export type MeetingStatusItems = 'Invite' | 'Discussion' | 'Confirmed' | 'Cancel
 
 export const MeetingStatus: Record<MeetingStatusItems, IMeetingStatusItem> = {
     Invite: {
-        Title: 'Приглашение',
+        Title: 'Invite',
         Code: 'Invite'
     },
     Discussion: {
-        Title: 'Обсуждение',
+        Title: 'Discussion',
         Code: 'Discussion'
     },
     Confirmed: {
-        Title: 'Подтверждено',
+        Title: 'Confirmed',
         Code: 'Confirmed'
     },
     Canceled: {
-        Title: 'Завершено',
+        Title: 'Canceled',
         Code: 'Canceled'
     }
 }

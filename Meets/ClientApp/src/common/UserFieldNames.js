@@ -18,12 +18,12 @@ export const UserFieldNames = {
  * */
 export function getUserEditorModalTitle(fieldName) {
     switch (fieldName) {
-        case UserFieldNames.FullName: return 'Имя';
-        case UserFieldNames.BirthDate: return 'Дата рождения';
-        case UserFieldNames.City: return 'Город';
-        case UserFieldNames.Description: return 'О себе';
-        case UserFieldNames.Growth: return 'Рост';
-        case UserFieldNames.Weight: return 'Вес';
-        case UserFieldNames.Tags: return 'Тэги';
+        case UserFieldNames.FullName: return 'Name';
+        case UserFieldNames.BirthDate: return 'Birth date';
+        case UserFieldNames.City: return 'City';
+        case UserFieldNames.Description: return 'Description';
+        case UserFieldNames.Growth: return 'Height';
+        case UserFieldNames.Weight: return 'Weight';
+        case UserFieldNames.Tags: return 'Tags';
     }
 }

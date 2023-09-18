@@ -13,7 +13,7 @@ namespace Meets.Controllers.api.dto.Account
 
         [Required]
         [StringLength(100)]
-        [Display(Name = "Полное имя")]
+        [Display(Name = "Full name")]
         public string FullName { get; set; }
         public string City { get; set; }
         public string Avatar { get; set; }
@@ -22,14 +22,14 @@ namespace Meets.Controllers.api.dto.Account
         public string Tags { get; set; } = "";
 
         [Required]
-        [StringLength(100, ErrorMessage = "Длинна пароля должна быть минимум {2} и максимум {1} символов.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Lenghth of password must be minimum {2} and maximum {1} symbols", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Подтверждение пароля")]
-        [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
+        [Display(Name = "Password confirmation")]
+        [Compare("Password", ErrorMessage = "Passwords are different.")]
         public string ConfirmPassword { get; set; }
     }
 }

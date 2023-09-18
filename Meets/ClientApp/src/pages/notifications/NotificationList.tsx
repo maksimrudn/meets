@@ -40,7 +40,7 @@ export default function NotificationList() {
             <div className="Content">
 
                 <div className="Today">
-                    <div className="Title">Сегодня</div>
+                    <div className="Title">Today</div>
                     <div className="Notifications">
                         {notifications.length > 0 && notifications.filter((item: NotificationDTO) => moment(item.createdDate).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')).map((item: NotificationDTO) =>
                             <div className="Item">
@@ -71,7 +71,7 @@ export default function NotificationList() {
                 </div>
 
                 <div className="Yesterday">
-                    <div className="Title">Вчера</div>
+                    <div className="Title">Yesterday</div>
                     <div className="Notifications">
                         {notifications.length > 0 && notifications.filter((item: NotificationDTO) => moment(item.createdDate).format('DD-MM-YYYY') === moment().add(-1, 'days').format('DD-MM-YYYY')).map((item: NotificationDTO) =>
                             <div className="Item">
@@ -102,7 +102,7 @@ export default function NotificationList() {
                 </div>
 
                 <div className="Past">
-                    <div className="Title">Прошедшие</div>
+                    <div className="Title">Past</div>
                     <div className="Notifications">
                         {notifications.length > 0 && notifications.filter((item: NotificationDTO) => moment(item.createdDate).format('DD-MM-YYYY') <= moment().add(1, 'days').format('DD-MM-YYYY')).map((item: NotificationDTO) =>
                             <div className="Item">

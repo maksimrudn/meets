@@ -119,14 +119,14 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                 }}
                 className="Header"
             >
-                Приглашение
+                Invitation
             </ModalHeader>
             <ModalBody
                 className="Body"
             >
                 <form onSubmit={handleSubmit(handleInvite)}>
                     <div className="col-12 mb-2">
-                        <label className="form-label">Дата / Время</label>
+                        <label className="form-label">Date / Time</label>
                         <DateTime
                             onChange={onChangeDate}
                             initialValue={meeting.meetRequest.meetingDate && moment(meeting.meetRequest.meetingDate).format('DD.MM.YYYY HH:mm')  }
@@ -145,11 +145,11 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                             //timeFormat={false}
                             closeOnSelect={true}
                         />
-                        {errors.Date && <p className='w-100 text-center text-danger mt-2'>Обязательно к заполнению</p>}
+                        {errors.Date && <p className='w-100 text-center text-danger mt-2'>Required</p>}
                     </div>
 
                     <div className="col-12 mb-2">
-                        <label className="form-label">Сообщение</label>
+                        <label className="form-label">Message</label>
                         <textarea
                             className="form-control"
                             defaultValue={meeting.meetRequest.message}
@@ -160,7 +160,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                     </div>
 
                     <div className="col-12 d-flex justify-content-between align-items-center">
-                        <span className="form-label">Онлайн встреча</span>
+                        <span className="form-label">Online</span>
                         <div className="Switch mb-3">
                             <input
                                 type="checkbox"
@@ -178,7 +178,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                             return (
                                 <>
                                     <div className="col-12 mb-2">
-                                        <span className="form-label">Место встречи</span>
+                                        <span className="form-label">Place</span>
                                         <textarea {
                                             ...register('Place',
                                                 {
@@ -187,12 +187,12 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                             )}
                                             className="form-control"
                                             value={meeting.meetRequest.place}
-                                            placeholder="Тверская ул., 22, Москва, 127006"
+                                            placeholder="Tverskaya, 22, Moscow"
                                             onChange={onChangePlace}
                                             rows={4}
                                             disabled={(meeting.isLoading && !meeting.dataLoaded)}
                                         />
-                                        {errors.Place && <p className='w-100 text-center text-danger mt-2'>Обязательно к заполнению</p>}
+                                        {errors.Place && <p className='w-100 text-center text-danger mt-2'>Required</p>}
                                     </div>
 
                                     <button type="button" className="SetPlaceBtn btn mt-3" onClick={mapSelectModalToggle}>
@@ -205,7 +205,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                             return (
                                 <>
                                     <div className="col-12 mb-2">
-                                        <span className="form-label">Место встречи</span>
+                                        <span className="form-label">Place</span>
                                         <textarea {
                                             ...register('Place',
                                                 {
@@ -220,10 +220,10 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
                                             rows={4}
                                             disabled={(meeting.isLoading && !meeting.dataLoaded)}
                                         />
-                                        {errors.Place && <p className='w-100 text-center text-danger mt-2'>Обязательно к заполнению</p>}
+                                        {errors.Place && <p className='w-100 text-center text-danger mt-2'>Required</p>}
                                     </div>
 
-                                    <div className="col-12 text-start text-muted">Здесь можно указать место встречи онлайн - ссылка на встречу в zoom или другой контакт</div>
+                                    <div className="col-12 text-start text-muted">Here you can specify place of meeting - zoom link or another contact information</div>
                                 </>
                             );
                         }
@@ -231,7 +231,7 @@ export default function MeetRequestModal(props: IMeetRequestModalProps) {
 
                     {meeting.error && <p className='text-danger w-100 text-center mt-2'>{meeting.error}</p>}
 
-                    <button type="submit" className="SaveBtn btn mt-3">Отправить</button>
+                    <button type="submit" className="SaveBtn btn mt-3">Send</button>
                 </form>
 
                 {isOpenMapSelectModal &&

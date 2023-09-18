@@ -71,7 +71,7 @@ export default function UserItem(props: UserItemProps) {
                     {props.user.id !== currentUser.id &&
                         <button className="Meet btn" type="button" onClick={meetRequestModalToggle} disabled={props.user.isInvited}>
                             <span className="Icon"><CoffeeIcon /></span>
-                            <span className="Text" onClick={() => meetRequestModalToggle()}>Пригласить</span>
+                            <span className="Text" onClick={() => meetRequestModalToggle()}>Invite</span>
                         </button>
                     }
 

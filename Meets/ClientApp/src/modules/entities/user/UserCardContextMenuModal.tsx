@@ -71,17 +71,17 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                 className="Body"
             >
                 <div className="d-flex flex-column justify-content-center">
-                    <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={currentUser.avatar ? false : true}>Открыть фото</button>
+                    <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={currentUser.avatar ? false : true}>Open photo</button>
                     {state.user.id === currentUser.id &&
                         <>
                             <div className="FileUpload">
-                                <label className="Action btn mb-3" htmlFor="fileupload">Изменить фото</label>
+                                <label className="Action btn mb-3" htmlFor="fileupload">Change photo</label>
                                 <input type="file" id="fileupload" name="photo" onChange={handleFileUploadChange} />
                             </div>
-                            <button type="button" className="Action btn mb-3" onClick={toggleRemoveAvatarModal}>Удалить фото</button>
+                            <button type="button" className="Action btn mb-3" onClick={toggleRemoveAvatarModal}>Remove photo</button>
                         </>
                     }
-                    <button type="button" className="Cancel btn" onClick={props.toggle}>Отменить</button>
+                    <button type="button" className="Cancel btn" onClick={props.toggle}>Cancel</button>
                 </div>
 
 

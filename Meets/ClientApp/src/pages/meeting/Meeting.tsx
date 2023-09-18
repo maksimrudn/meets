@@ -218,7 +218,7 @@ export default function Meeting(props: IMeetingProps) {
                                             if (meetingStore.meeting.status !== MeetingStatus.Discussion.Code &&
                                                 meetingStore.meeting.status !== MeetingStatus.Confirmed.Code &&
                                                 meetingStore.meeting.status !== MeetingStatus.Canceled.Code) {
-                                                return (<button className="StatusBtn" type="button" onClick={discussOnClick}>Обсудить</button>);
+                                                return (<button className="StatusBtn" type="button" onClick={discussOnClick}>Discuss</button>);
                                             }
                                         }
                                     })()}
@@ -227,7 +227,7 @@ export default function Meeting(props: IMeetingProps) {
 
                                             if (meetingStore.meeting.status !== MeetingStatus.Confirmed.Code &&
                                                 meetingStore.meeting.status !== MeetingStatus.Canceled.Code) {
-                                                return (<button className="StatusBtn" type="button" onClick={confirmOnClick}>Подтвердить</button>);
+                                                return (<button className="StatusBtn" type="button" onClick={confirmOnClick}>Approve</button>);
                                             }
                                         }
                                     })()}

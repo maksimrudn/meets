@@ -119,7 +119,7 @@ function UserCard(): JSX.Element {
         var keywords = '';
         var description = '';
 
-        var userTitle = userStore.user?.fullName ?? "Название не указано";
+        var userTitle = userStore.user?.fullName ?? "Name is not specified";
         title = "Пользователь: " + userTitle + " - посмотреть все события на EventSurfing";
         keywords = "пользователь " + userTitle + ", " + "расписание " + userTitle;
         description = "Описание пользователя " + userTitle;
@@ -172,7 +172,7 @@ function UserCard(): JSX.Element {
 
                             <div className="d-flex justify-content-end">
                                 <span className="col-8 d-flex justify-content-center">
-                                    <h2>{userStore.user?.fullName || 'не указано'}</h2>
+                                    <h2>{userStore.user?.fullName || 'not specified'}</h2>
                                 </span>
 
                                 <span className="col-2 d-flex justify-content-end">
@@ -218,7 +218,7 @@ function UserCard(): JSX.Element {
                                                     <span className="text-white me-1">
                                                         <LocationIconSvg />
                                                     </span>
-                                                    <span>{userStore.user.distance} км от вас</span>
+                                                    <span>{userStore.user.distance} km far</span>
 
 
                                                 </span>
@@ -262,29 +262,29 @@ function UserCard(): JSX.Element {
                             <div className="ActivityInfo d-flex justify-content-evenly">
                                 <div className="d-flex flex-column justify-content-center">
                                     <span className="fs-4 text-center">{userStore.user?.subscribers}</span>
-                                    <small>подписчиков</small>
+                                    <small>Subscribers</small>
                                 </div>
 
                                 <div className="d-flex flex-column justify-content-center">
                                     <span className="fs-4 text-center">{userStore.user?.subscriptions}</span>
-                                    <small>подписок</small>
+                                    <small>Subscribtions</small>
                                 </div>
 
                                 <div className=" d-flex flex-column justify-content-center">
                                     <span className="fs-4 text-center">{userStore.user?.meetings}</span>
-                                    <small>встречь</small>
+                                    <small>Meetings</small>
                                 </div>
                             </div>
 
                             <div className="Tags">
                                 <div className="d-flex justify-content-start align-items-center ms-2 my-3">
-                                    <span className="fs-4 me-3">Тэги</span>
+                                    <span className="fs-4 me-3">Tags</span>
                                     {userStore.isOwner &&
                                         <span className="IconEdit" role="button" onClick={() => onClickEditIcon(UserFieldNames.Tags)}><EditIcon /></span>
                                     }
                                 </div>
                                 <div className="ms-2">
-                                    {!userStore.user?.tags?.length ? 'не указано' : userStore.user.tags.map((tag: any) =>
+                                    {!userStore.user?.tags?.length ? 'not specified' : userStore.user.tags.map((tag: any) =>
                                         <span key={tag} className="Tag badge bg-secondary rounded-pill text-black py-2 px-3 me-2">{tag}</span>
                                     )}
                                 </div>

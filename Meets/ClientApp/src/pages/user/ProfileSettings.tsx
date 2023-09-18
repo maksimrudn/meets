@@ -75,7 +75,7 @@ function ProfileSettings() {
 
             <div className="Header mt-3">
                 <span className="GoBackBtn" onClick={() => { history.goBack(); }}><ArrowIcon /></span>
-                <span className="Title">Настройки</span>
+                <span className="Title">Settings</span>
                 <span className="SaveChangesBtn" onClick={handleEdit}><CheckMarkIconSvg /></span>
             </div>
 
@@ -91,7 +91,7 @@ function ProfileSettings() {
 
 
                         {!settings.profile.emailConfirmed &&
-                            <div className="Message">Подтвердите адрес эл.почты чтобы защитить аккаунт</div>
+                            <div className="Message">Confirm email for protection of your account</div>
                         }
                     </Link>
                 </div>
@@ -240,14 +240,14 @@ function ProfileSettings() {
                 />
             </div>
 
-            <button type="button" className="LogOut btn mb-5" onClick={handleLogOut}>Выйти</button>
+            <button type="button" className="LogOut btn mb-5" onClick={handleLogOut}>Log Out</button>
 
             <button type="button" className="RemoveAccount btn mb-5" onClick={toggleRemoveAccountModal}>Remove account</button>
 
             <ConfirmationModal
                 isOpen={isOpenRemoveAccountModal}
                 toggle={toggleRemoveAccountModal}
-                message='Уверены что хотите удалить аккаунт?'
+                message='Are you sure that you want to delete your account?'
                 confirmAction={handleRemoveAccount}
             />
 

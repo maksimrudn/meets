@@ -160,7 +160,7 @@ export default function UserEditorModal(props: UserEditorModalProps) {
                         }
                     })()}
 
-                    <button type="button" className="SaveBtn btn mt-3" onClick={handleSaveChanges}><span className="fs-6 text-white">Сохранить</span></button>
+                    <button type="button" className="SaveBtn btn mt-3" onClick={handleSaveChanges}><span className="fs-6 text-white">Save</span></button>
 
                 </ModalBody>
 

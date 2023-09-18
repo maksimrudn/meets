@@ -1,4 +1,4 @@
 ﻿export const MeetingListTabs = {
-    Outbox: 'Исходящие',
-    Inbox: 'Входящие'
+    Outbox: 'Outbox',
+    Inbox: 'Inbox'
 }

@@ -212,7 +212,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                 <div className="Main mb-2">
 
                                     <div className="d-flex justify-content-start mb-5">
-                                        <span className="fs-5 me-4">{state.user.description || 'О себе ничего не указано'}</span>
+                                        <span className="fs-5 me-4">{state.user.description || 'Nothing is specified'}</span>
                                         {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Description)}><EditIcon /></span>
                                         }
@@ -222,7 +222,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconBirthDate text-white me-2">
                                             <BirthDateIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{state.user.birthDate && (moment().diff(moment(state.user.birthDate), 'years')) + ' лет' || 'не указано'}</span>
+                                        <span className="fs-5 me-4">{state.user.birthDate && (moment().diff(moment(state.user.birthDate), 'years')) + ' years' || 'not specified'}</span>
                                         {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.BirthDate)}><EditIcon /></span>
                                         }
@@ -234,7 +234,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                 <path id="Icon_metro-location" data-name="Icon metro-location" d="M16.257,1.392A10.223,10.223,0,0,0,6.034,11.616c0,10.223,10.223,22.492,10.223,22.492S26.481,21.839,26.481,11.616A10.223,10.223,0,0,0,16.257,1.392Zm0,16.485a6.262,6.262,0,1,1,6.262-6.262,6.262,6.262,0,0,1-6.262,6.262ZM12.3,11.616a3.962,3.962,0,1,1,3.962,3.962A3.962,3.962,0,0,1,12.3,11.616Z" transform="translate(-5.534 -0.892)" fill="#fff" stroke="rgba(0,0,0,0.2)" stroke-width="1" />
                                             </svg>
                                         </span>
-                                        <span className="fs-5 me-4">{state.user.city || 'не указано'}</span>
+                                        <span className="fs-5 me-4">{state.user.city || 'not specifie'}</span>
                                         {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.City)}><EditIcon /></span>
                                         }
@@ -244,7 +244,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconGrowth text-white me-2">
                                             <GrowthIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{state.user.growth ? `${state.user.growth} см` : 'не указано'}</span>
+                                        <span className="fs-5 me-4">{state.user.growth ? `${state.user.growth} sm` : 'not specifie'}</span>
                                         {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Growth)}><EditIcon /></span>
                                         }
@@ -254,7 +254,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconWeight text-white me-2">
                                             <WeightIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{state.user.weight ? `${state.user.weight} кг` : 'не указано'}</span>
+                                        <span className="fs-5 me-4">{state.user.weight ? `${state.user.weight} sm` : 'not specifie'}</span>
                                         {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Weight)}><EditIcon /></span>
                                         }
