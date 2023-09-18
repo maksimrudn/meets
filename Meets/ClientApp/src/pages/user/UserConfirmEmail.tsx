@@ -58,14 +58,14 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setEmail(e.target.value) }}
                             readOnly
                         />
-                        {errors.Email?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Обязательно к заполнению</p>}
-                        {errors.Email?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Неверный формат</p>}
-                        {showMessage && <p className='text-danger w-100 text-start mt-2'>Письмо с подтверждением отправлено. Проверьте почту.</p>}
+                        {errors.Email?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Required</p>}
+                        {errors.Email?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Format is incorrect</p>}
+                        {showMessage && <p className='text-danger w-100 text-start mt-2'>Latter with confirmation was sent. Check your email</p>}
                     </div>
                 </div>
 
                 <div className="col-12 text-center mt-2">
-                    <button type="submit" className="Submit btn">Отправить письмо с подтверждением</button>
+                    <button type="submit" className="Submit btn">Send latter with confirmation</button>
                 </div>
             </form>
 

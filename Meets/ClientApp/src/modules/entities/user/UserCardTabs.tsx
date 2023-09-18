@@ -269,7 +269,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (state.user.id !== currentUser.id && !state.user.learnings?.length) return null;
                         return (
                             <div className="TabLearning">
-                                <div className="Desc">Пройденные учебные курсы и события</div>
+                                <div className="Desc">Completed courses and education events</div>
 
                                 {state.user.learnings && state.user.learnings.map((learning: Learning) =>
                                     <div className="Item" key={learning.id}>
@@ -308,7 +308,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (state.user.id !== currentUser.id && !state.user.works?.length) return null;
                         return (
                             <div className="TabWork">
-                                <div className="Desc">Места работы и другой занятости</div>
+                                <div className="Desc">Places of work and other occupation</div>
 
                                 {state.user.works && state.user.works.map((work: Work) =>
                                     <div className="Item" key={work.id}>
@@ -353,7 +353,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (state.user.id !== currentUser.id && !state.user.activities?.length) return null;
                         return (
                             <div className="TabActivity">
-                                <div className="Desc">Хобби, увлечения и другие дела, которым периодически уделяется время</div>
+                                <div className="Desc">Hobby, interests and other businesses that are payed attention periodically </div>
 
                                 {state.user.activities && state.user.activities.map((activity: Activity) =>
                                     <div className="Item" key={activity.id}>
@@ -384,7 +384,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                         if (state.user.id !== currentUser.id && !state.user.facts?.length) return null;
                         return (
                             <div className="TabFacts">
-                                <div className="Desc">Любые факты о себе</div>
+                                <div className="Desc">Whatever facts about yourself</div>
 
                                 {state.user.facts && state.user.facts.map((fact: Fact) =>
                                     <div className="Item" key={fact.id}>

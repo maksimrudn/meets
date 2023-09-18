@@ -232,7 +232,7 @@ function UserCard(): JSX.Element {
                                     <div className="col-9 me-3">
                                         <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={userStore.user?.isInvited}>
                                             <span className="me-4"><CoffeeIcon /></span>
-                                            <span className="fs-5 text-black">Пригласить</span>
+                                            <span className="fs-5 text-black">Invite</span>
                                         </button>
                                     </div>
 
@@ -249,7 +249,7 @@ function UserCard(): JSX.Element {
                                     <div className="col-12">
                                         <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettings}>
                                             <span className="me-4"><ProfileSettingsIcon /></span>
-                                            <span className="fs-5 text-black">Настройки</span>
+                                            <span className="fs-5 text-black">Settings</span>
                                         </Link>
                                     </div>
                                 )

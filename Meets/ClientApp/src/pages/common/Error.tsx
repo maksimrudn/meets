@@ -1,4 +1,5 @@
-﻿import { useHistory, useLocation } from 'react-router-dom';
+﻿import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import ApiError from '../../common/ApiError';
 import IApiError from '../../common/IApiError';
 import CheckIcon from '../../icons/CheckIcon';
@@ -8,7 +9,9 @@ import ExclamationIcon from '../../icons/ExclamationIcon';
 import './Error.scss';
 
 
-function Error() {
+export default function Error() {
+
+    
     let history = useHistory();
     let location = useLocation<IApiError>();
 
@@ -21,15 +24,14 @@ function Error() {
 
                 <div className="Icon mx-auto mb-5"><ExclamationIcon /></div>
 
-                <div className="fs-3 text-center mb-5">Ошибка {location.state.code}</div>
+                <div className="fs-3 text-center mb-5">Error {location.state.code}</div>
 
                 <div className="Text mb-3">{location.state.message}</div>
 
-                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>На главную</button></div>
+                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>Main page</button></div>
 
             </div>
         </>
     );
 }
 
-export default Error;

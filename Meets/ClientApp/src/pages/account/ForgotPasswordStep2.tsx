@@ -13,11 +13,11 @@ function ForgotPasswordStep2() {
 
                 <div className="Icon mx-auto mb-5"><EmailOutlineIcon /></div>
 
-                <div className="fs-3 text-center mb-5">Восстановить пароль</div>
+                <div className="fs-3 text-center mb-5">Recovery password</div>
 
-                <div className="Text mb-3">На указанный email было выслано письмо для восстановления пароля</div>
+                <div className="Text mb-3">To specified email the email for recovery was sent</div>
 
-                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>На главную</button></div>
+                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>Main page</button></div>
 
             </div>
         </>

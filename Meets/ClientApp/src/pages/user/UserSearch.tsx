@@ -66,7 +66,7 @@ export default function UserSearch() {
 
                 <div className="Header">
                     <span className="Button ms-3" onClick={() => { history.goBack(); }}><GoBackIcon /></span>
-                    <h3 className="fw-bold mb-0">Поиск</h3>
+                    <h3 className="fw-bold mb-0">Search</h3>
                     <span className="Button me-3" onClick={() => filterModalToggle()}><SlidersIcon /></span>
                 </div>
 

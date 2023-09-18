@@ -13,9 +13,9 @@ function Lockout() {
 
                 <div className="Icon mx-auto mb-5"><BlockedIcon /></div>
 
-                <div className="Title fs-3 text-center">Заблокировано</div>
+                <div className="Title fs-3 text-center">Blocked</div>
 
-                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>На главную</button></div>
+                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>Main page</button></div>
 
             </div>
 

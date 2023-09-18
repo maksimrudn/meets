@@ -100,7 +100,7 @@ function ProfileSettings() {
                     <Link className="Link" to={Routes.UserChangePassword}>
                         <div className="Row">
                             <div className="Wrap">
-                                <div className="Text">Пароль</div>
+                                <div className="Text">Password</div>
                             </div>
                             <div className="Icon"><ArrowIcon /></div>
                         </div>
@@ -142,11 +142,10 @@ function ProfileSettings() {
                         />
                         <label htmlFor="invite"></label>
                     </div>
-                    <span className="Title">Открыт для приглашений</span>
+                    <span className="Title">Open for invitations</span>
                 </div>
                 <div className="Desc">
-                    Снимите эту галочку, чтобы вам не могли присылать приглашения. Например пока вы слишком заняты.
-                    На вас смогут подписаться и как только вы станете доступны - подписчики будут проинформированы.
+                    Uncheck for unable sending invitations for you. For example, if you are busy. People can subscribe on you and when you will be available than subscribers will be informed.
                 </div>
             </div>
 
@@ -167,13 +166,13 @@ function ProfileSettings() {
                         />
                         <label htmlFor="search"></label>
                     </div>
-                    <span className="Title">Показывать меня в поиске</span>
+                    <span className="Title">Show me in search</span>
                 </div>
             </div>
 
             <div className="GeoTracking mb-3">
                 <div className="d-inline-flex w-100 align-items-center justify-content-between">
-                    <span className="Title">Гео-отслеживание</span>
+                    <span className="Title">Geo-tracking</span>
                     <div className="Switch mb-4">
                         <input
                             type="checkbox"
@@ -191,12 +190,12 @@ function ProfileSettings() {
                     </div>
                 </div>
                 <div className="Desc">
-                    Ваше текущее местоположение будет отслеживаться для того, чтобы люди по близости могли вас найти
+                    Your current position will be tracked in order to people near you can find you.
                 </div>
             </div>
 
             <div className="Activity mb-4">
-                <label className="form-label ms-2">Сфера деятельности</label>
+                <label className="form-label ms-2">Occupation</label>
                 <input
                     className="form-control"
                     type="text"
@@ -211,7 +210,7 @@ function ProfileSettings() {
             </div>
 
             <div className="Company mb-4">
-                <label className="form-label ms-2">Компания</label>
+                <label className="form-label ms-2">Company</label>
                 <input
                     className="form-control"
                     type="text"
@@ -227,7 +226,7 @@ function ProfileSettings() {
             </div>
 
             <div className="Post mb-5">
-                <label className="form-label ms-2">Должность</label>
+                <label className="form-label ms-2">Position</label>
                 <input
                     className="form-control"
                     type="text"
@@ -243,7 +242,7 @@ function ProfileSettings() {
 
             <button type="button" className="LogOut btn mb-5" onClick={handleLogOut}>Выйти</button>
 
-            <button type="button" className="RemoveAccount btn mb-5" onClick={toggleRemoveAccountModal}>Удалить аккаунт</button>
+            <button type="button" className="RemoveAccount btn mb-5" onClick={toggleRemoveAccountModal}>Remove account</button>
 
             <ConfirmationModal
                 isOpen={isOpenRemoveAccountModal}

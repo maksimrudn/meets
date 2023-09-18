@@ -34,7 +34,7 @@ export default function UserChangePassword() {
 
             <div className="Header d-flex justify-content-start align-items-center mb-5">
                 <span className="GoBackBtn me-5" role="button" onClick={() => history.goBack()}><GoBackIcon /></span>
-                <span className='Title'>Изменение пароля</span>
+                <span className='Title'>Password changing</span>
             </div>
 
             <div className="Data d-flex flex-column justify-content-center h-100">
@@ -43,7 +43,7 @@ export default function UserChangePassword() {
 
                     <div className="col-12">
                         <div className="mb-4">
-                            <label className="form-label ms-2">Старый пароль</label>
+                            <label className="form-label ms-2">Old password</label>
                             <input {
                                 ...register('OldPassword',
                                     {
@@ -57,13 +57,13 @@ export default function UserChangePassword() {
                                 value={oldPassword}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setOldPassword(e.target.value) }}
                             />
-                            {errors.OldPassword && <p className='Error'>Обязательно к заполнению</p>}
+                            {errors.OldPassword && <p className='Error'>Required</p>}
                         </div>
                     </div>
 
                     <div className="col-12">
                         <div className="mb-4">
-                            <label className="form-label ms-2">Новый пароль</label>
+                            <label className="form-label ms-2">New password</label>
                             <input {
                                 ...register('NewPassword',
                                     {
@@ -79,15 +79,15 @@ export default function UserChangePassword() {
                                 value={newPassword}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setNewPassword(e.target.value) }}
                             />
-                            {errors.NewPassword?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Обязательно к заполнению</p>}
-                            {errors.NewPassword?.type === 'minLength' && <p className='text-danger w-100 text-center mt-2'>Пароль должен содержать минимум 8 символов</p>}
-                            {errors.NewPassword?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Пароль должен содержать хотя бы одну цифру (0-9)</p>}
+                            {errors.NewPassword?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Required</p>}
+                            {errors.NewPassword?.type === 'minLength' && <p className='text-danger w-100 text-center mt-2'>Password must have at least 8 symbols</p>}
+                            {errors.NewPassword?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Password must have at least one digit (0-9)</p>}
                         </div>
                     </div>
 
                     <div className="col-12">
                         <div className="mb-4">
-                            <label className="form-label ms-2">Подтверждение</label>
+                            <label className="form-label ms-2">Confirmation</label>
                             <input {
                                 ...register('ConfirmPassword',
                                     {
@@ -101,13 +101,13 @@ export default function UserChangePassword() {
                                 value={confirmPassword}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setConfirmPassword(e.target.value) }}
                             />
-                            {errors.ConfirmPassword?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Обязательно к заполнению</p>}
-                            {errors.ConfirmPassword?.type === 'validate' && <p className='text-danger w-100 text-center mt-2'>Пароли отличаются</p>}
+                            {errors.ConfirmPassword?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Required</p>}
+                            {errors.ConfirmPassword?.type === 'validate' && <p className='text-danger w-100 text-center mt-2'>Passwords are different</p>}
                         </div>
                     </div>
 
                     <div className="col-12 text-center mt-4">
-                        <button type="submit" className="Save btn">Сохранить</button>
+                        <button type="submit" className="Save btn">Save</button>
                     </div>
                 </form>
             </div>

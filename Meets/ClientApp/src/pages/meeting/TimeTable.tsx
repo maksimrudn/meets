@@ -52,7 +52,7 @@ export default function TimeTable() {
         <div className="TimeTable">
                 <div className="Header">
                     <span className="GoBackBtn" onClick={() => history.goBack()}><GoBackIcon /></span>
-                    <span className="Title">Расписание</span>
+                    <span className="Title">Schedule</span>
                     <span></span>
                 </div>
 
