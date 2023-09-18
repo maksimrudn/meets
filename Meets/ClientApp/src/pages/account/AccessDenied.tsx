@@ -13,9 +13,9 @@ function AccessDenied() {
 
                 <div className="Icon mx-auto mb-5"><BlockedIcon /></div>
 
-                <div className="Title fs-3 text-center">Доступ запрещён</div>
+                <div className="Title fs-3 text-center">Access is denied</div>
 
-                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>На главную</button></div>
+                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>Main page</button></div>
 
             </div>
 

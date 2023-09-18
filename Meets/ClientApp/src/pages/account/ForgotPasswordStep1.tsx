@@ -22,7 +22,7 @@ export default function ForgotPasswordStep1() {
 
             history.push('/account/forgotPasswordStep2');
         } catch (err) {
-            history.push(Routes.Error, err );
+            history.push(Routes.Error);//, err );
         }
     }
 
@@ -35,9 +35,9 @@ export default function ForgotPasswordStep1() {
                 </div>
 
                 <div className="Data d-flex flex-column justify-content-center h-100">
-                    <div className="fs-3 text-center mb-5">Восстановить пароль</div>
+                    <div className="fs-3 text-center mb-5">Recovery password</div>
 
-                    <div className="Text mb-3">Введите email на который будет выслана ссылка для восстановления</div>
+                    <div className="Text mb-3">Enter email to which the link for recovery will be sent</div>
 
                     <form className="d-block" onSubmit={onSubmit}>
 
@@ -47,7 +47,7 @@ export default function ForgotPasswordStep1() {
                         </div>
 
                         <div className="col-12 text-center">
-                            <button type="submit" className="Send btn">Отправить</button>
+                            <button type="submit" className="Send btn">Send</button>
                         </div>
 
                     </form>

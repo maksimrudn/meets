@@ -16,11 +16,11 @@ function ConfirmEmailError() {
 
                 <div className="Icon mx-auto mb-5"><ExclamationIcon /></div>
 
-                <div className="fs-3 text-center mb-5">Email не подтверждён!</div>
+                <div className="fs-3 text-center mb-5">Email is not confirmed!</div>
 
-                <div className="Text mb-3">Ссылка на подтверждение email устарела. Создайте новый запрос на подтверждение в настройках</div>
+                <div className="Text mb-3">Link for confirmation is outdated. Make new request for confirmation in settings. </div>
 
-                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>На главную</button></div>
+                <div className="d-flex justify-content-center"><button type='button' className='Action btn' onClick={() => history.push('/')}>Main page</button></div>
 
             </div>
         </>

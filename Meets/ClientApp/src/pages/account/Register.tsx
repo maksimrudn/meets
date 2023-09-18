@@ -55,7 +55,7 @@ function Register() {
                 </div>
 
                 <div className="Data d-flex flex-column justify-content-center h-100">
-                    <div className="fs-3 text-center mb-2">Регистрация</div>
+                    <div className="fs-3 text-center mb-2">Registration</div>
 
                     <form className="row g-1 p-3 p-md-4" onSubmit={handleSubmit(handleRegister)}>
                         <div className="col-12">
@@ -69,11 +69,11 @@ function Register() {
                                             }
                                         )}
                                         className="form-control form-control-lg"
-                                        placeholder="Полное имя"
+                                        placeholder="Full name"
                                         value={fullName}
                                         onChange={(e) => { setFullName(e.target.value) }}
                                     />
-                                    {errors.FullName && <p className='text-danger w-100 text-center mt-2'>Обязательно к заполнению</p>}
+                                    {errors.FullName && <p className='text-danger w-100 text-center mt-2'>Required</p>}
                                 </div>
                             </div>
                         </div>
@@ -94,8 +94,8 @@ function Register() {
                                         value={email}
                                         onChange={(e) => { setEmail(e.target.value) }}
                                     />
-                                    {errors.Email?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Обязательно к заполнению</p>}
-                                    {errors.Email?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Неверный формат</p>}
+                                    {errors.Email?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Required</p>}
+                                    {errors.Email?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Format is incorrect</p>}
                                 </div>
                             </div>
                         </div>
@@ -119,9 +119,9 @@ function Register() {
                                         value={password}
                                         onChange={(e) => { setPassword(e.target.value) }}
                                     />
-                                    {errors.Password?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Обязательно к заполнению</p>}
-                                    {errors.Password?.type === 'minLength' && <p className='text-danger w-100 text-center mt-2'>Пароль должен содержать минимум 8 символов</p>}
-                                    {errors.Password?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Пароль должен содержать хотя бы одну цифру (0-9)</p>}
+                                    {errors.Password?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Required</p>}
+                                    {errors.Password?.type === 'minLength' && <p className='text-danger w-100 text-center mt-2'>Password must have at least 8 symbols</p>}
+                                    {errors.Password?.type === 'pattern' && <p className='text-danger w-100 text-center mt-2'>Password must have at least one digit (0-9)</p>}
                                 </div>
                             </div>
                         </div>
@@ -143,17 +143,17 @@ function Register() {
                                         value={confirmPassword}
                                         onChange={(e) => { setConfirmPassword(e.target.value) }}
                                     />
-                                    {errors.ConfirmPassword?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Обязательно к заполнению</p>}
-                                    {errors.ConfirmPassword?.type === 'validate' && <p className='text-danger w-100 text-center mt-2'>Пароли отличаются</p>}
+                                    {errors.ConfirmPassword?.type === 'required' && <p className='text-danger w-100 text-center mt-2'>Required</p>}
+                                    {errors.ConfirmPassword?.type === 'validate' && <p className='text-danger w-100 text-center mt-2'>Passwords are different</p>}
                                 </div>
                             </div>
                         </div>
 
                         <div className="col-12 text-center mt-4">
-                            <button type="submit" className="Registration btn">Зарегистрироваться</button>
+                            <button type="submit" className="Registration btn">Sign In</button>
                         </div>
                         <div className="col-12 text-center mt-4">
-                            <span className="ToLogin">Уже зарегистрированы? <Link to="/account/login" title="Войти" className="Link ms-3">Войти</Link></span>
+                            <span className="ToLogin">Уже зарегистрированы? <Link to="/account/login" title="Войти" className="Link ms-3">Log In</Link></span>
                         </div>
                     </form>
                 </div>

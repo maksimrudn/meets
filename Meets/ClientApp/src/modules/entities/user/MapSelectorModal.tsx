@@ -101,7 +101,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
             >
                 <button type="button" className="SetPlaceBtn btn mt-3" onClick={onDetectGeoposition} disabled={isNavigatorEnabled}>
                     <span className="me-3"><LocateMapIcon /></span>
-                    <span>Текущее местоположение</span>
+                    <span>Current position</span>
                 </button>
 
                 <div className="Map">
@@ -115,7 +115,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
                 </div>
 
                 <div className="col-12 mb-2">
-                    <label className="form-label">Адрес</label>
+                    <label className="form-label">Address</label>
                     <textarea
                         className="form-control"
                         value={coords.address}
@@ -125,7 +125,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
                     />
                 </div>
 
-                <button type="button" className="SaveBtn btn mt-3" onClick={onSave}>Выбрать</button>
+                <button type="button" className="SaveBtn btn mt-3" onClick={onSave}>Select</button>
 
             </ModalBody>
 
