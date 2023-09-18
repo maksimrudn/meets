@@ -153,7 +153,7 @@ function Register() {
                             <button type="submit" className="Registration btn">Sign In</button>
                         </div>
                         <div className="col-12 text-center mt-4">
-                            <span className="ToLogin">Уже зарегистрированы? <Link to="/account/login" title="Войти" className="Link ms-3">Log In</Link></span>
+                            <span className="ToLogin">Already registered? <Link to="/account/login" title="Войти" className="Link ms-3">Log In</Link></span>
                         </div>
                     </form>
                 </div>
