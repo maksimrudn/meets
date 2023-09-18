@@ -1,4 +1,6 @@
 ﻿import AppConfig from "./AppConfig";
+import * as Cookies from 'js-cookie';
+import * as moment from 'moment-timezone';
 
 
 export const formToObject = (htmlForm) => {
@@ -142,6 +144,14 @@ export function getAvatarPathForUser(user) {
 }
 
 /**
+ * получает время жизни токена доступа
+ * */
+export function getTokenExpireTime() {
+    return moment().add(15, 'minutes').toDate();
+}
+
+
+/**
  * получает путь для event картинки из папки Content
  * @param {any} evId - id события
  * @param {any} img - example: (000001.png)
@@ -151,3 +161,34 @@ export function getImagePathForEvent(evId, img) {
 }
 
 
+export function isSignedIn() {
+    let res = false;
+
+    let token = Cookies.get('access_token');
+
+    if (token) {
+        res = !isTokenExpired(token);
+    }
+
+    return res;
+}
+
+function isTokenExpired(token) {
+    let res = true;
+
+    const decodedJwt = parseJwt(token);
+
+    if (decodedJwt.exp * 1000 < Date.now()) {
+        res = false;
+    }
+
+    return res;
+}
+
+const parseJwt = (token) => {
+    try {
+        return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+        return null;
+    }
+};

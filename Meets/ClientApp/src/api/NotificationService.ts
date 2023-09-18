@@ -1,13 +1,11 @@
 ﻿import NotificationDTO from "../contracts/notifications/NotificationDTO";
-import BaseService from "./BaseService";
+import httpService from "./BaseService";
 
-class NotificationService extends BaseService {
-    getList(): NotificationDTO[] {
-        let res;
-        res = this.executeRequestXHR('/api/notification/getlist', 'post');
-        return res;
+const notificationService = {
+    getList: async (): Promise<NotificationDTO[]> => {
+        const { data } = await httpService.post('/api/notification/getlist');
+        return data;
     }
-}
+};
 
-let notificationService = new NotificationService();
 export default notificationService;

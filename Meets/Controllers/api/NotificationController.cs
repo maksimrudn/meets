@@ -1,8 +1,8 @@
 ﻿using Meets.Controllers.api.dto.Notifications;
 using Meets.Data;
 using Meets.Extensions;
+using Meets.Infrastructure;
 using Meets.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [Area("api")]
     [ApiController]
     public class NotificationController : ControllerBase
@@ -23,7 +24,6 @@ namespace Meets.Controllers.api
             _db = db;
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<List<NotificationDTO>> GetList()
         {

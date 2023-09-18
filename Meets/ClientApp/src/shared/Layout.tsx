@@ -1,11 +1,6 @@
 ﻿import React, { Component, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 
-import { connect, useSelector } from 'react-redux';
-import mapStateToProps from '../store/mapStateToProps';
-import mapDispatchToProps from '../store/mapDispatchToProps';
-
-
 import UserCard from '../pages/user/UserCard';
 import UserSearch from '../pages/user/UserSearch';
 
@@ -23,7 +18,6 @@ import Lockout from '../pages/account/Lockout';
 
 import 'bootstrap/dist/js/bootstrap.js';
 import BottomMenu from './BottomMenu';
-import { BottomMenuItems } from '../common/BottomMenuItems';
 import ConfirmEmailSuccess from '../pages/account/ConfirmEmailSuccess';
 import ConfirmEmailError from '../pages/account/ConfirmEmailError';
 import ForgotPasswordStep3 from '../pages/account/ForgotPasswordStep3';
@@ -33,53 +27,21 @@ import Routes from '../common/Routes';
 import ProfileSettings from '../pages/user/ProfileSettings';
 import UserChangePassword from '../pages/user/UserChangePassword';
 import UserConfirmEmail from '../pages/user/UserConfirmEmail';
-import UserAuthInfo from '../contracts/UserAuthInfo';
 import MeetingList from '../pages/meeting/MeetingList';
 import Meeting from '../pages/meeting/Meeting';
 import NotificationList from '../pages/notifications/NotificationList';
-import NotificationDTO from '../contracts/notifications/NotificationDTO';
-import notificationService from '../api/NotificationService';
-import { RootState, useAppDispatch } from '../store/createStore';
-import { getIsLoggedIn } from '../store/currentUser';
 import TimeTable from '../pages/meeting/TimeTable';
-
+import useAccountStore from '../hooks/useAccountStore';
+import ProtectedRoute from './ProtectedRoute';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Layout() {
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const isLoggedIn = useSelector(getIsLoggedIn());
-    const dispatch = useAppDispatch();
+    const account = useAccountStore();
 
     const [isOpenMeeting, setIsOpenMeeting] = useState(false);
-
-    const [selectedMenuItem, setSelectedMenuItem] = useState(BottomMenuItems.UserSearch);
-
-
-
-
-    const selectMenuItemOnClick = (item: string) => {
-        //const item = e.target.dataset.item;
-        switch (item) {
-            case BottomMenuItems.UserSearch:
-                setSelectedMenuItem(BottomMenuItems.UserSearch);
-                break;
-            case BottomMenuItems.Profie:
-                setSelectedMenuItem(BottomMenuItems.Profie);
-                break;
-            case BottomMenuItems.Meetings:
-                setSelectedMenuItem(BottomMenuItems.Meetings);
-                break;
-            case BottomMenuItems.Notifications:
-                setSelectedMenuItem(BottomMenuItems.Notifications);
-                break;
-            case BottomMenuItems.TimeTable:
-                setSelectedMenuItem(BottomMenuItems.TimeTable);
-                break;
-        }
-
-    }
-
 
     return (
         <Router basename="/">
@@ -119,50 +81,47 @@ function Layout() {
 
 
                                         <Route exact path="/" render={(routeProps) => {
-                                            return isLoggedIn ? <UserSearch userInfo={currentUser.user} /> : <Login />
+                                            return account.isSignedIn ? <UserSearch /> : <Login />
                                         }} />
 
 
-                                        {isLoggedIn &&
                                             <>
-                                                <Route path={Routes.UserCard} render={(routeProps) => (
-                                                    <UserCard
-                                                        {...routeProps}
-                                                    />
+                                            <ProtectedRoute path={Routes.UserCard} render={(routeProps) => (
+                                                    <UserCard />
 
-                                                )}></Route>
-                                                <Route path={Routes.ProfileSettings} render={(props) => <ProfileSettings {...props} />}></Route>
-                                                <Route path="/user/Search">
+                                            )}></ProtectedRoute>
+                                            <ProtectedRoute path={Routes.ProfileSettings} render={(props) => <ProfileSettings />}></ProtectedRoute>
+                                            <ProtectedRoute path="/user/Search">
                                                     <UserSearch />
-                                                </Route>
-                                                <Route path={Routes.UserChangePassword} render={props => <UserChangePassword {...props} />} />
-                                                <Route path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail />} />
-                                                <Route path={Routes.MeetingList} render={(props) => <MeetingList {...props} />} />
-                                                <Route path={Routes.Meeting} render={(routeProps) => (
+                                            </ProtectedRoute>
+                                            <ProtectedRoute path={Routes.UserChangePassword} render={props => <UserChangePassword />} />
+                                            <ProtectedRoute path={Routes.UserConfirmEmail} render={() => <UserConfirmEmail />} />
+                                            <ProtectedRoute path={Routes.MeetingList} render={(props) => <MeetingList {...props} />} />
+                                            <ProtectedRoute path={Routes.Meeting} render={(routeProps) => (
                                                     <Meeting
 
                                                         setIsOpenMeeting={setIsOpenMeeting}
                                                         {...routeProps}
                                                     />
                                                 )} />
-                                                <Route path={Routes.Notifications} render={() => (
+                                            <ProtectedRoute path={Routes.Notifications} render={() => (
                                                     <NotificationList />
                                                 )} />
-                                                <Route path={Routes.TimeTable} render={() => <TimeTable />} />
+                                            <ProtectedRoute path={Routes.TimeTable} render={() => <TimeTable />} />
                                                 <Route path={Routes.Error} render={() => <Error />} />
                                             </>
-                                        }
+                                        
                                     </Switch>
                                 </div>
                             </div>
 
-                            {(isLoggedIn && !isOpenMeeting) &&
-                                <BottomMenu
-                                    selectedMenuItem={selectedMenuItem}
-                                    selectMenuItemOnClick={selectMenuItemOnClick}
-                                />
+                            {(account.isSignedIn && !isOpenMeeting) &&
+                                <BottomMenu />
                             }
 
+                            <ToastContainer
+                                position="bottom-right"
+                            />
                         </div>
                     </Route>
                 </Switch>

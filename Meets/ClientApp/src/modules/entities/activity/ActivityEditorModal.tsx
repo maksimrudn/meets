@@ -8,63 +8,51 @@ import PlusIcon from '../../../icons/PlusIcon';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import CalendarAltIcon from '../../../icons/CalendarAltIcon';
 import MenuCloseIcon from '../../../icons/MenuCloseIcon';
 
 import './ActivityEditorModal.scss'
 import { Activity } from '../../../contracts/activity/Activity';
 import activityService from '../../../api/ActivityService';
-
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
+import { toast } from 'react-toastify';
 
 
 interface ActivityEditorModalProps {
     isOpen: boolean
     toggle: () => void
-
-    ActivityId: any
-    updateUser: () => void
+    activity: Activity
 }
 
 export default function ActivityEditorModal(props: ActivityEditorModalProps) {
-    const [activity, setActivity] = useState<Activity>(new Activity());
+    const userStore = useUserStore();
 
-    useEffect(() => {
-        try {
-            if (props.ActivityId) {
-                let formData = new FormData();
-                formData.append('id', props.ActivityId);
-                let activity: Activity = activityService.get(formData);
-                setActivity(activity);
-            }
-        } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }, [props.ActivityId]);
-
-    const onSaveChanges = () => {
-        if (props.ActivityId) {
+    const onSaveChanges = async () => {
+        if (props.activity.id) {
             try {
-                let formData = new FormData();
-                formData.append('id', activity.id);
-                formData.append('title', activity.title);
-
-                activityService.edit(formData);
-                props.updateUser();
+                await userStore.editActivity();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+                toast.error(`Ошибка, ${err.message}`);
             }
         } else {
             try {
-                activityService.create(activity);
-                props.updateUser();
+                await userStore.createActivity();
                 props.toggle();
             } catch (err: any) {
-                NotificationManager.error(err.message, err.name);
+                toast.error(`Ошибка, ${err.message}`);
             }
         }
+    }
+
+    const onChangeTitle = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        try {
+            await userStore.setActivity({
+                ...userStore.activity,
+                title: e.target.value
+            })
+        } catch (err) { }
     }
 
     return (
@@ -86,7 +74,7 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
                 }}
                 className="Header"
             >
-                {props.ActivityId ? 'Редактировать' : 'Создать'}
+                {props.activity.id ? 'Редактировать' : 'Создать'}
             </ModalHeader>
             <ModalBody
                 className="Body"
@@ -95,13 +83,8 @@ export default function ActivityEditorModal(props: ActivityEditorModalProps) {
                     <label className="form-label">Название</label>
                     <textarea
                         className="form-control"
-                        defaultValue={activity.title}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                            setActivity({
-                                ...activity,
-                                title: e.target.value
-                            })
-                        }}
+                        defaultValue={props.activity.title}
+                        onChange={onChangeTitle}
                         cols={5}
                         rows={6}
                     />

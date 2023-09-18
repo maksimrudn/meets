@@ -1,54 +1,40 @@
-﻿import { setegid } from 'process';
-import React, { Component, useState } from 'react';
+﻿import React, { Component, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
-import accountService from '../../api/AccountService';
-import * as Cookies from 'js-cookie';
-import { connect, useSelector } from 'react-redux';
+
 import MenuCloseIcon from '../../icons/MenuCloseIcon';
 import UserOutlineIcon from '../../icons/UserOutlineIcon';
 import LockOutlineIcon from '../../icons/LockOutlineIcon';
 
 
 import './Login.scss';
-import { RootState, useAppDispatch } from '../../store/createStore';
-import { getIsLoggedIn, updateCurrentUser } from '../../store/currentUser';
+import useAccountStore from '../../hooks/useAccountStore';
 
 
 
-function Login(props) {
+function Login() {
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    
-    const dispatch = useAppDispatch();
+    const account = useAccountStore();
 
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
 
-    const [errMessage, setErrMessage] = useState('');
-
     const history = useHistory();
 
-    const onLoginSubmit = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            var jwtResponse = accountService.login(email, password);
-            Cookies.set('access_token', jwtResponse.accessToken);
-
-            dispatch(updateCurrentUser());
-
+            await account.login(email, password);
             history.push('/');
+        } catch (err) {
+            
         }
-        catch (err) {
-            setErrMessage(err.message);
-        }
+
+        
     }
 
     return (
         <>
-            <NotificationContainer />
 
             <div className="Login">
 
@@ -59,7 +45,7 @@ function Login(props) {
                 <div className="Data d-flex flex-column justify-content-center h-100">
                     <div className="fs-3 text-center mb-2">Authorization</div>
 
-                    <form className="d-block" onSubmit={onLoginSubmit}>
+                    <form className="d-block" onSubmit={handleLogin}>
 
                         <div className="input-group mb-3">
                             <span className="input-group-text" id="email"><UserOutlineIcon /></span>
@@ -71,7 +57,7 @@ function Login(props) {
                             <input id="Input.Password" className="form-control form-control-lg" type="password" placeholder="***************" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
 
-                        {errMessage && <p className='text-danger w-100 text-center mt-2'>{errMessage}</p>}
+                        {account.error && <p className='text-danger w-100 text-center mt-2'>{account.error}</p>}
 
                         <div className="col-12 text-center">
                             <button type="submit" className="ComeIn btn">Log In</button>

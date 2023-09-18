@@ -1,7 +1,5 @@
 ﻿import React, { Component, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import userService from '../../api/UserService';
 import parse from 'html-react-parser';
 import { useForm } from 'react-hook-form';
@@ -9,8 +7,9 @@ import GoBackIcon from '../../icons/GoBackIcon';
 import Routes from '../../common/Routes';
 
 import './UserConfirmEmail.scss';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
-import useStoreCurrentUser from '../../hooks/useCurrentUser';
+import useAccountStore from '../../hooks/useAccountStore';
+import useSettingsStore from '../../hooks/useSettingsStore';
+import { toast } from 'react-toastify';
 
 interface IUserConfirmEmailProps{
 }
@@ -19,30 +18,30 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const currentUser = useStoreCurrentUser();
+    const { currentUser } = useAccountStore();
+    const settings = useSettingsStore();
 
-    const [email, setEmail] = useState<string>('');
+    const [email, setEmail] = useState<string>(currentUser?.email as string);
     const [showMessage, setShowMessage] = useState(false);
 
-    const onSubmit = () => {
+    const handleConfirmEmail = async () => {
         try {
-            userService.confirmEmail({ email });
+            await settings.confirmEmail(email);
             setShowMessage(true);
-        } catch (err) {
-            history.push(Routes.Error, err);
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
     return (
         <div className="UserConfirmEmail">
-            <NotificationContainer />
 
             <div className="Header d-flex justify-content-start align-items-center mb-5">
                 <span className="GoBackBtn me-5" role="button" onClick={() => history.goBack()}><GoBackIcon /></span>
                 <span className='Title'>Адрес эл. почты</span>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(handleConfirmEmail)}>
                 <div className="col-12">
                     <div className="mb-3">
                         <label className="form-label ms-2">Адрес эл. почты</label>
@@ -55,7 +54,7 @@ export default function UserConfirmEmail(props: IUserConfirmEmailProps) {
                             )}
                             className="form-control"
                             placeholder="ivanov@mail.ru"
-                            value={currentUser.user.email}
+                            value={email}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setEmail(e.target.value) }}
                             readOnly
                         />

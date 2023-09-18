@@ -1,28 +1,25 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import userService from '../../../api/UserService';
 import { UserFieldNames } from '../../../common/UserFieldNames';
 import { getAllowedPhotoFilesByMask } from '../../../common/Utils';
-import useStoreCurrentUser from '../../../hooks/useCurrentUser';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
+import { RootState } from '../../../store/createStore';
 import ConfirmationModal from '../../ConfirmationModal';
 import ShowUserAvatarModal from './ShowUserAvatarModal';
 import './UserCardContextMenuModal.scss';
-
+import { toast } from 'react-toastify';
 
 interface UserCardContextMenuModalProps {
     isOpen: boolean
     toggle: any
-
-    user: any
-
-    onSaveChanges: any
-
-    update(): void
 }
 
 export default function UserCardContextMenuModal(props: UserCardContextMenuModalProps) {
-
-    const cuStore = useStoreCurrentUser();
+    const { currentUser } = useAccountStore();
+    const state = useUserStore();
 
     const [isOpenRemoveAvatarModal, setIsOpenRemoveAvatarModal] = useState(false);
     const [isOpenShowAvatarModal, setIsShowAvatar] = useState(false);
@@ -36,25 +33,29 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
         setIsShowAvatar(!isOpenShowAvatarModal);
     }
 
-    const removeAvatar = () => {
+    const handleRemoveAvatar = () => {
         try {
-            userService.removeAvatar();
-            props.update();
-
+            state.removeAvatar();
             toggleRemoveAvatarModal();
         }
         catch (err: any) {
-
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
 
-    const onFileUploadChange = async (e: Event | any) => {
+    const handleFileUploadChange = async (e: Event | any) => {
         let target = e.target as HTMLInputElement;
         let files = getAllowedPhotoFilesByMask(target.files);
 
         props.toggle();
-        props.onSaveChanges(UserFieldNames.Photo, files[0]);
+
+        try {
+            state.editUser(UserFieldNames.Photo, files[0]);
+        }
+        catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     return (
@@ -70,12 +71,12 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                 className="Body"
             >
                 <div className="d-flex flex-column justify-content-center">
-                    <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={props.user.avatar ? false : true}>Открыть фото</button>
-                    {props.user.id === cuStore.user.user.id &&
+                    <button type="button" className="Action btn mb-3" onClick={toggleShowAvatarModal} disabled={currentUser.avatar ? false : true}>Открыть фото</button>
+                    {state.user.id === currentUser.id &&
                         <>
                             <div className="FileUpload">
                                 <label className="Action btn mb-3" htmlFor="fileupload">Изменить фото</label>
-                                <input type="file" id="fileupload" name="photo" onChange={onFileUploadChange} />
+                                <input type="file" id="fileupload" name="photo" onChange={handleFileUploadChange} />
                             </div>
                             <button type="button" className="Action btn mb-3" onClick={toggleRemoveAvatarModal}>Удалить фото</button>
                         </>
@@ -88,7 +89,7 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                     <ShowUserAvatarModal
                         isOpen={isOpenShowAvatarModal}
                         toggle={toggleShowAvatarModal}
-                        user={props.user}
+                        user={state.user}
                     />
                 }
 
@@ -97,7 +98,7 @@ export default function UserCardContextMenuModal(props: UserCardContextMenuModal
                         isOpen={isOpenRemoveAvatarModal}
                         toggle={toggleRemoveAvatarModal}
                         message="Удалить ваше фото?"
-                        confirmAction={removeAvatar}
+                        confirmAction={handleRemoveAvatar}
                         parrentToggle={props.toggle}
                     />
                 }

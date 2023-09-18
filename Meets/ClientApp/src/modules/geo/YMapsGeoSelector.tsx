@@ -1,10 +1,9 @@
 ﻿import * as React from 'react';
 import { Component, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { YMaps, Map, Placemark, YMapsApi } from 'react-yandex-maps';
-import AppConfig from 'common/AppConfig';
 import YMapsConfig from '../../common/YMapsConfig';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import YMapsIcons from '../../common/YMapsIcons';
+import UserDTO from '../../contracts/user/UserDTO';
 
 
 /**
@@ -25,7 +24,7 @@ export interface YMapsGeoSelectorProps {
     latitude: number,
     longitude: number,
     onChangeCoordinates(latitude: number, longitude: number, address: string): void, //  - функция, в которую возвращается результат изменения геопозиции
-    userInfo: UserAuthInfo
+    currentUser: UserDTO
 }
 
 
@@ -146,9 +145,9 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
         if (this.props.latitude) {
             centerLatitude = this.props.latitude;
             centerLongitude = this.props.longitude;
-        } else if (this.props.userInfo.hasGeolocation) {
-            centerLatitude = this.props.userInfo.latitude;
-            centerLongitude = this.props.userInfo.longitude;
+        } else if (this.props.currentUser.hasGeolocation) {
+            centerLatitude = this.props.currentUser.latitude;
+            centerLongitude = this.props.currentUser.longitude;
         } else if (this.state.coordsIP) {
             //let coords = this.getCoordsByIP();
             centerLatitude = this.state.coordsIP[0];
@@ -179,9 +178,9 @@ export default class YMapsGeoSelector extends Component<YMapsGeoSelectorProps, a
                         onLoad={ymaps => this.onLoadMap(ymaps)}
 
                     >
-                        {this.props.userInfo.hasGeolocation &&
+                        {this.props.currentUser.hasGeolocation &&
                             <Placemark
-                                geometry={[this.props.userInfo.latitude, this.props.userInfo.longitude]}
+                                geometry={[this.props.currentUser.latitude, this.props.currentUser.longitude]}
                                 options={{
                                     preset: YMapsIcons.MyPosition,
                                     //iconColor: 'red'

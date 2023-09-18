@@ -1,7 +1,5 @@
 ﻿import React, { Component, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import userService from '../../api/UserService';
 import parse from 'html-react-parser';
 import { useForm } from 'react-hook-form';
@@ -9,28 +7,30 @@ import GoBackIcon from '../../icons/GoBackIcon';
 import Routes from '../../common/Routes';
 
 import './UserChangePassword.scss';
+import useSettingsStore from '../../hooks/useSettingsStore';
+import { toast } from 'react-toastify';
 
 export default function UserChangePassword() {
     const history = useHistory();
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
+    const settings = useSettingsStore();
+
     const [oldPassword, setOldPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-    const onSubmit = () => {
+    const handleChangePassword = async () => {
         try {
-            userService.changePassword(oldPassword, newPassword, confirmPassword);
+            await settings.changePassword(oldPassword, newPassword, confirmPassword);
             history.goBack();
-            //NotificationManager.success('Пароль успешно изменён!', 'Уведомление');
-        } catch (err) {
-            history.push(Routes.Error, err);
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
     return (
         <div className="UserChangePassword">
-            <NotificationContainer />
 
             <div className="Header d-flex justify-content-start align-items-center mb-5">
                 <span className="GoBackBtn me-5" role="button" onClick={() => history.goBack()}><GoBackIcon /></span>
@@ -39,7 +39,7 @@ export default function UserChangePassword() {
 
             <div className="Data d-flex flex-column justify-content-center h-100">
 
-                <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                <form onSubmit={handleSubmit(handleChangePassword)} autoComplete="off">
 
                     <div className="col-12">
                         <div className="mb-4">

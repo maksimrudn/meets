@@ -3,54 +3,27 @@ import { Link, useParams, useHistory } from 'react-router-dom';
 import Moment from 'react-moment';
 import moment from 'moment';
 import 'moment-timezone';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 
-import { scrollIntoView } from 'scroll-polyfill';
-
-import ReactDOM from 'react-dom';
-
-import userService from '../../api/UserService';
 import { Helmet } from 'react-helmet';
-import AppConfig from '../../common/AppConfig';
 import { getAllowedPhotoFilesByMask, getAvatarPathForUser, loadPhotoContentFromFiles, objectToFormData } from '../../common/Utils';
-import YMapsGeoViewer from '../../modules/geo/YMapsGeoViewer';
-import $ from 'jquery';
 
 import SubscribeButton from '../../modules/entities/user/SubscribeButton';
 import './UserCard.scss';
-import Date from '../../modules/entities/user/edit/Date';
-import { AddressSuggestions } from 'react-dadata';
 
-
-import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css'
-import { connect, useSelector } from 'react-redux';
-import mapStateToProps from '../../store/mapStateToProps';
-import mapDispatchToProps from '../../store/mapDispatchToProps';
 import UserEditorModal from '../../modules/entities/user/UserEditorModal';
 import { UserFieldNames } from '../../common/UserFieldNames';
 import GoBackIcon from '../../icons/GoBackIcon';
 import SettingsIcon from '../../icons/SettingsIcon';
 import EditIconSvg from '../../icons/EditIconSvg';
 import LocationIconSvg from '../../icons/LocationIconSvg';
-import MessageIcon from '../../icons/MessageIcon';
-import UserPlusIcon from '../../icons/UserPlusIcon';
 import EditIcon from '../../icons/EditIcon';
-import BirthDateIconSvg from '../../icons/BirthDateIconSvg';
-import GrowthIconSvg from '../../icons/GrowthIconSvg';
-import WeightIconSvg from '../../icons/WeightIconSvg';
-import SwiperTabs from '../../modules/tabs/SwiperTabs';
 import UserCardTabs from '../../modules/entities/user/UserCardTabs';
 import { UserCardTabsNames } from '../../common/UserCardTabsNames';
-import UserCardAvatarModal from '../../modules/entities/user/UserCardAvatarModal';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 import UserCardContextMenuModal from '../../modules/entities/user/UserCardContextMenuModal';
 import CompanyIconSvg from '../../icons/CompanyIconSvg';
-import UserCardResponse from '../../contracts/user/UserCardResponse';
 import JobIconSvg from '../../icons/JobIconSvg';
-import ApiError from '../../common/ApiError';
 import Routes from '../../common/Routes';
 import subscribtionService from '../../api/SubscribtionService';
 import ProfileSettingsIcon from '../../icons/ProfileSettingsIcon';
@@ -61,11 +34,10 @@ import 'moment/locale/ru';
 import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
 
 import CoffeeIcon from '../../icons/CoffeeIcon';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import WaitingScreen from '../common/WaitingScreen';
-import { RootState, useAppDispatch } from '../../store/createStore';
-import { updateCurrentUser } from '../../store/currentUser';
-
+import useAccountStore from '../../hooks/useAccountStore';
+import useUserStore from '../../hooks/useUserStore';
+import { toast } from 'react-toastify';
 
 
 interface UserCardParams {
@@ -78,13 +50,8 @@ function UserCard(): JSX.Element {
 
     const history = useHistory();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    const userStore = useUserStore();
 
-
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const [userCard, setUserCard] = useState<UserCardResponse>(new UserCardResponse());
 
     const [isOpenUserEditModal, setIsOpenUserEditModal] = useState(false);
     const [fieldName, setFieldName] = useState<any>('');
@@ -92,31 +59,22 @@ function UserCard(): JSX.Element {
     const [selectedTab, setSelectedTab] = useState<any>(UserCardTabsNames.Info);
     const [isOpenUserCardContextMenuModal, setIsOpenOpenUserCardContextMenuModal] = useState(false);
 
-    
-
     const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
 
     // элемент к которому скроллит после изменеия id пользователя
     let topElement: any = useRef();
 
     useEffect(() => {
+        const update = async () => {
+            try {
+                await userStore.updateUser(params.id);
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
+        }
 
         update();
     }, [params.id]);
-
-    const update = () => {
-        try {
-            setIsLoading(true);
-
-            const userCard = userService.getCard(params.id);
-            setUserCard(userCard);
-
-            setIsLoading(false);
-        } catch (err) {
-            history.push(Routes.Error, err);
-        }
-    }
-
 
     const toggleUserCardContextMenuModal = () => {
         setIsOpenOpenUserCardContextMenuModal(!isOpenUserCardContextMenuModal);
@@ -134,61 +92,25 @@ function UserCard(): JSX.Element {
     
 
     const onClickEditIcon = (fieldName: any) => {
-        setFieldName(fieldName); //e.target.dataset.fieldName
+        setFieldName(fieldName);
         toggleUserEditorModal();
     }
 
     
 
-    const onSubscribe = () => {
+    const handleSubscribe = async () => {
         try {
-            subscribtionService.subscribe(userCard.id);
-            update();
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, err.name);
+            await userStore.subscribe();
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const onUnSubscribe = () => {
+    const handleUnSubscribe = async () => {
         try {
-            subscribtionService.unSubscribe(userCard.id);
-            update();
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, err.name);
-        }
-    }
-
-    const onSaveChanges = (fieldName: string, value: any) => {
-        let newData = {
-            ...userCard,
-            [fieldName]: value
-        };
-
-        let userData = objectToFormData(newData);
-
-        if (userCard.latitude && userCard.longitude) {
-            userData.set('latitude', `${userCard.latitude.toLocaleString('ru-Ru')}`);
-            userData.set('longitude', `${userCard.longitude.toLocaleString('ru-Ru')}`);
-        }
-
-        userData.delete('tags');
-
-        if (fieldName === UserFieldNames.Tags) {
-            value.map((tag: any) => userData.append('Tags', tag));
-        } else {
-            userCard.tags?.map((tag: any) => userData.append('Tags', tag));
-        }
-
-        try {
-            userService.edit(userData);
-            update();
-
-            dispatch(updateCurrentUser);
-        }
-        catch (err: any) {
-            NotificationManager.error(err.message, 0);
+            await userStore.unSubscribe();
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
@@ -197,7 +119,7 @@ function UserCard(): JSX.Element {
         var keywords = '';
         var description = '';
 
-        var userTitle = userCard.fullName ?? "Название не указано";
+        var userTitle = userStore.user?.fullName ?? "Название не указано";
         title = "Пользователь: " + userTitle + " - посмотреть все события на EventSurfing";
         keywords = "пользователь " + userTitle + ", " + "расписание " + userTitle;
         description = "Описание пользователя " + userTitle;
@@ -210,7 +132,7 @@ function UserCard(): JSX.Element {
     return (
 
         <>
-            {isLoading ?
+            {userStore.isLoading ?
                 <WaitingScreen />
                 :
                 <>
@@ -222,7 +144,6 @@ function UserCard(): JSX.Element {
                         <meta property="og:title" content={seo.title} />
                         <meta property="og:description" content={seo.description} />
                     </Helmet>
-                    <NotificationContainer />
 
                     <div className="UserCard col-12">
                         {/* UserDetails container: Start */}
@@ -231,14 +152,14 @@ function UserCard(): JSX.Element {
                             <span className="Button ms-3" onClick={() => { history.goBack(); }}><GoBackIcon /></span>
                             <span className="Button me-3" onClick={toggleUserCardContextMenuModal}><SettingsIcon /></span>
                         </div>
-                        {userCard.avatar
+                        {userStore.user?.avatar
                             ? (
                                 <div className="MainAvatarContainer col-12">
                                     <div className="AvatarContainerBlur">
-                                        <img className="AvatarBlur" src={getAvatarPathForUser(userCard)} alt="" />
+                                        <img className="AvatarBlur" src={getAvatarPathForUser(userStore.user)} alt="" />
                                     </div>
                                     <div className="AvatarContainer">
-                                        <img className="Avatar" src={getAvatarPathForUser(userCard)} alt="" />
+                                        <img className="Avatar" src={getAvatarPathForUser(userStore.user)} alt="" />
                                     </div>
                                 </div>
                             )
@@ -251,11 +172,11 @@ function UserCard(): JSX.Element {
 
                             <div className="d-flex justify-content-end">
                                 <span className="col-8 d-flex justify-content-center">
-                                    <h2>{userCard.fullName || 'not specified'}</h2>
+                                    <h2>{userStore.user?.fullName || 'не указано'}</h2>
                                 </span>
 
                                 <span className="col-2 d-flex justify-content-end">
-                                    {(currentUser.userId === userCard.id) &&
+                                    {userStore.isOwner &&
                                         <span className="text-white" role="button" onClick={() => onClickEditIcon(UserFieldNames.FullName)}>
                                             <EditIconSvg />
                                         </span>
@@ -263,33 +184,33 @@ function UserCard(): JSX.Element {
                                 </span>
                             </div>
 
-                            {userCard.specialization && // сфера деятельности
+                            {userStore.user?.specialization && // сфера деятельности
                                 <div className="col-12 d-flex align-items-center justify-content-center">
-                                    <span>{userCard.specialization}</span>
+                                    <span>{userStore.user?.specialization}</span>
                                 </div>
                             }
 
-                            {userCard.company &&
+                            {userStore.user?.company &&
                                 <div className="col-12 d-flex align-items-center justify-content-center">
                                     <span className="text-white me-3">
                                         <CompanyIconSvg />
                                     </span>
-                                    <span>{userCard.company}</span>
+                                    <span>{userStore.user?.company}</span>
                                 </div>
                             }
 
-                            {userCard.job &&
+                            {userStore.user?.job &&
                                 <div className="col-12 d-flex align-items-center justify-content-center mb-2">
                                     <span className="text-white me-3">
                                         <JobIconSvg />
                                     </span>
-                                    <span>{userCard.job}</span>
+                                    <span>{userStore.user?.job}</span>
                                 </div>
                             }
 
                             {(() => {
-                                if (currentUser.userId !== userCard.id) {
-                                    if (userCard.distance) {
+                                if (!userStore.isOwner) {
+                                    if (userStore.user?.distance) {
                                         return (
                                             <div className="d-flex justify-content-center mb-2">
                                                 <span>
@@ -297,7 +218,7 @@ function UserCard(): JSX.Element {
                                                     <span className="text-white me-1">
                                                         <LocationIconSvg />
                                                     </span>
-                                                    <span>{userCard.distance} km far</span>
+                                                    <span>{userStore.user.distance} км от вас</span>
 
 
                                                 </span>
@@ -306,10 +227,10 @@ function UserCard(): JSX.Element {
                                 }
                             })()}
 
-                            {(currentUser.user?.user?.id !== userCard.id)
+                            {(!userStore.isOwner)
                                 ? (<div className="d-flex justify-content-around">
                                     <div className="col-9 me-3">
-                                        <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={userCard.isInvited}>
+                                        <button className="Invite btn" type="button" onClick={toggleMeetRequestModal} disabled={userStore.user?.isInvited}>
                                             <span className="me-4"><CoffeeIcon /></span>
                                             <span className="fs-5 text-black">Invite</span>
                                         </button>
@@ -317,16 +238,16 @@ function UserCard(): JSX.Element {
 
                                     <div className="col-3 d-flex justify-content-center">
                                         <SubscribeButton
-                                            subscribed={userCard.isSubscribed}
-                                            onSubscribe={onSubscribe}
-                                            onUnsubscribe={onUnSubscribe}
+                                            subscribed={userStore.user?.isSubscribed as boolean}
+                                            onSubscribe={handleSubscribe}
+                                            onUnsubscribe={handleUnSubscribe}
                                         />
                                     </div>
 
                                 </div>)
                                 : (
                                     <div className="col-12">
-                                        <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettingsBuild(userCard.id)}>
+                                        <Link className="SettingsBtn btn btn-white p-2" to={Routes.ProfileSettings}>
                                             <span className="me-4"><ProfileSettingsIcon /></span>
                                             <span className="fs-5 text-black">Settings</span>
                                         </Link>
@@ -340,30 +261,30 @@ function UserCard(): JSX.Element {
 
                             <div className="ActivityInfo d-flex justify-content-evenly">
                                 <div className="d-flex flex-column justify-content-center">
-                                    <span className="fs-4 text-center">{userCard.subscribers}</span>
-                                    <small>Subscribers</small>
+                                    <span className="fs-4 text-center">{userStore.user?.subscribers}</span>
+                                    <small>подписчиков</small>
                                 </div>
 
                                 <div className="d-flex flex-column justify-content-center">
-                                    <span className="fs-4 text-center">{userCard.subscriptions}</span>
-                                    <small>Subscribes</small>
+                                    <span className="fs-4 text-center">{userStore.user?.subscriptions}</span>
+                                    <small>подписок</small>
                                 </div>
 
                                 <div className=" d-flex flex-column justify-content-center">
-                                    <span className="fs-4 text-center">{userCard.meetings}</span>
-                                    <small>Meetings</small>
+                                    <span className="fs-4 text-center">{userStore.user?.meetings}</span>
+                                    <small>встречь</small>
                                 </div>
                             </div>
 
                             <div className="Tags">
                                 <div className="d-flex justify-content-start align-items-center ms-2 my-3">
-                                    <span className="fs-4 me-3">Tags</span>
-                                    {(currentUser.user?.user?.id === userCard.id) &&
+                                    <span className="fs-4 me-3">Тэги</span>
+                                    {userStore.isOwner &&
                                         <span className="IconEdit" role="button" onClick={() => onClickEditIcon(UserFieldNames.Tags)}><EditIcon /></span>
                                     }
                                 </div>
                                 <div className="ms-2">
-                                    {!userCard.tags?.length ? 'not specified' : userCard.tags.map((tag: any) =>
+                                    {!userStore.user?.tags?.length ? 'не указано' : userStore.user.tags.map((tag: any) =>
                                         <span key={tag} className="Tag badge bg-secondary rounded-pill text-black py-2 px-3 me-2">{tag}</span>
                                     )}
                                 </div>
@@ -371,58 +292,38 @@ function UserCard(): JSX.Element {
 
                         </div>
 
-                        <UserCardTabs
-                            user={userCard}
-                            tabs={UserCardTabsNames}
-                            selectedTab={selectedTab}
-                            setSelectedTab={setSelectedTab}
-                            onClickEditIcon={onClickEditIcon}
-                            updateUser={update}
-                            learnings={userCard?.learnings}
-                            works={userCard?.works}
-                            activities={userCard?.activities}
-                            facts={userCard?.facts}
-                        />
+                        {(userStore.dataLoaded && !userStore.error) &&
+                            <UserCardTabs
+                                tabs={UserCardTabsNames}
+                                selectedTab={selectedTab}
+                                setSelectedTab={setSelectedTab}
+                                onClickEditIcon={onClickEditIcon}
+                            />
+                        }
+                        
 
-                        {isOpenUserEditModal &&
+                        {(userStore.dataLoaded && isOpenUserEditModal) &&
                             <UserEditorModal
-                                user={userCard}
                                 isOpen={isOpenUserEditModal}
                                 toggle={toggleUserEditorModal}
                                 fieldName={fieldName}
-                                onSaveChanges={onSaveChanges}
                             />
                         }
 
-                        {isOpenUserCardContextMenuModal &&
+                        {(userStore.dataLoaded && isOpenUserCardContextMenuModal) &&
                             <UserCardContextMenuModal
                                 isOpen={isOpenUserCardContextMenuModal}
                                 toggle={toggleUserCardContextMenuModal}
-                                
-                                user={userCard}
-                                update={update}
-
-                                onSaveChanges={onSaveChanges}
                             />
                         }
 
-                        
-
-                        
-
-                        {isOpenMeetModal &&
+                        {(userStore.dataLoaded && isOpenMeetModal) &&
                             <MeetRequestModal
                                 isOpen={isOpenMeetModal}
                                 toggle={toggleMeetRequestModal}
-                                user={userCard}
-                                updateUser={update}
-                            //updateNotifications={props.updateNotifications}
                             />
                         }
                         
-
-                        
-
                     </div>
                 </>
             }

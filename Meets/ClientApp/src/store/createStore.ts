@@ -1,12 +1,25 @@
-import currentUserReducer from './currentUser';
-import timeTableReducer from './TimeTable';
-
 import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
+import accountReducer from './account';
+import usersReducer from './users';
+import userReducer from './user';
+import timeTableReducer from './timetable';
+import menuReducer from './menu';
+import settingsReducer from './settings';
+import meetRequestReducer from './meetrequest';
+import meetingsReducer from './meetings';
+import meetingReducer from './meeting';
 
 const rootReducer = combineReducers({
-    currentUser: currentUserReducer,
-    timeTable: timeTableReducer
+    account: accountReducer,
+    users: usersReducer,
+    user: userReducer,
+    settings: settingsReducer,
+    timeTable: timeTableReducer,
+    menu: menuReducer,
+    meetRequest: meetRequestReducer,
+    meetings: meetingsReducer,
+    meeting: meetingReducer
 });
 
 export function createStore() {

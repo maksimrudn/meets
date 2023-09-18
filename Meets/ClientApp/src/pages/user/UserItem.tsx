@@ -1,8 +1,5 @@
-
 import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import { getAvatarPathForUser } from '../../common/Utils';
 import moment from 'moment';
 
@@ -12,16 +9,16 @@ import CoffeeIcon from '../../icons/CoffeeIcon';
 import JobIcon from '../../icons/JobIcon';
 import CompanyIcon from '../../icons/CompanyIcon';
 import Routes from '../../common/Routes';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
+import useAccountStore from '../../hooks/useAccountStore';
 import MeetRequestModal from '../../modules/entities/user/MeetRequestModal';
+import UserListItemDTO from '../../contracts/user/UserListItemDTO';
 
 interface UserItemProps {
-    currentUserId: number
-    user: any
+    user: UserListItemDTO
 }
 
 export default function UserItem(props: UserItemProps) {
-
+    const { currentUser } = useAccountStore();
 
     const [isOpenMeetModal, setIsOpenMeetModal] = useState(false);
 
@@ -37,11 +34,11 @@ export default function UserItem(props: UserItemProps) {
                     <div className="Avatar">
                         <img src={getAvatarPathForUser(props.user)} alt="" className="avatar" />
                     </div>
-                        <div className="Name">
-                            <Link to={Routes.UserCardBuild(props.user.id)} >
-                                {!props.user.fullName ? props.user.email : props.user.fullName}
-                            </Link>
-                        </div>
+                    <div className="Name">
+                        <Link to={Routes.UserCardBuild(props.user.id)} >
+                            {!props.user.fullName ? props.user.email : props.user.fullName}
+                        </Link>
+                    </div>
                     <div className="Age">{props.user.birthDate && (moment().diff(moment(props.user.birthDate), 'years'))}</div>
                 </div>
                 <div className="Body card-body">
@@ -71,27 +68,24 @@ export default function UserItem(props: UserItemProps) {
                         </div>
                     </div>
 
-                    {props.user.id != props.currentUserId &&
+                    {props.user.id !== currentUser.id &&
                         <button className="Meet btn" type="button" onClick={meetRequestModalToggle} disabled={props.user.isInvited}>
                             <span className="Icon"><CoffeeIcon /></span>
-                            <span className="Text">Invite</span>
+                            <span className="Text" onClick={() => meetRequestModalToggle()}>Пригласить</span>
                         </button>
                     }
 
-                   
+
                 </div>
             </div>
 
-
-            {/*<MeetRequestModal*/}
-            {/*    isOpen={isOpenMeetModal}*/}
-            {/*    toggle={meetRequestModalToggle}*/}
-            {/*    user={props.user}*/}
-            {/*    mapSelectModalToggle={mapSelectModalToggle}*/}
-            {/*    meetingAddress={meetingAddress}*/}
-            {/*    updateUser={update}*/}
-            {/*//updateNotifications={props.updateNotifications}*/}
-            {/*/>*/}
+            {isOpenMeetModal &&
+                <MeetRequestModal
+                    isOpen={isOpenMeetModal}
+                    toggle={meetRequestModalToggle}
+                    user={props.user}
+                />
+            }
 
         </div>
     );

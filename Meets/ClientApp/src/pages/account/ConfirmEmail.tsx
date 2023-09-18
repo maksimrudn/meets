@@ -6,41 +6,40 @@ import userService from '../../api/UserService';
 import { connect, useSelector } from 'react-redux';
 import mapDispatchToProps from '../../store/mapDispatchToProps';
 import mapStateToProps from '../../store/mapStateToProps';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import Routes  from '../../common/Routes';
 import { RootState, useAppDispatch } from '../../store/createStore';
 import { updateCurrentUser } from '../../store/currentUser';
+import useAccountStore from '../../hooks/useAccountStore';
 
 function ConfirmEmail() {
     let history = useHistory();
     let { search } = useLocation();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    const account = useAccountStore();
 
     useEffect(() => {
-        try {
-            // получить данные из урла и json`ом отправить на ConfirmEmail метод AccountController
-            let query = new URLSearchParams(search);
-            let userId = query.get('userId');
-            let code = query.get('code');
+        const confirmEmail = async () => {
+            try {
+                // получить данные из урла и json`ом отправить на ConfirmEmail метод AccountController
+                let query = new URLSearchParams(search);
+                let userId = query.get('userId');
+                let code = query.get('code');
 
-            let jwtResponse = accountService.confirmEmail(userId, code);
-            Cookies.set('access_token', jwtResponse.accessToken);
+                await account.confirmEmail(userId, code);
 
-            dispatch(updateCurrentUser);
+                history.push('/account/confirmEmailSuccess');
 
-            history.push('/account/confirmEmailSuccess');
-
-        } catch (err) {
-            history.push( Routes.Error, err );
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
         }
+
+        confirmEmail();
+
     }, []);
 
     return (
-        <>
-            <NotificationContainer />
-        </>
+        <></>
     );
 }
 

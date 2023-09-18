@@ -5,7 +5,6 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import meetingsService from '../../api/MeetingsService';
 import Routes from '../../common/Routes';
 import MeetingDTO from '../../contracts/meeting/MeetingDTO';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import ArrowIcon from '../../icons/GoBackIcon';
 import MeetingIcon from '../../icons/MeetingIcon';
 import moment from 'moment';
@@ -33,27 +32,28 @@ import 'react-date-time-new/css/react-datetime.css'
 import AppConfig from '../../common/AppConfig';
 import MeetingFieldNames from '../../common/MeetingFieldNames';
 import MeetingEditModal from '../../modules/entities/meeting/MeetingEditModal';
+import useMeetingStore from '../../hooks/useMeetingStore';
+import { toast } from 'react-toastify';
 
 interface IMeetingParams {
     id?: string
 }
 
-interface ILocationState{
+interface ILocationState {
     meetingId: any
 }
 
 interface IMeetingProps {
     setIsOpenMeeting: any,
     location: Location<ILocationState>
-    //updateNotifications: () => void
 }
 
 export default function Meeting(props: IMeetingProps) {
     const history = useHistory();
     const params = useParams<IMeetingParams>();
 
-    const [meeting, setMeeting] = useState<GetMeetingDTO>(new GetMeetingDTO());
-    const [messages, setMessages] = useState<MessageDTO[]>([]);
+    const { meetingId } = props.location.state;
+    const meetingStore = useMeetingStore();
 
     const [isOpenMeetingModal, setIsOpenMeetingModal] = useState(false);
     const [selectedFieldName, setSelectedFieldName] = useState<string>('');
@@ -61,8 +61,18 @@ export default function Meeting(props: IMeetingProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     useEffect(() => {
-        updateMeeting();
-        updateMessages();
+        const update = async () => {
+
+            try {
+                await meetingStore.updateMeeting(meetingId);
+                await meetingStore.updateMessages(meetingId);
+            }
+            catch (err: any) {
+                history.push(Routes.Error, err);
+            }
+        }
+
+        update();
     }, []);
 
     useEffect(() => {
@@ -73,87 +83,41 @@ export default function Meeting(props: IMeetingProps) {
         };
     });
 
-    const updateMeeting = () => {
+    const onSendMessage = async (text: any, receiverId: any) => {
         try {
-            let mt = meetingsService.get(props.location.state.meetingId);
-            setMeeting(mt);
-        } catch (err) {
-            history.push(Routes.Error, err);
+            await meetingStore.sendMessage(meetingId, text, receiverId);
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const updateMessages = () => {
+    const discussOnClick = async () => {
         try {
-            let res = messageService.getMessages(props.location.state.meetingId);
-            setMessages(res);
-        } catch (err) {
-            history.push(Routes.Error, err);
+            await meetingStore.discuss(meetingId);
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const onSendMessage = (text: any, receiverId: any) => {
-
-        var msgDto = {
-            receiverId: receiverId,
-            text: text,
-            meetingId: props.location.state.meetingId
-        };
-
-        messageService.sendMessage(msgDto);
-        updateMessages();
-    }
-
-    const discussOnClick = () => {
+    const cancelOnClick = async () => {
         try {
-            meetingsService.discuss(props.location.state.meetingId);
-            updateMeeting();
-            //props.updateNotifications();
-        } catch (err) {
-            history.push(Routes.Error, err);
+            await meetingStore.cancel(meetingId);
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const cancelOnClick = () => {
+    const confirmOnClick = async () => {
         try {
-            meetingsService.cancel(props.location.state.meetingId);
-            updateMeeting();
-            //props.updateNotifications();
-        } catch (err) {
-            history.push(Routes.Error, err);
+            await meetingStore.confirm(meetingId);
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const confirmOnClick = () => {
+    const handleEdit = async (value: string, fieldName: string) => {
         try {
-            meetingsService.confirm(props.location.state.meetingId);
-            updateMeeting();
-            //props.updateNotifications();
-        } catch (err) {
-            history.push(Routes.Error, err);
-        }
-    }
-
-    const onEditMeetingSave = (value: string, fieldName: string) => {
-        try {
-            let mt = {
-                id: props.location.state.meetingId,
-                place: '',
-                meetingDate: ''
-            }
-
-            if (fieldName === MeetingFieldNames.Date) {
-                mt.place = meeting.place;
-                mt.meetingDate = value;
-            } else {
-                mt.meetingDate = meeting.meetingDate;
-                mt.place = value;
-            }
-
-            meetingsService.edit(mt);
-            updateMeeting();
-            //props.updateNotifications();
-            meetingModalToggle();
-
+            await meetingStore.edit(meetingId, value, fieldName);
         } catch (err) {
             history.push(Routes.Error, err);
         }
@@ -189,25 +153,25 @@ export default function Meeting(props: IMeetingProps) {
                                 <div className="col-md-7 col-10 d-flex flex-column">
                                     <div className="DateTime mb-2">
                                         <span className="CalendarIcon me-2"><CalendarAltIcon /></span>
-                                        <span className="me-3">{moment(meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meeting.meetingDate).format('ddd')})</span>
+                                        <span className="me-3">{moment(meetingStore.meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meetingStore.meeting.meetingDate).format('ddd')})</span>
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
-                                        <span className="me-2">{moment(meeting.meetingDate).format('HH:mm')}</span>
-                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{moment(meetingStore.meeting.meetingDate).format('HH:mm')}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
-                                        <span className="me-2">{meeting.place}</span>
-                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{meetingStore.meeting.place}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Companion mb-2">
                                         <span className="me-2"><PersonIcon /></span>
-                                        <span>{meeting.companion?.fullName}</span>
+                                        <span>{meetingStore.meeting.companion?.fullName}</span>
                                     </div>
-                                    <div className="Status mb-2">{MeetingStatus[meeting.status as MeetingStatusItems]?.Title}</div>
+                                    <div className="Status mb-2">{MeetingStatus[meetingStore.meeting.status as MeetingStatusItems]?.Title}</div>
                                     <button className="ExpandBtn" type="button" onClick={expandToggle}><ArrowIcon /></button>
                                 </div>
                             </div>
@@ -218,57 +182,57 @@ export default function Meeting(props: IMeetingProps) {
                                 <div className="col-md-7 col-12 d-flex flex-column">
                                     <div className="Date mb-2">
                                         <span className="CalendarIcon me-2"><CalendarAltIcon /></span>
-                                        <span className="me-3">{moment(meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meeting.meetingDate).format('ddd')})</span>
-                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-3">{moment(meetingStore.meeting.meetingDate).format('DD MMMM, YYYY')} ({moment(meetingStore.meeting.meetingDate).format('ddd')})</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Time mb-2">
                                         <span className="TimeIcon me-2"><AccessTimeIcon /></span>
-                                        <span className="me-2">{moment(meeting.meetingDate).format('HH:mm')}</span>
-                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{moment(meetingStore.meeting.meetingDate).format('HH:mm')}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Date)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Place mb-2">
                                         <span className="me-2"><LocationIconSvg width='10.47' height='16.75' color='#000' /></span>
-                                        <span className="me-2">{meeting.place}</span>
-                                        {(meeting.isOwner && meeting.status !== MeetingStatus.Canceled.Code) &&
+                                        <span className="me-2">{meetingStore.meeting.place}</span>
+                                        {(meetingStore.meeting.isOwner && meetingStore.meeting.status !== MeetingStatus.Canceled.Code) &&
                                             <span className="EditIcon" role="button" onClick={() => editOnClick(MeetingFieldNames.Place)}><EditIcon /></span>
                                         }
                                     </div>
                                     <div className="Companion mb-2">
-                                        {meeting.companion?.avatar
-                                            ? <span className="Avatar me-3"><img src={getAvatarPathForUser(meeting.companion)} alt="" /></span>
+                                        {meetingStore.meeting.companion?.avatar
+                                            ? <span className="Avatar me-3"><img src={getAvatarPathForUser(meetingStore.meeting.companion)} alt="" /></span>
                                             : <span className="EmptyAvatar me-3"><EmptyAvatarIcon color='#000' /></span>
                                         }
-                                        <span className="Name">{meeting.companion?.fullName}</span>
+                                        <span className="Name">{meetingStore.meeting.companion?.fullName}</span>
                                     </div>
                                     <div className="Status mb-3">
                                         <span className="me-2">Статус</span>
-                                        <span className="Badge">{MeetingStatus[meeting.status as MeetingStatusItems]?.Title}</span>
+                                        <span className="Badge">{MeetingStatus[meetingStore.meeting.status as MeetingStatusItems]?.Title}</span>
                                     </div>
                                     {(() => {
-                                        if (!meeting.isOwner) {
+                                        if (!meetingStore.meeting.isOwner) {
 
-                                            if (meeting.status !== MeetingStatus.Discussion.Code &&
-                                                meeting.status !== MeetingStatus.Confirmed.Code &&
-                                                meeting.status !== MeetingStatus.Canceled.Code) {
-                                                return (<button className="StatusBtn" type="button" onClick={discussOnClick}>Discuss</button>);
+                                            if (meetingStore.meeting.status !== MeetingStatus.Discussion.Code &&
+                                                meetingStore.meeting.status !== MeetingStatus.Confirmed.Code &&
+                                                meetingStore.meeting.status !== MeetingStatus.Canceled.Code) {
+                                                return (<button className="StatusBtn" type="button" onClick={discussOnClick}>Обсудить</button>);
                                             }
                                         }
                                     })()}
                                     {(() => {
-                                        if (!meeting.isOwner) {
+                                        if (!meetingStore.meeting.isOwner) {
 
-                                            if (meeting.status !== MeetingStatus.Confirmed.Code &&
-                                                meeting.status !== MeetingStatus.Canceled.Code) {
-                                                return (<button className="StatusBtn" type="button" onClick={confirmOnClick}>Approve</button>);
+                                            if (meetingStore.meeting.status !== MeetingStatus.Confirmed.Code &&
+                                                meetingStore.meeting.status !== MeetingStatus.Canceled.Code) {
+                                                return (<button className="StatusBtn" type="button" onClick={confirmOnClick}>Подтвердить</button>);
                                             }
                                         }
                                     })()}
-                                    {meeting.status !== MeetingStatus.Canceled.Code &&
-                                        <button className="StatusBtn" type="button" onClick={cancelOnClick}>Cancel</button>
+                                    {meetingStore.meeting.status !== MeetingStatus.Canceled.Code &&
+                                        <button className="StatusBtn" type="button" onClick={cancelOnClick}>Завершить</button>
                                     }
 
                                     <button className="ExpandBtn" type="button" onClick={expandToggle}><ArrowIcon /></button>
@@ -281,20 +245,22 @@ export default function Meeting(props: IMeetingProps) {
 
             <div className="Messanger">
                 <MessageList
-                    messages={messages}
+                    messages={meetingStore.messages}
                     onSendMessage={onSendMessage}
                     targetUserId={params.id}
-                    isCanSendMessage={meeting.status === MeetingStatus.Discussion.Code || meeting.status === MeetingStatus.Confirmed.Code}
+                    isCanSendMessage={meetingStore.meeting.status === MeetingStatus.Discussion.Code || meetingStore.meeting.status === MeetingStatus.Confirmed.Code}
                 />
             </div>
 
-            <MeetingEditModal
-                isOpen={isOpenMeetingModal}
-                toggle={meetingModalToggle}
-                fieldName={selectedFieldName}
-                meeting={meeting}
-                onSaveChanges={onEditMeetingSave}
-            />
+            {(isOpenMeetingModal && meetingStore.dataLoaded) &&
+                <MeetingEditModal
+                    isOpen={isOpenMeetingModal}
+                    toggle={meetingModalToggle}
+                    fieldName={selectedFieldName}
+                    onSaveChanges={handleEdit}
+                />
+            }
+
         </div>
     );
 }

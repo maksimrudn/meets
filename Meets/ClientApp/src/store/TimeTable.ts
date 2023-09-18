@@ -5,14 +5,14 @@ import meetingsService from '../api/MeetingsService';
 
 
 
-interface ITimeTableInitialState {
+export interface ITimeTableState {
     timeTable: GetTimeTableDTO[] | null
     isLoading: boolean
     error: string | null
     dataLoaded: boolean
 }
 
-const initialState: ITimeTableInitialState = {
+const initialState: ITimeTableState = {
     timeTable: null,
     isLoading: false,
     error: null,
@@ -46,7 +46,7 @@ export const updateTimeTable = (): AppThunk => async dispatch => {
     dispatch(plansRequested());
 
     try {
-        const td = meetingsService.getTimeTable();
+        const td = await meetingsService.getTimeTable();
         dispatch(plansReceived(td));
     } catch (err: any) {
         dispatch(plansFailed(err.message));

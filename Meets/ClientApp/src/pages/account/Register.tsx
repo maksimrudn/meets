@@ -5,7 +5,6 @@ import mapStateToProps from '../../store/mapStateToProps';
 import * as Cookies from 'js-cookie';
 import { connect, useSelector } from 'react-redux';
 import accountService from '../../api/AccountService';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { useForm } from 'react-hook-form';
 import userService from '../../api/UserService';
 import LockOutlineIcon from '../../icons/LockOutlineIcon';
@@ -16,16 +15,15 @@ import MenuCloseIcon from '../../icons/MenuCloseIcon';
 import './Register.scss';
 import Routes from '../../common/Routes';
 import { RootState, useAppDispatch } from '../../store/createStore';
-import { updateCurrentUser } from '../../store/currentUser';
+import useAccountStore from '../../hooks/useAccountStore';
 
 
 
-function Register(props) {
+function Register() {
     // Todo: перевести проверки на https://react-hook-form.com/
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
+    const account = useAccountStore();
 
     let [fullName, setFullName] = useState('');
     let [email, setEmail] = useState('');
@@ -36,13 +34,10 @@ function Register(props) {
 
 
 
-    const onRegisterSubmit = (e) => {
+    const handleRegister = async () => {
 
         try {
-            var jwtResponse = accountService.register(fullName, email, password, confirmPassword);
-            Cookies.set('access_token', jwtResponse.accessToken);
-
-            dispatch(updateCurrentUser);
+            await account.register(fullName, email, password, confirmPassword);
 
             history.push('/account/confirmEmailMessage');
         }
@@ -53,8 +48,6 @@ function Register(props) {
 
     return (
         <>
-            <NotificationContainer />
-
             <div className="Register">
 
                 <div className="Actions d-flex justify-content-between">
@@ -64,7 +57,7 @@ function Register(props) {
                 <div className="Data d-flex flex-column justify-content-center h-100">
                     <div className="fs-3 text-center mb-2">Registration</div>
 
-                    <form className="row g-1 p-3 p-md-4" onSubmit={handleSubmit(onRegisterSubmit)}>
+                    <form className="row g-1 p-3 p-md-4" onSubmit={handleSubmit(handleRegister)}>
                         <div className="col-12">
                             <div className="mb-2">
                                 <div className="input-group">

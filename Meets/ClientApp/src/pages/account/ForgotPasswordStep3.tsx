@@ -5,7 +5,6 @@ import mapStateToProps from '../../store/mapStateToProps';
 import * as Cookies from 'js-cookie';
 import { connect } from 'react-redux';
 import accountService from '../../api/AccountService';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
 import { useForm } from 'react-hook-form';
 import userService from '../../api/UserService';
 import LockOutlineIcon from '../../icons/LockOutlineIcon';
@@ -15,12 +14,15 @@ import MenuCloseIcon from '../../icons/MenuCloseIcon';
 
 import './ForgotPasswordStep3.scss';
 import Routes from '../../common/Routes';
+import useAccountStore from '../../hooks/useAccountStore';
 
 
 
-function ForgotPasswordStep3(props) {
+function ForgotPasswordStep3() {
     // Todo: перевести проверки на https://react-hook-form.com/
     const { register, getValues, formState: { errors }, handleSubmit } = useForm();
+
+    const account = useAccountStore();
 
     const [code, setCode] = useState('');
     const [email, setEmail] = useState('');
@@ -42,9 +44,9 @@ function ForgotPasswordStep3(props) {
 
     }, []);
 
-    const onSubmit = (e) => {
+    const handleResetPassword = async () => {
         try {
-            accountService.resetPassword(code, email, password, confirmPassword);
+            await account.resetPassword(code, email, password, confirmPassword);
 
             history.push('/account/forgotPasswordStep4');
         } catch (err) {
@@ -54,8 +56,6 @@ function ForgotPasswordStep3(props) {
 
     return (
         <>
-            <NotificationContainer />
-
             <div className="ForgotPasswordStep3">
 
                 <div className="Actions d-flex justify-content-between">
@@ -65,7 +65,7 @@ function ForgotPasswordStep3(props) {
                 <div className="Data d-flex flex-column justify-content-center h-100">
                     <div className="fs-3 text-center mb-2">Recovery password</div>
 
-                    <form className="row g-1 p-3 p-md-4" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                    <form className="row g-1 p-3 p-md-4" onSubmit={handleSubmit(handleResetPassword)} autoComplete="off">
 
                         <div className="col-12">
                             <div className="mb-2">

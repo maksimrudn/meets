@@ -12,65 +12,58 @@ import ProfileSettingsDTO from '../../contracts/user/ProfileSettingsDTO';
 import EditProfileSettingsDTO from '../../contracts/user/EditProfileSettingsDTO';
 import accountService from '../../api/AccountService';
 import ConfirmationModal from '../../modules/ConfirmationModal';
-import UserAuthInfo from '../../contracts/UserAuthInfo';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from '../../store/createStore';
-import { updateCurrentUser } from '../../store/currentUser';
+import useAccountStore from '../../hooks/useAccountStore';
+import useSettingsStore from '../../hooks/useSettingsStore';
+import { toast } from 'react-toastify';
 
-
-
-interface IProfileSettingsParams {
-    id?: string
-}
 
 function ProfileSettings() {
     let history = useHistory();
-    let params = useParams<IProfileSettingsParams>();
 
-    const currentUser = useSelector((state: RootState) => state.currentUser);
-    const dispatch = useAppDispatch();
-
-    const [profile, setProfile] = useState<ProfileSettingsDTO>(new ProfileSettingsDTO());
+    const account = useAccountStore();
+    const settings = useSettingsStore();
 
     const [isOpenRemoveAccountModal, setIsOpenRemoveAccountModal] = useState(false);
 
     useEffect(() => {
+        const update = async () => {
+            try {
+                await settings.update();
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
+        }
+
         update();
-    }, [params.id]);
+    }, []);
 
-    const update = () => {
+    const handleEdit = async () => {
         try {
-            const profile = userService.getProfileSettings(params.id);
-            setProfile(profile);
-        } catch (err: any) {
-            history.push(Routes.Error, err);
-        }
-    }
-
-    const onSaveChanges = () => {
-        let data = new EditProfileSettingsDTO();
-        data = { ...profile, userId: params.id };
-
-        try {
-            userService.editProfileSettings(data);
+            await settings.edit();
             history.goBack();
-            //update();
         } catch (err: any) {
-            history.push(Routes.Error, err);
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const removeAccount = () => {
-        accountService.removeAccount();
-        history.push('/account/login');
+    const handleRemoveAccount = async () => {
+        try {
+            await settings.removeAccount();
+            history.push('/account/login');
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
-    const LogOut = () => {
-        Cookies.remove('access_token');
-
-        dispatch(updateCurrentUser);
-
-        history.push('/account/login');
+    const handleLogOut = async () => {
+        try {
+            await account.logout();
+            history.push('/account/login');
+        } catch (err: any) {
+            toast.error(`Ошибка, ${err.message}`);
+        }
     }
 
     const toggleRemoveAccountModal = () => {
@@ -82,29 +75,29 @@ function ProfileSettings() {
 
             <div className="Header mt-3">
                 <span className="GoBackBtn" onClick={() => { history.goBack(); }}><ArrowIcon /></span>
-                <span className="Title">Settings</span>
-                <span className="SaveChangesBtn" onClick={onSaveChanges}><CheckMarkIconSvg /></span>
+                <span className="Title">Настройки</span>
+                <span className="SaveChangesBtn" onClick={handleEdit}><CheckMarkIconSvg /></span>
             </div>
 
             <div className="card">
                 <div className="ConfirmEmail">
-                    <Link className="Link" to={Routes.UserConfirmEmailBuild(params.id)}>
+                    <Link className="Link" to={Routes.UserConfirmEmail}>
                         <div className="Row">
                             <div className="Wrap">
-                                <span className="Text">{profile.email}</span>
+                                <span className="Text">{settings.profile.email}</span>
                             </div>
                             <div className="Icon"><ArrowIcon /></div>
                         </div>
 
 
-                        {!profile.emailConfirmed &&
-                            <div className="Message">Confirm email to protect your account</div>
+                        {!settings.profile.emailConfirmed &&
+                            <div className="Message">Подтвердите адрес эл.почты чтобы защитить аккаунт</div>
                         }
                     </Link>
                 </div>
 
                 <div className="ChangePassword">
-                    <Link className="Link" to={Routes.UserChangePasswordBuild(params.id)}>
+                    <Link className="Link" to={Routes.UserChangePassword}>
                         <div className="Row">
                             <div className="Wrap">
                                 <div className="Text">Password</div>
@@ -122,8 +115,12 @@ function ProfileSettings() {
                     <input
                         className="form-control"
                         type="text"
-                        defaultValue={profile.telegram?.replace('@', '')}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, telegram: e.target.value })}
+                        defaultValue={settings.profile.telegram?.replace('@', '')}
+                        onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                            try {
+                                await settings.setProfile({ ...settings.profile, telegram: e.target.value });
+                            } catch (err) { }
+                        }}
                     />
                 </div>
             </div>
@@ -135,8 +132,13 @@ function ProfileSettings() {
                             type="checkbox"
                             className="checkbox"
                             id="invite"
-                            defaultChecked={profile.isInvitable}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, isInvitable: e.target.checked })}
+                            defaultChecked={settings.profile.isInvitable}
+                            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                                try {
+                                    await settings.setProfile({ ...settings.profile, isInvitable: e.target.checked })
+                                }
+                                catch (err) { }
+                            }}
                         />
                         <label htmlFor="invite"></label>
                     </div>
@@ -154,8 +156,13 @@ function ProfileSettings() {
                             type="checkbox"
                             className="checkbox"
                             id="search"
-                            defaultChecked={profile.isSearchable}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, isSearchable: e.target.checked })}
+                            defaultChecked={settings.profile.isSearchable}
+                            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                                try {
+                                    await settings.setProfile({ ...settings.profile, isSearchable: e.target.checked });
+                                }
+                                catch (err) { }
+                            }}
                         />
                         <label htmlFor="search"></label>
                     </div>
@@ -170,8 +177,14 @@ function ProfileSettings() {
                         <input
                             type="checkbox"
                             id="switch"
-                            defaultChecked={profile.isGeoTracking}
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, isGeoTracking: e.target.checked })}
+                            defaultChecked={settings.profile.isGeoTracking}
+                            onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                                try {
+                                    await settings.setProfile({ ...settings.profile, isGeoTracking: e.target.checked });
+                                }
+                                catch (err) { }
+                            }
+                            }
                         />
                         <label htmlFor="switch"></label>
                     </div>
@@ -186,8 +199,13 @@ function ProfileSettings() {
                 <input
                     className="form-control"
                     type="text"
-                    defaultValue={profile.specialization}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, specialization: e.target.value })}
+                    defaultValue={settings.profile.specialization}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                        try {
+                            await settings.setProfile({ ...settings.profile, specialization: e.target.value });
+                        }
+                        catch (err) { }
+                    }}
                 />
             </div>
 
@@ -196,8 +214,14 @@ function ProfileSettings() {
                 <input
                     className="form-control"
                     type="text"
-                    defaultValue={profile.company}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, company: e.target.value })}
+                    defaultValue={settings.profile.company}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                        try {
+                            await settings.setProfile({ ...settings.profile, company: e.target.value });
+                        }
+                        catch (err) { }
+                    }
+                    }
                 />
             </div>
 
@@ -206,20 +230,25 @@ function ProfileSettings() {
                 <input
                     className="form-control"
                     type="text"
-                    defaultValue={profile.job}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProfile({ ...profile, job: e.target.value })}
+                    defaultValue={settings.profile.job}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                        try {
+                            await settings.setProfile({ ...settings.profile, job: e.target.value });
+                        }
+                        catch (err) { }
+                    }}
                 />
             </div>
 
-            <button type="button" className="LogOut btn mb-5" onClick={LogOut}>Log Out</button>
+            <button type="button" className="LogOut btn mb-5" onClick={handleLogOut}>Выйти</button>
 
             <button type="button" className="RemoveAccount btn mb-5" onClick={toggleRemoveAccountModal}>Remove account</button>
 
             <ConfirmationModal
                 isOpen={isOpenRemoveAccountModal}
                 toggle={toggleRemoveAccountModal}
-                message='Are you sure?'
-                confirmAction={removeAccount}
+                message='Уверены что хотите удалить аккаунт?'
+                confirmAction={handleRemoveAccount}
             />
 
         </div>

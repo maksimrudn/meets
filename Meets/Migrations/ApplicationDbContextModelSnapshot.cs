@@ -629,6 +629,47 @@ namespace Meets.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
+                    b.OwnsMany("Meets.Models.RefreshToken", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<decimal>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("decimal(20,0)");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<decimal>("Id"), 1L, 1);
+
+                            b1.Property<decimal>("ApplicationUserId")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<DateTime>("Created")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("Expires")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("ReasonRevoked")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ReplacedByToken")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateTime?>("Revoked")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ApplicationUserId");
+
+                            b1.ToTable("RefreshToken");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ApplicationUserId");
+                        });
+
+                    b.Navigation("RefreshTokens");
+
                     b.Navigation("Role");
                 });
 

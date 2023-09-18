@@ -12,7 +12,6 @@ using Meets.Extensions;
 using Meets.Models.User;
 using Microsoft.EntityFrameworkCore;
 using Meets.Domain;
-using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
@@ -25,9 +24,11 @@ using Meets.Services;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
+using Meets.Infrastructure;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [DisableCors]
     [Area("api")]
     [ApiController]
@@ -53,40 +54,7 @@ namespace Meets.Controllers.api
             _hostEnv = webHost;
         }
 
-        /// <summary>
-        /// Метод для получения информации о пользователе и признака аутентификации. Должен быть открыт для неавторизованных пользователей
-        /// </summary>
-        /// <returns></returns>
-        //[DisableCors]
-        [HttpPost("[area]/[controller]/[action]")]
-        public async Task<ActionResult<UserAuthInfo>> GetAuthInfo()
-        {
-            UserAuthInfo res = new UserAuthInfo()
-            {
-                IsAuthenticated = false
-            };
-
-            if (User.Identity.IsAuthenticated)
-            {
-                res.IsAuthenticated = true;
-
-                ApplicationUser user = _db.Users.Find(User.GetUserId());
-                res.UserName = user.UserName;
-                res.User = user;
-                res.City = user.City;
-                res.IsAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
-
-                if (user.Latitude != 0 && user.Longitude != 0)
-                {
-                    res.HasGeolocation = true;
-                    res.Latitude = user.Latitude;
-                    res.Longitude = user.Longitude;
-                }
-            }
-
-            return res;
-            
-        }
+        
 
         // todo: Необходимо выделить специальный метод, который будет возвращать события пользователя для фронта (например getEvents(..)), либо использовать event api
         // todo: параметры должны быть не в int а в bool и все они должны передаваться одной dto
@@ -195,7 +163,7 @@ namespace Meets.Controllers.api
             
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<ProfileSettingsDTO>> GetProfileSettings(ByUserIdRequest request)
         {
@@ -215,7 +183,7 @@ namespace Meets.Controllers.api
             return settingsDTO;
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> EditProfileSettings(EditProfileSettingsDTO request)
         {
@@ -300,10 +268,11 @@ namespace Meets.Controllers.api
                 res = res.Where(x => DateTime.Now.Year - x.BirthDate.Value.Year <= request.AgeTo);
             }
 
-            if (!string.IsNullOrEmpty(request.Work))
+            if (!string.IsNullOrEmpty(request.Company))
             {
-                string workTrimed = request.Work.Trim().ToLower();
-                res = res.Where(x => x.Works.Any(w => w.Title.ToLower().Contains(workTrimed)));
+                string companyTrimed = request.Company.Trim().ToLower();
+                res = res.Where(x => x.Company.ToLower().Contains(companyTrimed));
+                //res = res.Where(x => x.Works.Any(w => w.Title.ToLower().Contains(workTrimed)));
             }
 
             if (!string.IsNullOrEmpty(request.Learning))
@@ -346,7 +315,7 @@ namespace Meets.Controllers.api
             
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public IActionResult SaveUserGeo([FromForm]UserGeodataDTO userGeodata)
         {   
@@ -360,7 +329,7 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public IActionResult SaveUserCity(CityDTO request)
         {
@@ -374,7 +343,7 @@ namespace Meets.Controllers.api
             
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public ActionResult<Coordinates> GetCoordinatesForCurrentUser()
         {
@@ -393,7 +362,7 @@ namespace Meets.Controllers.api
             }
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public ActionResult<UserDTO> Get(GetParamsDTO getParamsDTO)
         {
@@ -407,7 +376,7 @@ namespace Meets.Controllers.api
             return _mapper.Map<UserDTO>(user);
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult> Edit([FromForm]UserDTO userDto, [FromForm]IFormFile photo)
         {
@@ -481,7 +450,7 @@ namespace Meets.Controllers.api
             return resultImageSequence;
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public ActionResult RemoveUserAvatar()
         { 
@@ -505,7 +474,7 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequest model)
         {
@@ -523,7 +492,7 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
+        
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult> ConfirmEmail(ConfirmEmailDTO request)
         {

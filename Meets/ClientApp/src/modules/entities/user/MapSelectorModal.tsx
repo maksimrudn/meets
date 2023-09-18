@@ -6,10 +6,10 @@ import 'moment/locale/ru';
 import LocateMapIcon from '../../../icons/LocateMapIcon';
 import YMapsGeoSelector from '../../../modules/geo/YMapsGeoSelector';
 import getPosition from '../../../common/GeoUtils';
-import UserAuthInfo from '../../../contracts/UserAuthInfo';
 
 import './MapSelectorModal.scss';
-import useStoreCurrentUser from '../../../hooks/useCurrentUser';
+import useAccountStore from '../../../hooks/useAccountStore';
+import useMeetRequestStore from '../../../hooks/useMeetRequestStore';
 
 type MapSelectorModalState = {
     latitude: number,
@@ -20,12 +20,12 @@ type MapSelectorModalState = {
 type IMapSelectorModalProps = {
     isOpen: boolean,
     toggle(): void,
-    setMeetingAddress(address: string):void
 }
 
 export default function MapSelectorModal(props: IMapSelectorModalProps) {
 
-    const currentUser = useStoreCurrentUser();
+    const { currentUser } = useAccountStore();
+    const meeting = useMeetRequestStore();
 
     const [coords, setCoords] = useState<MapSelectorModalState>({
         latitude: 0,
@@ -65,9 +65,12 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
         }
     }
 
-    const onSave = () => {
-        props.setMeetingAddress(coords.address as string);
-        props.toggle();
+    const onSave = async () => {
+        try {
+            await meeting.setMeetRequest({ ...meeting.meetRequest, place: coords.address });
+            props.toggle();
+        }
+        catch (err) { }
     }
 
     return (
@@ -107,7 +110,7 @@ export default function MapSelectorModal(props: IMapSelectorModalProps) {
                         latitude={coords.latitude}
                         longitude={coords.longitude}
                         onChangeCoordinates={onChangeCoordinatesModal}
-                        userInfo={currentUser.user }
+                        currentUser={currentUser}
                     />
                 </div>
 

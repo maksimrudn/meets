@@ -17,8 +17,6 @@ import PlusIcon from '../../../icons/PlusIcon';
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import DateTime from 'react-date-time-new';
 import 'react-date-time-new/css/react-datetime.css';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
 import learningService from '../../../api/LearningService';
 import { Learning } from '../../../contracts/learning/Learning';
 import CalendarAltIcon from '../../../icons/CalendarAltIcon';
@@ -36,9 +34,12 @@ import ActivityEditorModal from '../activity/ActivityEditorModal';
 import { Fact } from '../../../contracts/fact/Fact';
 import factService from '../../../api/FactService';
 import FactEditorModal from '../fact/FactEditorModal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/createStore';
-
+import useAccountStore from '../../../hooks/useAccountStore';
+import useUserStore from '../../../hooks/useUserStore';
+import { UserCardTabsNames } from '../../../common/UserCardTabsNames';
+import { toast } from 'react-toastify';
 
 
 
@@ -48,21 +49,12 @@ interface UserCardTabsProps {
     selectedTab: any
     setSelectedTab: any
 
-    user: any
     onClickEditIcon: any
-
-
-    updateUser: () => void
-
-    learnings: Learning[]
-    works: Work[]
-    activities: Activity[]
-    facts: Fact[]
 }
 
 export default function UserCardTabs(props: UserCardTabsProps) {
-
-    const currentUser = useSelector((state: RootState) => state.currentUser);
+    const { currentUser } = useAccountStore();
+    const state = useUserStore();
 
     const [isOpenLearningEditorModal, setIsLearningEditorModal] = useState(false);
     const [isOpenWorkEditorModal, setIsWorkEditorModal] = useState(false);
@@ -73,11 +65,6 @@ export default function UserCardTabs(props: UserCardTabsProps) {
     const [isOpenRemoveWorkConfirmModal, setIsOpenRemoveWorkConfirmModal] = useState(false);
     const [isOpenRemoveActivityConfirmModal, setIsOpenRemoveActivityConfirmModal] = useState(false);
     const [isOpenRemoveFactConfirmModal, setIsOpenRemoveFactConfirmModal] = useState(false);
-
-    const [learningId, setLearningId] = useState<string>('');
-    const [workId, setWorkId] = useState<string>('');
-    const [activityId, setActivityId] = useState<string>('');
-    const [factId, setFactId] = useState<string>('');
 
     const learningEditorModalToggler = () => {
         setIsLearningEditorModal(!isOpenLearningEditorModal);
@@ -95,43 +82,66 @@ export default function UserCardTabs(props: UserCardTabsProps) {
         setIsFactEditorModal(!isOpenFactEditorModal);
     }
 
-    const editLearningOnClick = (learningId: string) => {
-        setLearningId(learningId);
+    const editLearningOnClick = async (learning: Learning) => {
+        try {
+            await state.setLearning(learning);
+        } catch (err) { }
+
         learningEditorModalToggler();
     }
 
-    const editWorkOnClick = (workId: string) => {
-        setWorkId(workId);
+    const editWorkOnClick = async (work: Work) => {
+        try {
+            await state.setWork(work);
+        } catch (err) { }
+
         workEditorModalToggler();
     }
 
-    const editActivityOnClick = (activityId: string) => {
-        setActivityId(activityId);
+    const editActivityOnClick = async (activity: Activity) => {
+        try {
+            await state.setActivity(activity);
+        } catch (err) { }
+
         activityEditorModalToggler();
     }
 
-    const editFactOnClick = (factId: string) => {
-        setFactId(factId);
+    const editFactOnClick = async (fact: Fact) => {
+        try {
+            await state.setFact(fact);
+        } catch (err) { }
         factEditorModalToggler();
     }
 
-    const removeLearningOnClick = (learningId: string) => {
-        setLearningId(learningId);
+    const removeLearningOnClick = async (learning: Learning) => {
+        try {
+            await state.setLearning(learning);
+        } catch (err) { }
+
         removeLearningConfirmModalToggler();
     }
 
-    const removeWorkOnClick = (workId: string) => {
-        setWorkId(workId);
+    const removeWorkOnClick = async (work: Work) => {
+        try {
+            await state.setWork(work);
+        } catch (err) { }
+
         removeWorkConfirmModalToggler();
     }
 
-    const removeActivityOnClick = (activityId: string) => {
-        setActivityId(activityId);
+    const removeActivityOnClick = async (activity: Activity) => {
+        try {
+            await state.setActivity(activity);
+        } catch (err) { }
+
         removeActivityConfirmModalToggler();
     }
 
-    const removeFactOnClick = (factId: string) => {
-        setFactId(factId);
+    const removeFactOnClick = async (fact: Fact) => {
+        try {
+            await state.setFact(fact);
+        } catch (err) { }
+
         removeFactConfirmModalToggler();
     }
 
@@ -151,51 +161,35 @@ export default function UserCardTabs(props: UserCardTabsProps) {
         setIsOpenRemoveFactConfirmModal(!isOpenRemoveFactConfirmModal);
     }
 
-    const removeLearning = () => {
+    const handleRemoveLearning = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', learningId);
-            learningService.remove(formData);
-
-            props.updateUser();
+            await state.removeLearning();
         } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const removeWork = () => {
+    const handleRemoveWork = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', workId);
-            workService.remove(formData);
-
-            props.updateUser();
+            await state.removeWork();
         } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const removeActivity = () => {
+    const handleRemoveActivity = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', activityId);
-            activityService.remove(formData);
-
-            props.updateUser();
+            await state.removeActivity();
         } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
-    const removeFact = () => {
+    const handleRemoveFact = async () => {
         try {
-            let formData = new FormData();
-            formData.append('id', factId);
-            factService.remove(formData);
-
-            props.updateUser();
+            await state.removeFact();
         } catch (err: any) {
-            NotificationManager.error(err.message, err.name);
+            toast.error(`Ошибка, ${err.message}`);
         }
     }
 
@@ -203,55 +197,33 @@ export default function UserCardTabs(props: UserCardTabsProps) {
         <div className="UserCardTabs">
             <div className="TabBtnsContainer">
                 <SwiperTabs
-                    tabs={[
-                        {
-                            title: props.tabs.Info,
-                            count: 1
-                        },
-                        {
-                            title: props.tabs.Learning,
-                            count: props.learnings?.length
-                        },
-                        {
-                            title: props.tabs.Work,
-                            count: props.works?.length
-                        },
-                        {
-                            title: props.tabs.Activity,
-                            count: props.activities?.length
-                        },
-                        {
-                            title: props.tabs.Facts,
-                            count: props.facts?.length
-                        }
-                    ]}
+                    tabs={state.tabHeader}
                     selectedTab={props.selectedTab}
                     setSelectedTab={props.setSelectedTab}
-                    user={props.user}
-                    userInfo={currentUser.user}
+                    user={state.user}
                 />
             </div>
 
             {(() => {
                 switch (props.selectedTab) {
-                    case props.tabs.Info:
+                    case UserCardTabsNames.Info:
                         return (
                             <div className="TabInfo">
                                 <div className="Main mb-2">
 
-                        <div className="d-flex justify-content-start mb-5">
-                                        <span className="fs-5 me-4">{props.user.description || 'About is not specified'}</span>
-                                        {(currentUser.userId === props.user.id) &&
-                                <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Description)}><EditIcon /></span>
-                            }
-                        </div>
+                                    <div className="d-flex justify-content-start mb-5">
+                                        <span className="fs-5 me-4">{state.user.description || 'О себе ничего не указано'}</span>
+                                        {(currentUser.id === state.user.id) &&
+                                            <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Description)}><EditIcon /></span>
+                                        }
+                                    </div>
 
                                     <div className="d-flex justify-content-start align-items-center mb-5">
                                         <span className="IconBirthDate text-white me-2">
                                             <BirthDateIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.birthDate && (moment().diff(moment(props.user.birthDate), 'years')) + ' лет' || 'not specified'}</span>
-                                        {(currentUser.userId === props.user.id) &&
+                                        <span className="fs-5 me-4">{state.user.birthDate && (moment().diff(moment(state.user.birthDate), 'years')) + ' лет' || 'не указано'}</span>
+                                        {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.BirthDate)}><EditIcon /></span>
                                         }
                                     </div>
@@ -262,8 +234,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                 <path id="Icon_metro-location" data-name="Icon metro-location" d="M16.257,1.392A10.223,10.223,0,0,0,6.034,11.616c0,10.223,10.223,22.492,10.223,22.492S26.481,21.839,26.481,11.616A10.223,10.223,0,0,0,16.257,1.392Zm0,16.485a6.262,6.262,0,1,1,6.262-6.262,6.262,6.262,0,0,1-6.262,6.262ZM12.3,11.616a3.962,3.962,0,1,1,3.962,3.962A3.962,3.962,0,0,1,12.3,11.616Z" transform="translate(-5.534 -0.892)" fill="#fff" stroke="rgba(0,0,0,0.2)" stroke-width="1" />
                                             </svg>
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.city || 'not specified'}</span>
-                                        {(currentUser.userId === props.user.id) &&
+                                        <span className="fs-5 me-4">{state.user.city || 'не указано'}</span>
+                                        {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.City)}><EditIcon /></span>
                                         }
                                     </div>
@@ -272,8 +244,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconGrowth text-white me-2">
                                             <GrowthIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.growth ? `${props.user.growth} см` : 'not specified'}</span>
-                                        {(currentUser.userId === props.user.id) &&
+                                        <span className="fs-5 me-4">{state.user.growth ? `${state.user.growth} см` : 'не указано'}</span>
+                                        {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Growth)}><EditIcon /></span>
                                         }
                                     </div>
@@ -282,8 +254,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                         <span className="IconWeight text-white me-2">
                                             <WeightIconSvg />
                                         </span>
-                                        <span className="fs-5 me-4">{props.user.weight ? `${props.user.weight} кг` : 'not specified'}</span>
-                                        {(currentUser.userId === props.user.id) &&
+                                        <span className="fs-5 me-4">{state.user.weight ? `${state.user.weight} кг` : 'не указано'}</span>
+                                        {(currentUser.id === state.user.id) &&
                                             <span className="IconEdit" role="button" onClick={() => props.onClickEditIcon(UserFieldNames.Weight)}><EditIcon /></span>
                                         }
                                     </div>
@@ -293,13 +265,13 @@ export default function UserCardTabs(props: UserCardTabsProps) {
 
                             </div>
                         );
-                    case props.tabs.Learning:
-                        if (props.user.id !== currentUser.userId && !props.learnings?.length) return null;
+                    case UserCardTabsNames.Learning:
+                        if (state.user.id !== currentUser.id && !state.user.learnings?.length) return null;
                         return (
                             <div className="TabLearning">
                                 <div className="Desc">Completed courses and education events</div>
 
-                                {props.learnings && props.learnings.map((learning: Learning) =>
+                                {state.user.learnings && state.user.learnings.map((learning: Learning) =>
                                     <div className="Item" key={learning.id}>
                                         <div className="Header">
                                             <div className={'d-flex ' + (learning.startDate && learning.endDate ? 'justify-content-between' : 'justify-content-end')}>
@@ -312,10 +284,10 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                     }
                                                 </div>
                                                 <div className="d-flex align-items-center">
-                                                    {(currentUser.userId === props.user.id) &&
+                                                    {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editLearningOnClick(learning.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeLearningOnClick(learning.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editLearningOnClick(learning)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeLearningOnClick(learning)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -327,20 +299,18 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === currentUser.userId &&
-                                    /*<div className="Actions">*/
-                                        <span className="Button" onClick={() => learningEditorModalToggler()}><PlusIcon /></span>
-                                    /*</div>*/
+                                {state.user.id === currentUser.id &&
+                                    <span className="Button" onClick={() => learningEditorModalToggler()}><PlusIcon /></span>
                                 }
                             </div>
                         );
-                    case props.tabs.Work:
-                        if (props.user.id !== currentUser.userId && !props.works?.length) return null;
+                    case UserCardTabsNames.Work:
+                        if (state.user.id !== currentUser.id && !state.user.works?.length) return null;
                         return (
                             <div className="TabWork">
                                 <div className="Desc">Places of work and other occupation</div>
 
-                                {props.works && props.works.map((work: Work) =>
+                                {state.user.works && state.user.works.map((work: Work) =>
                                     <div className="Item" key={work.id}>
                                         <div className="Header">
                                             <div className={'d-flex ' + (work.startDate && work.endDate ? 'justify-content-between' : 'justify-content-end')}>
@@ -353,10 +323,10 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                                     }
                                                 </div>
                                                 <div className="d-flex align-items-center">
-                                                    {(currentUser.userId === props.user.id) &&
+                                                    {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editWorkOnClick(work.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeWorkOnClick(work.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editWorkOnClick(work)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeWorkOnClick(work)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -366,7 +336,7 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                             <div className="Title">{work.title}</div>
                                             {work.post &&
                                                 <span className="Post">
-                                                    <span className="me-3"><JobIcon /></span>
+                                                    <span className="me-3"><JobIcon color="#000" /></span>
                                                     <span>{work.post}</span>
                                                 </span>
                                             }
@@ -374,28 +344,26 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === currentUser.userId &&
-                                    /*<div className="Actions">*/
+                                {state.user.id === currentUser.id &&
                                     <span className="Button" onClick={() => workEditorModalToggler()}><PlusIcon /></span>
-                                    /*</div>*/
                                 }
                             </div>
                         );
-                    case props.tabs.Activity:
-                        if (props.user.id !== currentUser.userId && !props.activities?.length) return null;
+                    case UserCardTabsNames.Activity:
+                        if (state.user.id !== currentUser.id && !state.user.activities?.length) return null;
                         return (
                             <div className="TabActivity">
                                 <div className="Desc">Hobby, interests and other businesses that are payed attention periodically </div>
 
-                                {props.activities && props.activities.map((activity: Activity) =>
+                                {state.user.activities && state.user.activities.map((activity: Activity) =>
                                     <div className="Item" key={activity.id}>
                                         <div className="Header">
                                             <div className={'d-flex justify-content-end'}>
                                                 <div className="d-flex align-items-center">
-                                                    {(currentUser.userId === props.user.id) &&
+                                                    {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editActivityOnClick(activity.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeActivityOnClick(activity.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editActivityOnClick(activity)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeActivityOnClick(activity)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -407,28 +375,26 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === currentUser.userId &&
-                                    /* <div className="Actions">*/
+                                {state.user.id === currentUser.id &&
                                     <span className="Button" onClick={() => activityEditorModalToggler()}><PlusIcon /></span>
-                                   /* </div>*/
                                 }
                             </div>
                         );
-                    case props.tabs.Facts:
-                        if (props.user.id !== currentUser.userId && !props.facts?.length) return null;
+                    case UserCardTabsNames.Facts:
+                        if (state.user.id !== currentUser.id && !state.user.facts?.length) return null;
                         return (
                             <div className="TabFacts">
                                 <div className="Desc">Whatever facts about yourself</div>
 
-                                {props.facts && props.facts.map((fact: Fact) =>
+                                {state.user.facts && state.user.facts.map((fact: Fact) =>
                                     <div className="Item" key={fact.id}>
                                         <div className="Header">
                                             <div className={'d-flex justify-content-end'}>
                                                 <div className="d-flex align-items-center">
-                                                    {(currentUser.userId === props.user.id) &&
+                                                    {(currentUser.id === state.user.id) &&
                                                         <>
-                                                            <span className="Edit me-3" role="button" onClick={() => editFactOnClick(fact.id)}><EditIcon /></span>
-                                                            <span className="Remove" role="button" onClick={() => removeFactOnClick(fact.id)}><MenuCloseIcon /></span>
+                                                            <span className="Edit me-3" role="button" onClick={() => editFactOnClick(fact)}><EditIcon /></span>
+                                                            <span className="Remove" role="button" onClick={() => removeFactOnClick(fact)}><MenuCloseIcon /></span>
                                                         </>
                                                     }
                                                 </div>
@@ -440,10 +406,8 @@ export default function UserCardTabs(props: UserCardTabsProps) {
                                     </div>
                                 )}
 
-                                {props.user.id === currentUser.userId &&
-                                    /*<div className="Actions">*/
-                                        <span className="Button" onClick={() => factEditorModalToggler()}><PlusIcon /></span>
-                                    /*</div>*/
+                                {state.user.id === currentUser.id &&
+                                    <span className="Button" onClick={() => factEditorModalToggler()}><PlusIcon /></span>
                                 }
                             </div>
                         );
@@ -453,57 +417,53 @@ export default function UserCardTabs(props: UserCardTabsProps) {
             <LearningEditorModal
                 isOpen={isOpenLearningEditorModal}
                 toggle={learningEditorModalToggler}
-                LearningId={learningId}
-                updateUser={props.updateUser}
+                learning={state.learning}
             />
 
             <WorkEditorModal
                 isOpen={isOpenWorkEditorModal}
                 toggle={workEditorModalToggler}
-                WorkId={workId}
-                updateUser={props.updateUser}
+                work={state.work}
             />
 
             <ActivityEditorModal
                 isOpen={isOpenActivityEditorModal}
                 toggle={activityEditorModalToggler}
-                ActivityId={activityId}
-                updateUser={props.updateUser}
+                activity={state.activity}
             />
 
             <FactEditorModal
                 isOpen={isOpenFactEditorModal}
                 toggle={factEditorModalToggler}
-                FactId={factId}
-                updateUser={props.updateUser}
+                fact={state.fact}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveLearningConfirmModal}
                 toggle={removeLearningConfirmModalToggler}
                 message='Удалить запись об обучении?'
-                confirmAction={removeLearning}
+                confirmAction={handleRemoveLearning}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveWorkConfirmModal}
                 toggle={removeWorkConfirmModalToggler}
                 message='Удалить запись о месте работы?'
-                confirmAction={removeWork}
+                confirmAction={handleRemoveWork}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveActivityConfirmModal}
                 toggle={removeActivityConfirmModalToggler}
                 message='Удалить запись об активности?'
-                confirmAction={removeActivity}
+                confirmAction={handleRemoveActivity}
             />
 
             <ConfirmationModal
                 isOpen={isOpenRemoveFactConfirmModal}
                 toggle={removeFactConfirmModalToggler}
                 message='Удалить запись о факте?'
-                confirmAction={removeFact}
+                confirmAction={handleRemoveFact}
             />
 
         </div>

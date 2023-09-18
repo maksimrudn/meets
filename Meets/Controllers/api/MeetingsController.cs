@@ -3,9 +3,9 @@ using Meets.Controllers.api.dto.Meeting;
 using Meets.Data;
 using Meets.Exceptions;
 using Meets.Extensions;
+using Meets.Infrastructure;
 using Meets.Models;
 using Meets.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace Meets.Controllers.api
 {
+    [Authorize]
     [Area("api")]
     [ApiController]
     public class MeetingsController : ControllerBase
@@ -30,7 +31,6 @@ namespace Meets.Controllers.api
         }
 
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> Invite(MeetingRequest request)
         {
@@ -80,7 +80,6 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<List<MeetingDTO>>> GetList()
         {
@@ -108,7 +107,6 @@ namespace Meets.Controllers.api
             return list;
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<List<GetTimeTableDTO>> GetTimeTable()
         {
@@ -136,7 +134,6 @@ namespace Meets.Controllers.api
             return list;
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<ActionResult<GetMeetingDTO>> Get(ByMeetingIdRequest request)
         {
@@ -153,7 +150,6 @@ namespace Meets.Controllers.api
             return dto;
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> Edit(EditMeetingRequest request)
         {
@@ -170,7 +166,6 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> Discuss(ByMeetingIdRequest request)
         {
@@ -186,7 +181,6 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> Cancel(ByMeetingIdRequest request)
         {
@@ -202,7 +196,6 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> Confirm(ByMeetingIdRequest request)
         {
@@ -218,7 +211,6 @@ namespace Meets.Controllers.api
             return Ok();
         }
 
-        [Authorize]
         [HttpPost("[area]/[controller]/[action]")]
         public async Task<IActionResult> UnSubscribe(ByUserIdRequest request)
         {

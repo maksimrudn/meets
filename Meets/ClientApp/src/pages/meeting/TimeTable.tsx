@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import Routes from '../../common/Routes';
 import { RootState, useAppDispatch } from '../../store/createStore';
-import { updateTimeTable } from '../../store/TimeTable';
+import { updateTimeTable } from '../../store/timetable';
 import WaitingScreen from '../common/WaitingScreen';
 import _ from 'lodash';
 import GoBackIcon from '../../icons/GoBackIcon';
@@ -12,21 +12,25 @@ import 'moment-timezone';
 import 'moment/locale/ru';
 
 import './TimeTable.scss';
+import useTimeTableStore from '../../hooks/useTimeTableStore';
 
 export default function TimeTable() {
     moment.locale('ru');
 
     const history = useHistory();
 
-    const state = useSelector((state: RootState) => state.timeTable);
-    const dispatch = useAppDispatch();
+    const timetableStore = useTimeTableStore();
 
     useEffect(() => {
-        try {
-            dispatch(updateTimeTable());
-        } catch (err) {
-            history.push(Routes.Error, err);
+        const update = async () => {
+            try {
+                await timetableStore.update();
+            } catch (err) {
+                history.push(Routes.Error, err);
+            }
         }
+
+        update();
     }, []);
 
     const compareDates = (date: string) => {
@@ -39,10 +43,10 @@ export default function TimeTable() {
         }
     }
 
-    const sortedTimeTable = (state.timeTable && state.timeTable.length > 0) && _.sortBy(state.timeTable, (item) => (moment(item.meetingDate).format('DD MMMM YYYY')));
+    const sortedTimeTable = (timetableStore.timeTable && timetableStore.timeTable.length > 0) && _.sortBy(timetableStore.timeTable, (item) => (moment(item.meetingDate).format('DD MMMM YYYY')));
     const groupedTimeTable = sortedTimeTable && _.groupBy(sortedTimeTable, (item) => (moment(item.meetingDate).format('DD MMMM YYYY')));
 
-    return state.isLoading ? (
+    return timetableStore.isLoading ? (
         <WaitingScreen />
     ) : (
         <div className="TimeTable">
