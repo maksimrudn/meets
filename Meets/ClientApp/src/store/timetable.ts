@@ -1,4 +1,4 @@
-﻿import { AppThunk, RootState } from './createStore';
+import { AppThunk, RootState } from './createStore';
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import GetTimeTableDTO from '../contracts/meeting/GetTimeTableDTO';
 import meetingsService from '../api/MeetingsService';
