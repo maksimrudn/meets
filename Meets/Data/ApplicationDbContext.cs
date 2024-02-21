@@ -184,10 +184,10 @@ namespace Meets.Data
                     FullName = "Test User",
                     Job = "Test User",
                     Company = "VIClouds",
-                    NormalizedUserName = "loader@loader".ToUpper(),
+                    NormalizedUserName = "test@test".ToUpper(),
                     Email = "loader@loader",
                     NormalizedEmail = "loader@loader",
-                    PasswordHash = "AQAAAAEAACcQAAAAEM0ZQUtQTujF33s3DNg2JAmlO/QceeCykr10VbntxSs+mwM8PBbEkqaeObrzCaE4XA==",
+                    PasswordHash = "AQAAAAEAACcQAAAAEJghd3ye4DkVb7Intua5FREfoqVyGBO9Bqgb/QclZj7UB4jWPAjP94qDpHHbaTyi1w==", // hasher.HashPassword(null, "test@test"),
                     SecurityStamp = "b8db65e3-df56-4cc6-ad87-16e1c108db13",
                     ConcurrencyStamp = "3a770767-445a-4eef-93a3-2389c7949bb5"
                 }
