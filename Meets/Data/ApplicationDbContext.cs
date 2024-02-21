@@ -165,8 +165,8 @@ namespace Meets.Data
                     Id = 1, 
                     UserName = "admin@admin",
                     Company = "VIClouds",
-                    Job = "Администратор",
-                    FullName = "Администратор",
+                    Job = "Administrator",
+                    FullName = "Administrator",
                     NormalizedUserName = "admin@admin".ToUpper(),
                     Email = "admin@admin",
                     NormalizedEmail = "admin@admin",
@@ -180,9 +180,9 @@ namespace Meets.Data
                 new ApplicationUser
                 {
                     Id = 2, 
-                    UserName = "loader@loader",
-                    FullName = "Загрузчик",
-                    Job = "Администратор",
+                    UserName = "test@test",
+                    FullName = "Test User",
+                    Job = "Test User",
                     Company = "VIClouds",
                     NormalizedUserName = "loader@loader".ToUpper(),
                     Email = "loader@loader",
