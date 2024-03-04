@@ -1,3 +1,12 @@
+# C# files
+*.cs linguist-language=C#
+
+# TypeScript files
+*.ts linguist-language=TypeScript
+
+# JavaScript files
+*.js linguist-language=JavaScript
+
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################

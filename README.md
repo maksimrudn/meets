@@ -1,21 +1,24 @@
 # Meets
 ## Introduction
-Social Network for creation of business network based on experience and knowladge exchange.
-Project provides opportunity:
-1. For one persons 
-1.1. To share experiance, knowledge and facts about themselves, 
-1.2. To be found be another persons
-1.3. Receive benefins for communication with themselves
-2. For another persones
-2.1. To find people with real experience in particular field to communicate with them to obtain necessary information or build opinion (for example to communicate with person working in some company about which you want to know more before to be hired there)
+A social network designed for building business connections through the exchange of experiences and knowledge. The project offers the following opportunities:
+
+For individuals:
+1.1. To share their experiences, knowledge, and facts about themselves.
+1.2. To be discovered by others.
+1.3. To benefit from communication with others.
+
+For other individuals:
+2.1. To find people with real experience in a particular field to communicate with, in order to obtain necessary information or form an opinion (for example, to communicate with someone working in a specific company to learn more before considering employment there).
 
 ## System Architecture
 
-Frontend
+**Frontend**
+
 Location: Meets\ClientApp
 Stack: ReactJS, SCSS, Bootstrap, react-scripts
 
-Backend
+**Backend**
+
 Location: Meets\
 Stack: NET6, EF Core, MS SQL 2019
 
